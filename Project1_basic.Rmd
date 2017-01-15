@@ -1,0 +1,69 @@
+---
+title: "Project1"
+date: "1/15/2017"
+output: pdf_document
+---
+
+```{r, message=F, warning=F}
+setwd("~/Documents/Biostatistics/Collaboration II")
+totalData <- readRDS("dataForABP_CBF_2017-01-11.rds")
+library(Hmisc)
+library(knitr)
+
+crvdata <- totalData[totalData$asl.reac.usable == 1,
+                     c(1:18, 61, grep("asl.reac", names(totalData)))]
+names(crvdata) <- sub("asl.reac.", "", names(crvdata), fixed = TRUE)
+names(crvdata) <- sub(".hct", "", names(crvdata), fixed = TRUE)
+exclude <- totalData[totalData$asl.reac.usable == 0,
+                     c(1:18, 61, grep("asl.reac", names(totalData)))]
+names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
+
+#totalData$asl.reac.usable == 1,
+                     
+
+cats <- names(crvdata)[2:19]
+comparison <- c(c(), c(), c(),c())
+is <- length(crvdata$map.id)
+xs <- length(exclude$map.id)
+for (cat in cats){
+  if (is.factor(crvdata[,cat])){
+    chiData <- rbind(cbind(crvdata[,cat],rep("is", length(crvdata[,cat]))),
+                     cbind(exclude[,cat],rep("xs", length(exclude[,cat]))))
+    pp <- chisq.test(table(chiData[,1], chiData[,2]))$p.value
+    comparison <- rbind(comparison, c(label(crvdata[,cat]),'','', round(pp,4)))
+    for (lev in levels(crvdata[,cat])){
+      comparison <- rbind(comparison, c(paste("--",lev ), 
+                      paste(s <- sum(crvdata[,cat]==lev, na.rm=T), " (", round(s*100/is),
+                            "%)", sep=""),
+                      paste(s <- sum(exclude[,cat]==lev, na.rm=T), " (", round(s*100/xs),
+                            "%)", sep=""),""))
+    }
+    next
+  }
+  anovaData <- as.data.frame(rbind(cbind(crvdata[,cat],rep("is", length(crvdata[,cat]))),
+                     cbind(exclude[,cat],rep("xs", length(exclude[,cat])))))
+  anovaData[,1] <- as.numeric(as.character(anovaData[,1]))
+  pp <- kruskal.test(anovaData[,1] ~ anovaData[,2])$p.value
+  comparison <- rbind(c(label(crvdata[,cat]), 
+                paste(round(mean(crvdata[,cat], na.rm=T),1)," (",
+                      round(sd(crvdata[,cat],na.rm=T),1), ")",sep=""),
+                paste(round(mean(exclude[,cat], na.rm=T),1)," (",
+                      round(sd(exclude[,cat],na.rm=T),1), ")",sep=""),
+                round(pp,4)), comparison)
+}
+comparison <- as.data.frame(comparison[,c(1,3,2,4)])
+colnames(comparison) <- c("Variable","Excluded", "Analyzed Data", "P-Value")
+kable(comparison, width=3, 
+      caption=paste("Comparison of Demographics for Excluded & Included Data, w/ N=",
+                    length(exclude$id), " and N=",length(crvdata$id),
+                                         " respectively", sep=""))
+
+
+
+```
+
+
+
+
+
