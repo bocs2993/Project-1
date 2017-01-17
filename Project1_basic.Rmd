@@ -83,23 +83,11 @@ nrow(crvdata)
 missing <- c(c(), c())
 #comparison[,c("Variable", "Analyzed Data")]
 for (cat in cats){
-  if(sum(is.na(crvdata[,cat])) > 0){
-    if (is.factor(crvdata[,cat])){
-      s <- sum(is.na(crvdata[,cat]))
-      missing <- rbind(missing, c(label(crvdata[,cat]), paste(s, " (", round(s*100/is), "%)", sep="")))          
-      
-      for (lev in levels(crvdata[,cat])){
-        sl <- sum(is.na(crvdata[,cat]==lev))
-        missing <- rbind(missing, c(paste("--",lev ), 
-                        paste(sl, " (", round(sl*100/is, 2), "%)", sep="")))
-      }
-      next
-    }
-    
     missing <- rbind(missing, c(label(crvdata[,cat]), paste(s <- sum(is.na(crvdata[,cat])), " (", round(s*100/is, 2), "%)", sep="")))          
  }   
-}
 
+missing <- as.data.frame(missing)
+colnames(missing) <- c("Variable", "Missingness")
 
 kable(missing, width=3, 
       caption=paste("Missingness (N=", nrow(crvdata), ")", sep=""))
