@@ -5,7 +5,9 @@ output: pdf_document
 ---
 
 ```{r, message=F, warning=F}
-setwd("~/Documents/Biostatistics/Collaboration II")
+#setwd("~/Documents/Biostatistics/Collaboration II")
+setwd("~/Documents/BIOS7352/Project1")
+
 totalData <- readRDS("dataForABP_CBF_2017-01-11.rds")
 library(Hmisc)
 library(knitr)
@@ -65,5 +67,36 @@ kable(comparison, width=3,
 
 
 
+Missingness
+```{r}
+nrow(totalData)
+#Start with 336
+nrow(crvdata)
+#223 left after exclusions
+
+missing <- c(c(), c())
+#comparison[,c("Variable", "Analyzed Data")]
+for (cat in cats){
+  if(sum(is.na(crvdata[,cat])) > 0){
+    if (is.factor(crvdata[,cat])){
+      s <- sum(is.na(crvdata[,cat]))
+      missing <- rbind(missing, c(label(crvdata[,cat]), paste(s, " (", round(s*100/is), "%)", sep="")))          
+      
+      for (lev in levels(crvdata[,cat])){
+        sl <- sum(is.na(crvdata[,cat]==lev))
+        missing <- rbind(missing, c(paste("--",lev ), 
+                        paste(sl, " (", round(sl*100/is, 2), "%)", sep="")))
+      }
+      next
+    }
+    
+    missing <- rbind(missing, c(label(crvdata[,cat]), paste(s <- sum(is.na(crvdata[,cat])), " (", round(s*100/is, 2), "%)", sep="")))          
+ }   
+}
+
+
+kable(missing, width=3, 
+      caption=paste("Missingness (N=", nrow(crvdata), ")", sep=""))
+```
 
 
