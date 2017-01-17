@@ -64,7 +64,7 @@ comparison <- as.data.frame(comparison[,c(1,3,2,4)])
 colnames(comparison) <- c("Variable","Excluded", "Analyzed Data", "P-Value")
 kable(comparison, width=3, 
       caption=paste("Comparison of Demographics for Excluded & Included Data, w/ N=",
-                    length(exclude$id), " and N=",length(crvdata$id),
+                    length(exclude$map.id), " and N=",length(crvdata$map.id),
                                          " respectively", sep=""))
 
 
