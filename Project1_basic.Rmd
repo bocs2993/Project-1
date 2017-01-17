@@ -5,8 +5,8 @@ output: pdf_document
 ---
 
 ```{r, message=F, warning=F}
-#setwd("~/Documents/Biostatistics/Collaboration II")
-setwd("~/Documents/BIOS7352/Project1")
+setwd("~/Documents/Biostatistics/Collaboration II")
+#setwd("~/Documents/BIOS7352/Project1")
 
 totalData <- readRDS("dataForABP_CBF_2017-01-11.rds")
 library(Hmisc)
