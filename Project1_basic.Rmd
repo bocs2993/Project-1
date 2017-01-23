@@ -25,6 +25,8 @@ names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
 names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
 
 
+#describe(crvdata)
+
 #totalData$asl.reac.usable == 1,
                      
 
@@ -92,3 +94,46 @@ kable(missing, width=3,
 ```
 
 
+```{r scatterplots,fig.height=8, warning=F, message=F}
+require(GGally)
+
+predictors <- crvdata[,16:18]
+outcomes <- crvdata[, 20:33]
+
+outlong <- c()
+for (out in names(outcomes)){
+  lab <- rep(out, length(outcomes[,out]))
+  temp <- cbind(outcomes[, out], lab, predictors)
+  outlong <- rbind(outlong, temp)
+}
+names(outlong)[1] <- "outcome"
+levels(outlong$lab) <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe", 
+                         "Right Frontal Lobe", "Full Frontal Lobe", "Left Occipital Lobe", 
+                         "Right Occipital Lobe", "Full Occipital Lobe", "Left Temporal Lobe", 
+                         "Right Temporal Lobe", "Full Temporal Lobe", "Left Parietal Lobe", 
+                         "Right Parietal Lobe", "Full Parietal Lobe")
+
+ggplot(outlong, aes(systolic.rising.surge, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
+
+ggplot(outlong, aes(systolic.prewaking.surge, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
+
+
+ggplot(outlong, aes(nocturnal.systolic.diff.sleep.self.reported, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
+
+
+```
