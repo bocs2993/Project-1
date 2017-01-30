@@ -150,7 +150,7 @@ ggplot(outlong[1:1351,], aes(factor(lab), outcome)) +
         panel.grid.major.x=element_line(colour='grey')) +
   ylab("Measured CVR") + xlab("Area Scanned")
 
-ggplot(outlong[1352:2702,], aes(factor(lab), outcome)) +
+ggplot(outlong[1352:2701,], aes(factor(lab), outcome)) +
   geom_boxplot(outlier.colour = "purple") + 
   theme(legend.position="none", strip.text = element_text(size=12), 
         axis.text.x = element_text(size=11, angle = 70, hjust = 1), 
