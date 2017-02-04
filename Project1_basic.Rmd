@@ -18,6 +18,9 @@ crvdata <- totalData[totalData$asl.reac.usable == 1 &
                        grep("ma.", names(totalData)))]
 names(crvdata) <- sub("asl.reac.", "", names(crvdata), fixed = TRUE)
 names(crvdata) <- sub(".hct", "", names(crvdata), fixed = TRUE)
+names(crvdata) <- sub(".factor", "", names(crvdata), fixed = TRUE)
+names(crvdata) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
+                      names(crvdata), fixed = TRUE)
 crvdata <- crvdata[crvdata$time.reading.indicator == 'Yes' &
                      !is.na(crvdata$time.reading.indicator),]
 
@@ -26,6 +29,11 @@ exclude <- totalData[!(totalData$map.id %in% crvdata$map.id),
                        grep("ma.", names(totalData)))]
 names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
 names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
+                      names(exclude), fixed = TRUE)
+names(crvdata$noc.sys.diff)
 
 
 #describe(crvdata)
@@ -131,7 +139,7 @@ ggplot(outlong, aes(systolic.prewaking.surge, outcome, group=1)) +
   ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
 
 
-ggplot(outlong, aes(nocturnal.systolic.diff.sleep.self.reported, outcome, group=1)) +
+ggplot(outlong, aes(noc.sys.diff, outcome, group=1)) +
   geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
   theme(legend.position="none", strip.text = element_text(size=12), 
         axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
@@ -161,5 +169,53 @@ ggplot(outlong[1352:2701,], aes(factor(lab), outcome)) +
 ```
 
 
+```{r, imputation}
+toPredict <- c("systolic.rising.surge", "systolic.prewaking.surge", 
+               "noc.sys.diff")
+imputeSR <- glm(systolic.rising.surge ~ enrolled.dx + sex + raceethnicity +
+                apoe4pos + enrolled.dx + education + htnrx + icv + left.hemisphere + 
+                right.hemisphere, data = crvdata)
+pSysRising <- predict(imputeSR, newdata = crvdata)
+
+imputeSP <- ols(systolic.prewaking.surge ~ enrolled.dx + sex + raceethnicity +
+                apoe4pos + enrolled.dx + education + htnrx + icv + left.hemisphere + 
+                right.hemisphere, data = crvdata)
+pSysPrewaking <- predict(imputeSP, newdata = crvdata)
+
+imputeNS <- ols(noc.sys.diff ~ enrolled.dx + sex + 
+                  raceethnicity + apoe4pos + enrolled.dx + education + htnrx + icv +
+                  left.hemisphere + right.hemisphere, data = crvdata)
+pNocDiff <- predict(imputeNS, newdata = crvdata)
+
+crvdata$sys.rising.impute <- NULL
+crvdata$sys.prewaking.impute <- NULL
+crvdata$noc.diff.impute <- NULL
+for (i in 1:length(crvdata$map.id)){
+  if (is.na(crvdata$systolic.rising.surge[i])){
+    crvdata$sys.rising.impute[i] <- pSysRising[i]
+  } else {crvdata$sys.rising.impute[i] <- crvdata$systolic.rising.surge[i]}
+  if (is.na(crvdata$systolic.prewaking.surge[i])){
+    crvdata$sys.prewaking.impute[i] <- pSysPrewaking[i]
+  } else {crvdata$sys.rising.impute[i] <- crvdata$systolic.rising.surge[i]}
+  if (is.na(crvdata$noc.sys.diff[i])){
+    crvdata$noc.diff.impute[i] <- pNocDiff[i]
+  } else {crvdata$noc.diff.impute[i] <- crvdata$systolic.rising.surge[i]}
+}
+
+plot(crvdata$systolic.rising.surge, pSysRising, pch=16, cex = .8, ylim=c(-25,45),
+     main = "Imputed vs Empirical Data in Systolic Rising Surge", 
+     xlab = "Empirical", ylab="Imputed")
+abline(0,1, col='red', lwd=3)
+
+plot(crvdata$systolic.prewaking.surge, pSysPrewaking, pch=16, cex = .8,
+     main = "Imputed vs Empirical Data in Systolic Prewaking Surge", 
+     xlab = "Empirical", ylab="Imputed")
+abline(0,1)
+
+plot(crvdata$noc.sys.diff, pNocDiff, pch=16, cex = .8,
+     main = "Imputed vs Empirical Data in Nocturnal Difference in Systolic", 
+     xlab = "Empirical", ylab="Imputed")
+abline(0,1)
 
 
+```
