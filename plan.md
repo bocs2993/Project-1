@@ -80,3 +80,12 @@ Won't adjust for these unless data exploration provides strong evidence that we 
 * General: Start writing sections for the final report
 
 
+##Write-up  
+
+* Background: Hannah  
+* Inclusion/exclusion criteria: Brooklyn    
+* Methods  
+  -  Descriptives: Brooklyn  
+  -  Analysis (including imputations): Hannah  
+* Results  
+* Discussion
