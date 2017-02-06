@@ -30,7 +30,6 @@ exclude <- totalData[!(totalData$map.id %in% crvdata$map.id),
 names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
 names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
 names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
 names(exclude) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
                       names(exclude), fixed = TRUE)
 names(crvdata$noc.sys.diff)
@@ -169,7 +168,7 @@ ggplot(outlong[1352:2701,], aes(factor(lab), outcome)) +
 ```
 
 
-```{r, imputation}
+```{r, imputation, warning=F, echo=F}
 toPredict <- c("systolic.rising.surge", "systolic.prewaking.surge", 
                "noc.sys.diff")
 levels(crvdata$enrolled.dx) <- c("Normal","MCI", "Ambiguous At Risk", "Ambiguous At Risk")
@@ -185,8 +184,17 @@ crvdata$noc.diff.impute[is.na(crvdata$noc.diff.impute)] <- rowMeans(impute$imput
 crvdata$sys.rising.impute[is.na(crvdata$sys.rising.impute)] <- rowMeans(impute$imputed$systolic.rising.surge[,])
 crvdata$sys.prewaking.impute[is.na(crvdata$sys.prewaking.impute)] <- rowMeans(impute$imputed$systolic.prewaking.surge[,])
 
+ggplot(crvdata, aes(x=sys.rising.impute, fill = is.na(systolic.rising.surge))) +
+  geom_histogram(alpha=0.4, position="identity") + 
+  xlab("Systolic Rising Surge") + scale_fill_discrete(name = "Imputed")
 
+ggplot(crvdata, aes(x=sys.prewaking.impute, fill = is.na(systolic.prewaking.surge))) +
+  geom_histogram(alpha=0.4, position="identity") + 
+  xlab("Systolic Prewaking Surge") + scale_fill_discrete(name = "Imputed")
 
+ggplot(crvdata, aes(x=noc.diff.impute, fill = is.na(noc.sys.diff))) +
+  geom_histogram(alpha=0.4, position="identity") + 
+  xlab("Nocturnal Difference in Surge") + scale_fill_discrete(name = "Imputed")
 
 
 
