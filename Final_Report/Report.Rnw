@@ -1,0 +1,820 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{lmodern} % Latin modern fonts
+\usepackage[T1]{fontenc} % font encodings
+\usepackage{etexcmds} % Avoid name clashes with e-TEX commands
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{listings} % Typeset source code listings using LATEX
+\usepackage{setspace, relsize, booktabs, needspace, epic} % need one or more of these to make latex(describe) & other rms stuff work
+\usepackage{longtable} % Allows long tables to break across pages
+\usepackage{ctable} % for option for Hmisc Latex tables
+\usepackage{colortbl} % allows coloring of individual cells
+\usepackage{here} % Provides the H option for floats 
+\usepackage{dcolumn} % allows alignment by decimal point in tables
+%\usepackage[usenames,dvipsnames,svgnames]{xcolor} % Driver- independent color extensions % gets loaded by something else here
+\usepackage{enumitem} % modify numbering style for enumerate
+\usepackage{framed} % for shading of whole sections
+\usepackage{parskip} % formats paragraphs the way I like
+\usepackage{pdflscape} % lets you have landscape sections
+\usepackage{graphicx} % for resizebox
+\usepackage[super]{nth} % for 1st, 2nd, etc
+\usepackage[hyphens]{url}
+\usepackage[pdftitle={MAP PWV and CBF Values},
+            pdfauthor={D. Liu},
+            unicode=true,
+            pdfusetitle,
+            bookmarks=true,
+            bookmarksopenlevel=2,
+            breaklinks=true,
+            pdfborder={0 0 1},
+            backref=false]{hyperref} % support for hypertext
+\usepackage[fit]{truncate} % lets you truncate section headings for fancyhdr (and maybe other things)
+\usepackage{fancyhdr}
+%\usepackage[maxfloats= 44]{morefloats} %increases # of floats that can be held in memory at once
+
+\hypersetup{
+    bookmarksnumbered=false, % true means bookmarks in left window are numbered
+    bookmarksopen=false,     % true means only level 1 is displayed.
+    colorlinks=true,         % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links
+    pdfstartview=FitH
+}
+
+\newcommand{\projtitl}{MAP: ABP and CBF/CVR}
+\newcommand{\studyLead}{Angela Jefferson, PhD; Katherine Gifford, PsyD}
+\newcommand{\code}[1]{\texttt{\smaller #1}}
+\newcommand{\scom}[1]{\rm\scriptsize \# #1}
+\newcommand{\R}{{\normalfont\textsf{R}}{}}    
+\renewcommand{\subsectionmark}[1]{}
+\providecommand{\shadeRow}{\rowcolor[gray]{.9}}
+\providecommand{\bitshape}{\bfseries\itshape}
+
+ 
+\title{\projtitl\\ Study Leads: \studyLead}
+\author{Hannah Weeks \\ \href{mailto:hannah.l.weeks@vanderbilt.edu}{\url{hannah.l.weeks@vanderbilt.edu}}\\ \& \\
+Brooklyn Stanley  \\ \href{mailto:b.stanley@vanderbilt.edu}{\url{b.stanley@vanderbilt.edu}}
+\\ \ \\ Department of Biostatistics \\ Vanderbilt University }
+\date{February 15, 2017}
+%\pagestyle{fancy}
+
+
+\begin{document}
+
+\maketitle
+\tableofcontents     
+%\listoffigures
+%\listoftables
+\clearpage
+%\lhead{\small \truncate{.7\headwidth}{\projtitl}\\ 
+%    \truncate{.7\headwidth}{\nouppercase \leftmark}}
+%\rhead{\small \today\\ \truncate{.3\headwidth}{\rightmark}}
+
+
+
+<<Rsetup0, echo= FALSE, results= 'hide', warning=FALSE, message=FALSE>>=
+# R options
+#options(scipen= 8)
+
+# options for knitr
+opts_chunk$set(tidy= TRUE)
+opts_chunk$set(highlight= TRUE)
+opts_chunk$set(comment= NA)
+opts_chunk$set(
+    fig.path   = 'figure/graphics-',
+    cache.path = 'cache/graphics-',
+    fig.align  = 'center',
+    #dev        = 'postscript',
+    dev        = 'pdf',
+    fig.width  = 5,
+    fig.height = 5,
+    fig.show   = 'hold',
+    cache      = FALSE,
+    par        = TRUE
+    )
+opts_chunk$set(echo= TRUE) 
+opts_chunk$set(warning= FALSE) 
+opts_chunk$set(message= FALSE) 
+#opts_chunk$set(results= 'hide') 
+
+knit_hooks$set(
+    par= function(before, options, envir){
+        if (before && options$fig.show != 'none') {
+            par(
+                mar      = c(4, 4, 2.1, .1),
+                cex.lab  = .95,
+                cex.axis = .9,
+                mgp      = c(2, .7, 0),
+                tcl      = -.3)
+        }
+    }
+)
+
+knit_hooks$set(inline = function(x) {
+   if (is.numeric(x)) round(x, 3) else x})
+@
+
+<<Rsetup, echo= FALSE, results= 'hide', warning=FALSE, message=FALSE>>=
+# Setting up R
+rm(list= ls())
+options(datadist= NULL)
+
+# So that rms functions will work correctly with ordered factors
+options(contrasts=c("contr.treatment","contr.treatment"))
+
+
+# other libraries
+library(Hmisc)
+library(rms)
+library(xtable)
+library(ggplot2)
+#library(ltm) # for rcor.test
+library(grid)
+library(gridExtra) # for grid.arrange
+
+set.seed(20150525)
+runPlot=TRUE
+runAnalyses=TRUE
+@
+
+<<getdataPrep, echo = TRUE>>=
+#######################################
+#  File Directory                     #
+#######################################
+platform <- sessionInfo()$platform
+
+proj.dir <- file.path("~", "Documents", "BIOS7352", "Project1")
+data.dir <- file.path(proj.dir, "dataForABP_CBF_2017-01-11.rds")
+
+datfile  <- file.path(data.dir)
+
+#######################################
+#  Variables                          #
+#######################################
+
+# Descriptive and Adjusting Variables
+cov.con <- Cs(age, education)
+cov.cat <- Cs(enrolled.dx.factor, sex.factor, raceethnicity.factor, 
+              apoe4pos.factor, enrolled.dx.factor, 
+              htnrx.factor, diabetes.factor, currentsmoking.factor, cvd.factor, afib.factor,  echo.lvh.factor)
+
+desc.cov <- c(
+    cov.cat,
+    cov.con
+)
+
+#covariates for model
+cov <- Cs(age, raceethnicity.factor, education, enrolled.dx.factor, apoe4pos.factor, icv) 
+
+#Predictors
+predictors <- Cs(
+    systolic.rising.surge,
+    systolic.prewaking.surge,
+    nocturnal.systolic.diff.sleep.self.reported
+)
+
+#Outcomes
+outcomes.reac <- Cs(asl.reac.left.hemisphere,
+                    asl.reac.right.hemisphere,
+                    asl.reac.left.frontal.lobe,
+                    asl.reac.right.frontal.lobe,
+                    asl.reac.frontal.lobe,
+                    asl.reac.left.occipital.lobe,
+                    asl.reac.right.occipital.lobe,
+                    asl.reac.occipital.lobe,
+                    asl.reac.left.temporal.lobe,
+                    asl.reac.right.temporal.lobe,
+                    asl.reac.temporal.lobe,
+                    asl.reac.left.parietal.lobe,
+                    asl.reac.right.parietal.lobe,
+                    asl.reac.parietal.lobe)
+outcomes.reac=paste0(outcomes.reac, '.hct')
+
+ma.vars <- Cs(     ma.left.hemisphere,
+                   ma.right.hemisphere,
+                   ma.left.frontal.lobe.vol,
+                   ma.right.frontal.lobe.vol,
+                   ma.frontal.lobe.vol,
+                   ma.left.occipital.lobe.vol,
+                   ma.right.occipital.lobe.vol,                   
+                   ma.occipital.lobe.vol,
+                   ma.left.temporal.lobe.vol,
+                   ma.right.temporal.lobe.vol,                   
+                   ma.temporal.lobe.vol,
+                   ma.left.parietal.lobe.vol,
+                   ma.right.parietal.lobe.vol,                   
+                   ma.parietal.lobe.vol)
+
+outcomes.list=vector("list", 1)
+names(outcomes.list)=c("ASL.Reac")
+outcomes.list[['ASL.Reac']]=outcomes.reac
+
+outcomes=unlist(outcomes.list)
+
+# Exclusion Criteria Variables
+excl.var <- Cs(time.reading.indicator, asl.reac.usable)  
+
+@
+
+<<getdata2>>=
+totalData <- readRDS(datfile)
+@
+
+\clearpage
+\section{Summary of Project Requests}
+
+\subsection{Project Background}
+
+\begin{itemize}
+  \item Alzheimer's disease (AD) impairs short-term memory and affects one's ability to manage through daily life. 
+  \item Disease progresses from normal cognition through a stage of mild cognitive impairment (MCI) and finally to AD. 
+  \item Since there are currently no treatments for AD, research focuses on prevention and early detection so that effective strategies may be implemented once treatments are available.
+  \item Cardiovascular measures may be associated with and useful in identifying early symptoms of AD.
+  \item Cerebrovascular reactivity (CVR), possibly useful in early identification of patients at risk for AD, is a measurement of the change in cerebral blood flow when the vascular system is challenged by presence of carbon dioxide.
+  \item The current project goal is to determine if there is an association between cardiovascular measures (based on ambulatory measurements of systolic blood pressure) and cerebrovascular reactivity.
+\end{itemize}
+
+\subsection{Project Goals}
+
+{\it Primary Aim}
+\begin{itemize}
+  \item Characterize the associations between ambulatory blood pressure measurements (ABPM) and cerebrovascular reactivity.
+  \item {\bf Hypothesis:} Patients with abnormal variability or surge patterns will be associated with decreased CVR.
+\end{itemize}
+
+{\it Secondary Aim}
+\begin{itemize}
+  \item Investigate which ABPM predictor is most predictive of cognitive function, as measured by CVR.
+\end{itemize}
+
+\clearpage
+\section{Inclusion/Exclusion Criteria}
+
+
+<<>>=
+#######################################
+#  Inclusion/Exclusion                #
+#######################################
+
+cvrdata <- totalData[totalData$asl.reac.usable == 1 & 
+                       totalData$enrolled.dx.factor != "Dementia",
+                     c(1:18, 61, grep("asl.reac", names(totalData)),
+                       grep("ma.", names(totalData)))]
+names(cvrdata) <- sub("asl.reac.", "", names(cvrdata), fixed = TRUE)
+names(cvrdata) <- sub(".hct", "", names(cvrdata), fixed = TRUE)
+names(cvrdata) <- sub(".factor", "", names(cvrdata), fixed = TRUE)
+names(cvrdata) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
+                      names(cvrdata), fixed = TRUE)
+cvrdata <- cvrdata[cvrdata$time.reading.indicator == 'Yes' &
+                     !is.na(cvrdata$time.reading.indicator),]
+
+
+exclude <- totalData[!(totalData$map.id %in% cvrdata$map.id),
+                     c(1:18, 61, grep("asl.reac", names(totalData)),
+                       grep("ma.", names(totalData)))]
+names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
+names(exclude) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
+                      names(exclude), fixed = TRUE)
+names(cvrdata$noc.sys.diff)
+@
+
+Comparison of included/excluded data
+<<>>=
+#######################################
+#  Inclusion/Exclusion Comparison     #
+#######################################
+
+cats <- names(cvrdata)[2:18]
+comparison <- c(c(), c(), c(),c())
+is <- length(cvrdata$map.id)
+xs <- length(exclude$map.id)
+for (cat in cats){
+  if (is.factor(cvrdata[,cat])){
+    chiData <- rbind(cbind(cvrdata[,cat],rep("is", length(cvrdata[,cat]))),
+                     cbind(exclude[,cat],rep("xs", length(exclude[,cat]))))
+    pp <- chisq.test(table(chiData[,1], chiData[,2]))$p.value
+    comparison <- rbind(comparison, c(label(cvrdata[,cat]),'','', round(pp,4)))
+    for (lev in levels(cvrdata[,cat])){
+      comparison <- rbind(comparison, c(paste("--",lev ), 
+                      paste(s <- sum(cvrdata[,cat]==lev, na.rm=T), " (", round(s*100/is),
+                            "%)", sep=""),
+                      paste(s <- sum(exclude[,cat]==lev, na.rm=T), " (", round(s*100/xs),
+                            "%)", sep=""),""))
+    }
+    next
+  }
+  anovaData <- as.data.frame(rbind(cbind(cvrdata[,cat],rep("is", length(cvrdata[,cat]))),
+                     cbind(exclude[,cat],rep("xs", length(exclude[,cat])))))
+  anovaData[,1] <- as.numeric(as.character(anovaData[,1]))
+  pp <- kruskal.test(anovaData[,1] ~ anovaData[,2])$p.value
+  comparison <- rbind(c(label(cvrdata[,cat]), 
+                paste(round(mean(cvrdata[,cat], na.rm=T),1)," (",
+                      round(sd(cvrdata[,cat],na.rm=T),1), ")",sep=""),
+                paste(round(mean(exclude[,cat], na.rm=T),1)," (",
+                      round(sd(exclude[,cat],na.rm=T),1), ")",sep=""),
+                round(pp,4)), comparison)
+}
+comparison <- as.data.frame(comparison[,c(1,3,2,4)])
+colnames(comparison) <- c("Variable","Excluded", "Analyzed Data", "P-Value")
+kable(comparison, width=3, 
+      caption=paste("Comparison of Demographics for Excluded & Included Data, w/ N=",
+                    length(exclude$map.id), " and N=",length(cvrdata$map.id),
+                                         " respectively", sep=""))
+@
+
+
+\clearpage
+\section{Statistical Analysis Plan}
+
+\subsection{Variables}
+
+Outcomes: CVR measures for different regions of interest within the brain\\
+\begin{itemize}
+  \item \texttt{asl.reac.left.hemisphere.hct}
+  \item \texttt{asl.reac.right.hemisphere.hct}
+  \item \texttt{asl.reac.left.frontal.lobe.hct}
+  \item \texttt{asl.reac.right.frontal.lobe.hct}
+  \item \texttt{asl.reac.frontal.lobe.hct}
+  \item \texttt{asl.reac.left.occipital.lobe.hct}
+  \item \texttt{asl.reac.right.occipital.lobe.hct}
+  \item \texttt{asl.reac.occipital.lobe.hct}
+  \item \texttt{asl.reac.left.temporal.lobe.hct}
+  \item \texttt{asl.reac.right.temporal.lobe.hct}
+  \item \texttt{asl.reac.temporal.lobe.hct}
+  \item \texttt{asl.reac.left.parietal.lobe.hct}
+  \item \texttt{asl.reac.right.parietal.lobe.hct}
+  \item \texttt{asl.reac.parietal.lobe.hct}
+\end{itemize}
+
+Predictors  
+\begin{itemize}
+  \item \texttt{systolic.prewaking.surge}: Mean SBP in two hours after self-reported wake time minus mean SBP in two hours prior to self-reported wake time 
+  \item \texttt{systolic.rising.surge}: First SBP reading after self-reported wake time minus last SBP before self-reported wake time
+  \item \texttt{nocturnal.systolic.diff.sleep.self.reported}: Mean SBP during self-reported wake time minus mean SBP from self-reported asleep time
+\end{itemize}
+
+Covariates
+\begin{itemize}
+  \item \texttt{age}$^*$
+  \item \texttt{education}$^*$
+  \item \texttt{sex.factor}$^*$
+  \item \texttt{enrolled.dx.factor}$^*$: diagnosis group (dementia excluded)
+  \begin{itemize}
+    \item Normal
+    \item MCI
+    \item Ambiguous at risk
+  \end{itemize}
+  \item \texttt{raceethnicity.factor}$^*$
+  \item \texttt{apoe4pos.factor}$^*$
+  \item \texttt{htnrx.factor}$^*$
+  \item \texttt{diabetes.factor}
+\end{itemize}
+
+{\large Diabetes?}\\
+
+Regional brain volume variables. Models for outcomes in a given region are controlled for the corresponding variable for volume in that region.
+\begin{itemize}
+  \item \texttt{ma.left.hemisphere.vol}
+  \item \texttt{ma.right.hemisphere.vol}
+  \item \texttt{ma.left.frontal.lobe.vol}
+  \item \texttt{ma.right.frontal.lobe.vol}
+  \item \texttt{ma.frontal.lobe.vol}
+  \item \texttt{ma.left.occipital.lobe.vol}
+  \item \texttt{ma.right.occipital.lobe.vol}
+  \item \texttt{ma.occipital.lobe.vol}
+  \item \texttt{ma.left.temporal.lobe.vol}
+  \item \texttt{ma.right.temporal.lobe.vol}
+  \item \texttt{ma.temporal.lobe.vol}
+  \item \texttt{ma.left.parietal.lobe.vol}
+  \item \texttt{ma.right.parietal.lobe.vol}
+  \item \texttt{ma.parietal.lobe.vol}
+\end{itemize}
+
+<<missing, results = 'asis'>>=
+#######################################
+#  Missing Data                       #
+#######################################
+
+missing <- c(c(), c())
+#comparison[,c("Variable", "Analyzed Data")]
+for (cat in cats){
+    missing <- rbind(missing, c(label(cvrdata[,cat]), paste(s <- sum(is.na(cvrdata[,cat])), " (", round(s*100/is, 2), "%)", sep="")))          
+ }   
+
+missing <- as.data.frame(missing)
+colnames(missing) <- c("Variable", "Missingness")
+
+print(xtable(missing, caption=paste("Missingness (N=", nrow(cvrdata), ")", sep="")),
+      caption.placement = "top")
+@
+
+
+\subsection{Analysis Plan Overview}
+Cross-sectional analysis of 174 (check) patients from the VMAC MAP study.
+
+certain covariates not included in models because essentially all patients were in one of the categories (e.g. smoking had like one non-smoker)
+
+\section{Descriptive Statistics}
+\subsection{All variables}
+<<describeAll, results= 'asis'>>=
+latex(describe(mydat0, descript= "All variables"), file= "")
+@
+
+<<descrPrep, warning= FALSE>>=
+my.LatexlTable <-function(my.descr.var, my.bygrp, my.bygrp.lab=NULL, my.dat, my.test=TRUE, my.overall=TRUE, printWarning=TRUE){
+  my.descr.var = setdiff(my.descr.var, my.bygrp)
+  descrForm <- as.formula(paste0(paste(my.descr.var, collapse= " + "),  "~", my.bygrp))
+  
+  summary = summaryM(descrForm,
+    data       = my.dat,
+    test       = my.test,
+    continuous = 5,
+    overall    = my.overall
+  )
+  
+  my.bygrp.lab =ifelse(is.na(my.bygrp.lab), my.bygrp, my.bygrp.lab)
+  cat('\\LTcapwidth=\\textwidth \n')
+  if (printWarning) {
+      cat("\\textcolor{magenta}{Due to small cell counts, some of the chi-squared values and p-values may be incorrect.}\\\\ \n")
+  }    
+
+  latex(summary,
+      file        = "",
+      what        = '%',
+      caption     = paste0("All variables: Descriptive statistics by ", my.bygrp.lab),
+      prn         = TRUE,
+      npct        = "both",
+      exclude1    = FALSE,
+      prmsd       = TRUE,
+      long        = TRUE,
+      where       = "htbp",
+      digits      = 3,
+      pdig        = 4,
+      round       = 2,
+      size       = "smaller[3]",
+      outer.size  = "footnotesize",
+      lines.page   = 400,
+      middle.bold = TRUE,
+      longtable   = TRUE,
+      center      = "centering",
+      label       = paste0('tbl:descr.', my.bygrp),
+      vnames = 'names'
+  )
+}  
+@
+
+
+\section{Analysis Results}
+
+Weighted vs closest for match?
+
+{\huge I changed name of imputation to `impute.data` to avoid issue with there being a function called `impute`}
+
+<<imputation, results = 'hide'>>=
+#######################################
+#  Multiple-Imputation                #
+#######################################
+label(cvrdata$enrolled.dx) <- "Diagnosis"
+# toPredict <- c("systolic.rising.surge", "systolic.prewaking.surge", 
+#                "noc.sys.diff")
+cvrdata$enrolled.dx <-factor(cvrdata$enrolled.dx)
+
+
+impute.data <- aregImpute(~ systolic.rising.surge + systolic.prewaking.surge + noc.sys.diff + 
+                       enrolled.dx + sex + raceethnicity + apoe4pos + enrolled.dx + education +
+                       htnrx + icv + left.hemisphere + right.hemisphere, data = cvrdata,
+                     match = "closest")
+@
+
+
+{\large imputation graphs will go in sensitivity analysis section}
+
+<<results = 'hide'>>=
+#######################################
+#  Model Fitting                      #
+#######################################
+outcomes.reac <- sub("asl.reac.", "", outcomes.reac, fixed = TRUE)
+outcomes.reac <- sub(".hct", "", outcomes.reac, fixed = TRUE)
+
+
+
+modelFit <- function(outcome, predictor, ma, knot){
+  
+  fit <- fit.mult.impute(as.formula(paste0(outcome, "~ rcs(", predictor, ", c(", 
+                                           knot[1],",", knot[2],",", 
+                                           knot[3], ",", knot[4], ")) +", 
+                                           ma, "+",
+"age + sex + raceethnicity + education + enrolled.dx + apoe4pos")),
+                         fitter = ols, xtrans = impute.data, data = cvrdata)
+  
+  return(fit)
+}
+
+#Knot locations for each predictor
+prewaking.knot <- c(0, quantile(subset(cvrdata, systolic.prewaking.surge > 0)$systolic.prewaking.surge, probs = c(.25, .5, .75), na.rm = T))
+
+rising.knot <- c(0, quantile(subset(cvrdata, systolic.rising.surge > 0)$systolic.rising.surge, probs = c(.25, .5, .75), na.rm = T))
+
+noc.knot <- c(0, quantile(subset(cvrdata, noc.sys.diff > 0)$noc.sys.diff, probs = c(.1,.5,.9), na.rm = T))
+
+knots <- rbind(prewaking.knot, rising.knot, noc.knot); colnames(knots) = NULL
+knots
+
+#Systolic prewaking surge
+mod.sys.prewaking.surge <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.sys.prewaking.surge[[i]] <- modelFit(outcome = outcomes.reac[i], 
+                                           predictor = "systolic.prewaking.surge",
+                                           ma = ma.vars[i],
+                                           knot = prewaking.knot)
+}
+
+#Systolic rising surge
+mod.sys.rising.surge <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.sys.rising.surge[[i]] <- modelFit(outcome = outcomes.reac[i],
+                                           predictor = "systolic.rising.surge",
+                                           ma = ma.vars[i],
+                                        knot = rising.knot)
+}
+
+#Nocturnal Difference
+mod.noc.sys.diff <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.noc.sys.diff[[i]] <- modelFit(outcome = outcomes.reac[i],
+                                           predictor = "noc.sys.diff",
+                                           ma = ma.vars[i],
+                                    knot = noc.knot)
+}
+@
+
+
+\subsection{Test of Association between ABPM and CVR}
+
+Fit linear models with rcs for predictor to allow for non-linear association. Knots placed at 0 and {\large other percentiles}. 4 knots for each
+
+<<assocTable, results = 'asis'>>=
+outcomeNames <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe",
+                         "Right Frontal Lobe", "Full Frontal Lobe", "Left Occipital Lobe",
+                         "Right Occipital Lobe", "Full Occipital Lobe", "Left Temporal Lobe",
+                         "Right Temporal Lobe", "Full Temporal Lobe", "Left Parietal Lobe",
+                         "Right Parietal Lobe", "Full Parietal Lobe")
+
+
+
+sys.prewaking.pval <- lapply(mod.sys.prewaking.surge,
+                             function(x) anova(x)["systolic.prewaking.surge","P"])
+sys.rising.pval <- lapply(mod.sys.rising.surge,
+                             function(x) anova(x)["systolic.rising.surge","P"])
+noc.sys.diff.pval <- lapply(mod.noc.sys.diff,
+                             function(x) anova(x)["noc.sys.diff","P"])
+
+assoc.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.pval),
+                          "SBP Rising Surge" = unlist(sys.rising.pval),
+                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.pval),
+                          row.names = outcomeNames,
+                          check.names = FALSE)
+
+print(xtable(assoc.table, digits = 3,
+             caption = "P-values for test of association between ABPM and CVR"),
+      caption.placement = "top")
+@
+
+\begin{itemize}
+  \item The only model with an association detected at the 0.05 significance level was for nocturnal difference in systolic blood pressure.
+  \item However, we would recommend a multiple comparisons adjustement for fitting the 42 models (e.g. using a Bonferroni-corrected significance level of $\frac{.05}{42} = .0012$). With an adjusted significance level, we would not see a significant association for any brain region-predictor of interest pair.
+\end{itemize}
+
+\subsection{Coefficients and Partial Effect Plots}
+
+<<eval = F>>=
+sys.prewaking.coef <- do.call(rbind, lapply(mod.sys.prewaking.surge,
+                             function(x) x$coef[grep("systolic", names(x$coef))]))
+  
+sys.rising.coef <- do.call(rbind, lapply(mod.sys.prewaking.surge,
+                             function(x) x$coef[grep("systolic", names(x$coef))]))
+
+noc.diff.coef <- do.call(rbind, lapply(mod.sys.prewaking.surge,
+                             function(x) x$coef[grep("noc", names(x$coef))]))
+
+
+coef.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.pval),
+                          "SBP Rising Surge" = unlist(sys.rising.pval),
+                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.pval),
+                          row.names = outcomeNames,
+                          check.names = FALSE)
+
+print(xtable(assoc.table, digits = 3,
+             caption = "P-values for test of association between ABPM and CVR"),
+      caption.placement = "top")
+@
+
+
+Since coefficients from fitting a cubic spline are not directly interpretable, we provide partial effect plots. A single plot is presented from each model for the predictor of interest against the CVR outcome for the specified region of interest. Parital effect plots show the effect of each SBP measure on CVR outcome with other variables in the model fixed. By default, continuous variables are fixed at their median and categorical variables are fixed at their reference group. For these data, the default plotting values for (non-brain volume) covariates are:
+
+<<>>=
+subset_cvrdata <- subset(cvrdata, select = c(age, sex, enrolled.dx, raceethnicity,
+                                             apoe4pos, htnrx, education))
+datadist(subset_cvrdata)$limits["Adjust to",]
+@
+
+
+\begin{landscape}
+<<pep.Sys.Prewaking, fig.width = 10, fig.height = 7.5, echo = F, cache = TRUE>>=
+dd <- datadist(cvrdata)
+options(datadist = "dd")
+
+#Systolic prewaking surge
+sys.prewaking.PEP <- lapply(mod.sys.prewaking.surge,
+                             function(x) ggplot(Predict(x, systolic.prewaking.surge),
+                                                adj.subtitle = FALSE,
+                                                anova = anova(x), size.anova = 3,
+                                                pval = TRUE,
+                                                ylim. = c(1,5),
+                                                xlab = "SBP prewaking"))
+do.call(grid.arrange, sys.prewaking.PEP)
+@
+
+<<pep.Sys.Rising, fig.width = 10, fig.height = 7.5, eval = F, cache = TRUE>>=
+#Systolic rising surge
+sys.rising.PEP <- lapply(mod.sys.rising.surge,
+                             function(x) ggplot(Predict(x, systolic.rising.surge),
+                                                adj.subtitle = FALSE,
+                                                anova = anova(x), size.anova = 3,
+                                                pval = TRUE,
+                                                ylim. = c(1,5),
+                                                xlab = "SBP rising"))
+do.call(grid.arrange, sys.rising.PEP)
+@
+
+<<pep.Noc.Diff, fig.width = 10, fig.height = 7.5, cache = TRUE>>=
+#Nocturnal difference
+noc.sys.diff.PEP <- lapply(mod.noc.sys.diff,
+                             function(x) ggplot(Predict(x, noc.sys.diff),
+                                                adj.subtitle = FALSE,
+                                                anova = anova(x), size.anova = 3,
+                                                pval = TRUE,
+                                                ylim. = c(1,5),
+                                                xlab = "Nocturnal Difference"))
+do.call(grid.arrange, noc.sys.diff.PEP)
+@
+\end{landscape}
+
+<<eval=F>>=
+
+
+#All the above are at default values, but can look at these interactively
+plot1 <- ggplot(Predict(mod.sys.prewaking.surge[[1]], systolic.prewaking.surge, age=c(60,70)))
+#plot2 <-
+ggplot(Predict(mod.sys.prewaking.surge[[1]], systolic.prewaking.surge, enrolled.dx=c("Normal","MCI", "Ambiguous At Risk"), age=dd$limits["Adjust to", "age"]))
+grid.arrange(plot1, plot2, ncol = 2)
+
+ggplot(Predict(mod.sys.prewaking.surge[[1]], systolic.prewaking.surge))
+
+ggplot(Predict(mod.noc.sys.diff[[1]], noc.sys.diff)) +
+  scale_x_discrete(limits = c(noc.knot, 10, 20)) 
+
+
+
+@
+
+\subsection{Partial Effect Plots: Stratified by Diagnosis}
+Though results weren't significant, to understand potential trends we also present partial effect plots stratified by diagnosis group
+
+<<, echo = T>>=
+dd <- datadist(cvrdata)
+options(datadist = "dd")
+#Function obtained from:
+# http://stackoverflow.com/questions/11883844/inserting-a-table-under-the-legend-in-a-ggplot2-histogram
+
+#create inset table 
+g_legend<-function(a.gplot){ 
+  tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+  legend <- tmp$grobs[[leg]] 
+  return(legend)} 
+
+legend.dx <- g_legend(ggplot(Predict(mod.noc.sys.diff[[1]], noc.sys.diff,
+                 enrolled.dx = c("Normal", "MCI", "Ambiguous At Risk"))))
+@
+
+
+\begin{landscape}
+<<pep.Sys.Prewaking.dx, fig.width = 10, fig.height = 7.5, echo = F, cache = F>>=
+theme_update(legend.position = "none")
+
+#Systolic prewaking surge
+sys.prewaking.PEP.dx <- lapply(mod.sys.prewaking.surge,
+                             function(x) ggplot(Predict(x, systolic.prewaking.surge,
+                                                        enrolled.dx = c("Normal",
+                                                                        "MCI",
+                                                                        "Ambiguous At Risk")),
+                                                colfill = "grey60",
+                                                adj.subtitle = FALSE,
+                                                ylim. = c(0,5),
+                                                xlab = "SBP prewaking") + 
+  theme(legend.position = "none"))
+
+sys.prewaking.PEP.dx[[15]] <- legend.dx
+do.call(grid.arrange, sys.prewaking.PEP.dx)
+@
+
+<<pep.Sys.Rising.dx, fig.width = 10, fig.height = 7.5, echo = F, cache = F>>=
+#Systolic rising surge
+sys.rising.PEP.dx <- lapply(mod.sys.rising.surge,
+                             function(x) ggplot(Predict(x, systolic.rising.surge,
+                                                        enrolled.dx = c("Normal",
+                                                                        "MCI",
+                                                                        "Ambiguous At Risk")),
+                                                colfill = "grey60",
+                                                adj.subtitle = FALSE,
+                                                ylim. = c(0,5),
+                                                xlab = "SBP rising") + 
+  theme(legend.position = "none"))
+
+sys.rising.PEP.dx[[15]] <- legend.dx
+do.call(grid.arrange, sys.rising.PEP.dx)
+@
+
+<<pep.Noc.Diff.dx, fig.width = 10, fig.height = 7.5, cache = F>>=
+#Nocturnal difference
+noc.sys.diff.PEP.dx <- lapply(mod.noc.sys.diff,
+                             function(x) ggplot(Predict(x, noc.sys.diff,
+                                                        enrolled.dx = c("Normal",
+                                                                        "MCI",
+                                                                        "Ambiguous At Risk")),
+                                                colfill = "grey60",
+                                                adj.subtitle = FALSE,
+                                                ylim. = c(0,5),
+                                                xlab = "Nocturnal Difference") + 
+  theme(legend.position = "none"))
+
+
+noc.sys.diff.PEP.dx[[15]] <- legend.dx
+do.call(grid.arrange, noc.sys.diff.PEP.dx)
+@
+\end{landscape}
+
+\subsection{Tests of Linearity for ABPM Measures}
+
+<<results='asis'>>=
+sys.prewaking.nonlin <- lapply(mod.sys.prewaking.surge,
+                             function(x) anova(x)[" Nonlinear","P"])
+sys.rising.nonlin <- lapply(mod.sys.rising.surge,
+                             function(x) anova(x)[" Nonlinear","P"])
+noc.sys.diff.nonlin <- lapply(mod.noc.sys.diff,
+                             function(x) anova(x)[" Nonlinear","P"])
+
+
+linear.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.nonlin),
+                          "SBP Rising Surge" = unlist(sys.rising.nonlin),
+                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.nonlin),
+                          row.names = outcomeNames,
+                          check.names = FALSE)
+
+print(xtable(linear.table, digits = 3,
+             caption = "P-values for test of linearity for ABPM predictors"),
+      caption.placement = "top")
+@
+
+
+\section{Summary of Results}
+
+\begin{itemize}
+  \item Any associations?
+  \item Trends observed in the partial effect plots?
+  \item Nonlinearity of ABPM predictors?
+  \item Secondary aim: predictive power of ABPM measures?
+\end{itemize}
+
+\clearpage
+\section{R session information}
+\small
+<<versionInfo, results= 'markup'>>=
+    # helpful code from Nate (modified)
+    cat(version['version.string'][[1]], "\n")    
+    pack <- installed.packages()
+    pack.out <- pack[, c('Package', 'Version', 'Priority', 
+        'Depends')]
+    pack.in.session <- (.packages())
+    pack.out2 <- data.frame(pack.out[pack.out[, 1] %in% 
+        pack.in.session, ])[, -1]
+    cat("Packages:\n")
+    pack.out2[!pack.out2$Priority%in%c('base','recommended'),-2,
+        drop=FALSE]
+@
+
+\section{Roles and Responsibilities}
+
+\section{Code Appendix}
+
+Change this to echo = TRUE to print all code here in the appendix rather than in the report itself
+
+<<show-code, ref.label=all_labels(), echo = FALSE, eval=FALSE>>=
+
+@
+
+
+\end{document}
+
