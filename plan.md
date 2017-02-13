@@ -1,4 +1,28 @@
-#Project 1 
+#Project 1
+
+
+##For Final Draft
+
+**Brooklyn**   
+
+- Change variable names back to unaltered states    
+- Table 1 broken down by diagnosis group
+- Histograms of predictors by disease category  
+- Add text to descriptive statistics
+  * Draw attention to outliers (provide ID if someone is repeatedly the outlier)
+  * Push right hemisphere to second line of boxplots so that lobe regions aren't separated
+- Inclusion/exclusion criteria (line by line, tell how many people were excluded at each step - do Dementia first)
+
+**Hannah**  
+
+- Missingness table right before imputations are performed (Hannah - move the missingness table)
+- Write up results interpretations
+- Perform sensitivity analysis with linear regression and provide interpretation
+- Write up summary of results
+
+
+
+
 
 **Next Meeting: Monday, February 6th**
 
@@ -30,7 +54,7 @@
 * Hypertension medication  
 * Diagnosis  
 * Appropriate `ma.` variable for ROI volume  
-* Check about diabetes 
+* Check about diabetes
 
 
 Other variables in dataset: comorbidities like diabetes (?), smoking, CVD, A-fib, LV
@@ -42,7 +66,7 @@ Won't adjust for these unless data exploration provides strong evidence that we 
 
 * Regression (linear or allow nonlinearity with transformations/rcs)  
 
- * We should consider multiple imputation as a means of mitigating loss - complete case analysis could eliminate too many patients. I believe we are excluding those patients who do not have complete measurements on the outcomes, which would eliminate issues such as "no data on people with big heads." Thus, it might be reasonable to assume MAR for patients *not excluded from analysis*.  
+* We should consider multiple imputation as a means of mitigating loss - complete case analysis could eliminate too many patients. I believe we are excluding those patients who do not have complete measurements on the outcomes, which would eliminate issues such as "no data on people with big heads." Thus, it might be reasonable to assume MAR for patients *not excluded from analysis*.  
 
 **Secondary Objective**  
 
