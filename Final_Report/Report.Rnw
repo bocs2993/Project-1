@@ -247,8 +247,24 @@ totalData <- readRDS(datfile)
 \end{itemize}
 
 \clearpage
+
 \section{Inclusion/Exclusion Criteria}
 
+
+\begin{itemize}
+  \item Exclude patients with dementia at baseline
+  \begin{itemize}
+      \item `enrolled.dx.factor`, exclude = "Dementia", n = 1
+  \end{itemize} 
+  \item Quality check
+  \begin{itemize}
+    \item `asl.reac.usuable`, exclude = 0, n = 112
+  \end{itemize}
+  \item At least 39 readings
+  \begin{itemize}
+    \item `time.reading.indicator`, exclude = "No" or NA, n = 49
+  \end{itemize}  
+\end{itemize}
 
 <<>>=
 #######################################
@@ -259,11 +275,6 @@ cvrdata <- totalData[totalData$asl.reac.usable == 1 &
                        totalData$enrolled.dx.factor != "Dementia",
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
-names(cvrdata) <- sub("asl.reac.", "", names(cvrdata), fixed = TRUE)
-names(cvrdata) <- sub(".hct", "", names(cvrdata), fixed = TRUE)
-names(cvrdata) <- sub(".factor", "", names(cvrdata), fixed = TRUE)
-names(cvrdata) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
-                      names(cvrdata), fixed = TRUE)
 cvrdata <- cvrdata[cvrdata$time.reading.indicator == 'Yes' &
                      !is.na(cvrdata$time.reading.indicator),]
 
@@ -271,21 +282,18 @@ cvrdata <- cvrdata[cvrdata$time.reading.indicator == 'Yes' &
 exclude <- totalData[!(totalData$map.id %in% cvrdata$map.id),
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
-names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
-                      names(exclude), fixed = TRUE)
-names(cvrdata$noc.sys.diff)
+
 @
 
-Comparison of included/excluded data
+
+It should be noted that the method for exclusion is not random. Patient's with a larger intracranial volume were unable to fit into the equipment to gather the readings. It follows that more men were excluded because men tend to be larger in general. The table below displays all of the descriptive statistics for the excluded patients versus the patients in the analysis. Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). The third column is the p-value for the univariate comparison of the each variable between the excluded and included patients. A significant p-value (< 0.05) indicates that the excluded and included populations are significantly different for that variable.
+
 <<>>=
 #######################################
 #  Inclusion/Exclusion Comparison     #
 #######################################
 
-cats <- names(cvrdata)[2:18]
+cats <- names(cvrdata)[3:18]
 comparison <- c(c(), c(), c(),c())
 is <- length(cvrdata$map.id)
 xs <- length(exclude$map.id)
@@ -321,6 +329,70 @@ kable(comparison, width=3,
       caption=paste("Comparison of Demographics for Excluded & Included Data, w/ N=",
                     length(exclude$map.id), " and N=",length(cvrdata$map.id),
                                          " respectively", sep=""))
+@
+
+\section{Descriptive Statistics}
+\subsection{All variables}
+
+<<describeAll, results= 'asis'>>=
+latex(describe(mydat0, descript= "All variables"), file= "")
+@
+
+<<descrPrep, warning= FALSE>>=
+my.LatexlTable <-function(my.descr.var, my.bygrp, my.bygrp.lab=NULL, my.dat, my.test=TRUE, my.overall=TRUE, printWarning=TRUE){
+  my.descr.var = setdiff(my.descr.var, my.bygrp)
+  descrForm <- as.formula(paste0(paste(my.descr.var, collapse= " + "),  "~", my.bygrp))
+  
+  summary = summaryM(descrForm,
+    data       = my.dat,
+    test       = my.test,
+    continuous = 5,
+    overall    = my.overall
+  )
+  
+  my.bygrp.lab =ifelse(is.na(my.bygrp.lab), my.bygrp, my.bygrp.lab)
+  cat('\\LTcapwidth=\\textwidth \n')
+  if (printWarning) {
+      cat("\\textcolor{magenta}{Due to small cell counts, some of the chi-squared values and p-values may be incorrect.}\\\\ \n")
+  }    
+
+  latex(summary,
+      file        = "",
+      what        = '%',
+      caption     = paste0("All variables: Descriptive statistics by ", my.bygrp.lab),
+      prn         = TRUE,
+      npct        = "both",
+      exclude1    = FALSE,
+      prmsd       = TRUE,
+      long        = TRUE,
+      where       = "htbp",
+      digits      = 3,
+      pdig        = 4,
+      round       = 2,
+      size       = "smaller[3]",
+      outer.size  = "footnotesize",
+      lines.page   = 400,
+      middle.bold = TRUE,
+      longtable   = TRUE,
+      center      = "centering",
+      label       = paste0('tbl:descr.', my.bygrp),
+      vnames = 'names'
+  )
+}  
+@
+
+<<>>=
+
+
+
+
+
+
+
+
+
+
+
 @
 
 
@@ -414,55 +486,6 @@ print(xtable(missing, caption=paste("Missingness (N=", nrow(cvrdata), ")", sep="
 Cross-sectional analysis of 174 (check) patients from the VMAC MAP study.
 
 certain covariates not included in models because essentially all patients were in one of the categories (e.g. smoking had like one non-smoker)
-
-\section{Descriptive Statistics}
-\subsection{All variables}
-<<describeAll, results= 'asis'>>=
-latex(describe(mydat0, descript= "All variables"), file= "")
-@
-
-<<descrPrep, warning= FALSE>>=
-my.LatexlTable <-function(my.descr.var, my.bygrp, my.bygrp.lab=NULL, my.dat, my.test=TRUE, my.overall=TRUE, printWarning=TRUE){
-  my.descr.var = setdiff(my.descr.var, my.bygrp)
-  descrForm <- as.formula(paste0(paste(my.descr.var, collapse= " + "),  "~", my.bygrp))
-  
-  summary = summaryM(descrForm,
-    data       = my.dat,
-    test       = my.test,
-    continuous = 5,
-    overall    = my.overall
-  )
-  
-  my.bygrp.lab =ifelse(is.na(my.bygrp.lab), my.bygrp, my.bygrp.lab)
-  cat('\\LTcapwidth=\\textwidth \n')
-  if (printWarning) {
-      cat("\\textcolor{magenta}{Due to small cell counts, some of the chi-squared values and p-values may be incorrect.}\\\\ \n")
-  }    
-
-  latex(summary,
-      file        = "",
-      what        = '%',
-      caption     = paste0("All variables: Descriptive statistics by ", my.bygrp.lab),
-      prn         = TRUE,
-      npct        = "both",
-      exclude1    = FALSE,
-      prmsd       = TRUE,
-      long        = TRUE,
-      where       = "htbp",
-      digits      = 3,
-      pdig        = 4,
-      round       = 2,
-      size       = "smaller[3]",
-      outer.size  = "footnotesize",
-      lines.page   = 400,
-      middle.bold = TRUE,
-      longtable   = TRUE,
-      center      = "centering",
-      label       = paste0('tbl:descr.', my.bygrp),
-      vnames = 'names'
-  )
-}  
-@
 
 
 \section{Analysis Results}
