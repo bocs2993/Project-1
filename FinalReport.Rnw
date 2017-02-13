@@ -69,6 +69,34 @@ Brooklyn \textsc{Stanley}, Hannah \textsc{Weeks}\\[3cm]
 \tableofcontents
 \newpage
 
+\section{Inclusion/ Exclusion Criteria}
+\begin{itemize}
+  \item Quality check
+  \begin{itemize}
+    \item `asl.reac.usuable`, exclude = 0, n = 113
+  \end{itemize}
+  \item At least 39 readings
+  \begin{itemize}
+    \item `time.reading.indicator`, exclude = "No" or NA, n = 49
+  \end{itemize}  
+  \item Exclude patients with dementia at baseline
+  \begin{itemize}
+    \item `enrolled.dx.factor`, exclude = "Dementia", n = 1
+  \end{itemize}  
+\end{itemize}
+
+
+It should be noted that the method for exclusion is not random. Patient's with a larger intracranial volume were unable to fit into the equipment to gather the readings. It follows that more men were excluded because men tend to be larger in general. The table below displays all of the descriptive statistics for the excluded patients versus the patients in the analysis. Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). The third column is the p-value for the univariate comparison of the each variable between the excluded and included patients. A significant p-value (< 0.05) indicates that the excluded and included populations are significantly different for that variable.
+
+
+
+There is no missingness in the covariates of interest. However, due to the missingness in about 15\% of our predictors, we will perform multiple imputation.
+
+The following histograms show the distribution of each of the predictors with the distribution of the imputed values in blue. This is to display that the imputations are consistent with the observed data.
+
+
+As you can see, most of the scatterplots have no trend with a slope around 0. The plots for nocturnal difference in systolic blood pressure has a slight downward slope on the left hand side. However, this is driven by only 3 points in that area so it is unclear if this is anything more than spurious.
+
 
 
 \newpage

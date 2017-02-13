@@ -123,7 +123,7 @@ levels(outlong$lab) <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lo
                          "Right Temporal Lobe", "Full Temporal Lobe", "Left Parietal Lobe", 
                          "Right Parietal Lobe", "Full Parietal Lobe")
 
-ggplot(outlong, aes(systolic.rising.surge, outcome, group=1)) +
+ggplot(outlong, aes(systolic.rising.surge, outcome)) +
   geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
   theme(legend.position="none", strip.text = element_text(size=12), 
         axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
@@ -149,7 +149,7 @@ ggplot(outlong, aes(noc.sys.diff, outcome, group=1)) +
 ```
 
 ```{r, boxplots, echo=F, warning=F, fig.height=4.5}
-ggplot(outlong[1:1351,], aes(factor(lab), outcome)) +
+ggplot(outlong[1:1218,], aes(factor(lab), outcome)) +
   geom_boxplot(outlier.colour = "purple") + 
   theme(legend.position="none", strip.text = element_text(size=12), 
         axis.text.x = element_text(size=11, angle = 80, hjust = 1), 
@@ -157,7 +157,7 @@ ggplot(outlong[1:1351,], aes(factor(lab), outcome)) +
         panel.grid.major.x=element_line(colour='grey')) +
   ylab("Measured CVR") + xlab("Area Scanned")
 
-ggplot(outlong[1352:2701,], aes(factor(lab), outcome)) +
+ggplot(outlong[1219:2436,], aes(factor(lab), outcome)) +
   geom_boxplot(outlier.colour = "purple") + 
   theme(legend.position="none", strip.text = element_text(size=12), 
         axis.text.x = element_text(size=11, angle = 70, hjust = 1), 
@@ -168,7 +168,7 @@ ggplot(outlong[1352:2701,], aes(factor(lab), outcome)) +
 ```
 
 
-```{r, imputation, warning=F, echo=F}
+```{r, imputation, warning=F, echo=F, message=F}
 toPredict <- c("systolic.rising.surge", "systolic.prewaking.surge", 
                "noc.sys.diff")
 levels(crvdata$enrolled.dx) <- c("Normal","MCI", "Ambiguous At Risk", "Ambiguous At Risk")
