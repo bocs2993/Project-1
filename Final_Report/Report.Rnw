@@ -254,15 +254,15 @@ totalData <- readRDS(datfile)
 \begin{itemize}
   \item Exclude patients with dementia at baseline
   \begin{itemize}
-      \item `enrolled.dx.factor`, exclude = "Dementia", n = 1
+      \item \code{enrolled.dx.factor}, exclude = "Dementia", n = 1
   \end{itemize} 
   \item Quality check
   \begin{itemize}
-    \item `asl.reac.usuable`, exclude = 0, n = 112
+    \item \code{asl.reac.usuable}, exclude = 0, n = 112
   \end{itemize}
   \item At least 39 readings
   \begin{itemize}
-    \item `time.reading.indicator`, exclude = "No" or NA, n = 49
+    \item \code{time.reading.indicator}, exclude = "No" or NA, n = 49
   \end{itemize}  
 \end{itemize}
 
