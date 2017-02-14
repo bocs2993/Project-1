@@ -286,7 +286,7 @@ exclude <- totalData[!(totalData$map.id %in% cvrdata$map.id),
 @
 
 
-It should be noted that the method for exclusion is not random. Patient's with a larger intracranial volume were unable to fit into the equipment to gather the readings. It follows that more men were excluded because men tend to be larger in general. The table below displays all of the descriptive statistics for the excluded patients versus the patients in the analysis. Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). The third column is the p-value for the univariate comparison of the each variable between the excluded and included patients. A significant p-value (< 0.05) indicates that the excluded and included populations are significantly different for that variable.
+It should be noted that the method for exclusion is not random. Patient's with a larger intracranial volume were unable to fit into the equipment to gather the readings. It follows that more men were excluded because men tend to be larger in general. The table below displays all of the descriptive statistics for the excluded patients versus the patients in the analysis. Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). The third column is the p-value for the univariate comparison of the each variable between the excluded and included patients (Chi-square test for discrete and Kruskal-Wallis for continuous). A significant p-value (< 0.05) indicates that the excluded and included populations are significantly different for that variable.
 
 <<>>=
 #######################################
@@ -333,6 +333,137 @@ kable(comparison, width=3,
 
 \section{Descriptive Statistics}
 \subsection{All variables}
+<<>>=
+cats <- cats[-4]
+comparison <- c(c(), c(), c(),c())
+mciData <- cvrdata[cvrdata$enrolled.dx.factor=="MCI",]
+normData <- cvrdata[cvrdata$enrolled.dx.factor=="Normal",]
+abData <- cvrdata[cvrdata$enrolled.dx.factor=="Ambiguous At Risk",]
+ms <- length(mciData$map.id)
+ns <- length(normData$map.id)
+as <- length(abData$map.id)
+for (cat in cats){
+  if (is.factor(cvrdata[,cat])){
+    comparison <- rbind(comparison, c(label(cvrdata[,cat]),'','',''))
+    for (lev in levels(cvrdata[,cat])){
+      comparison <- rbind(comparison, c(paste("--",lev ), 
+                      paste(s <- sum(normData[,cat]==lev, na.rm=T), " (", round(s*100/ns),
+                            "%)", sep=""),
+                      paste(s <- sum(mciData[,cat]==lev, na.rm=T), " (", round(s*100/ms),
+                            "%)", sep=""),
+                      paste(s <- sum(abData[,cat]==lev, na.rm=T), " (", round(s*100/as),
+                            "%)", sep="")))
+    }
+    next
+  }
+  comparison <- rbind(c(label(cvrdata[,cat]), 
+                paste(round(mean(normData[,cat], na.rm=T),1)," (",
+                      round(sd(normData[,cat],na.rm=T),1), ")",sep=""),
+                paste(round(mean(mciData[,cat], na.rm=T),1)," (",
+                      round(sd(mciData[,cat],na.rm=T),1), ")",sep=""),
+                paste(round(mean(abData[,cat], na.rm=T),1)," (",
+                      round(sd(abData[,cat],na.rm=T),1), ")",sep="")), comparison)
+}
+comparison <- as.data.frame(comparison)
+colnames(comparison) <- c("Variable","Normal//N = 101", "MCI//N = 62", "Ambiguous At-Risk//N = 11")
+kable(comparison, width=3, caption="Comparison of Demographics across Diagnosis Status")
+#kable(comparison, width=3, 
+#      caption=paste("Comparison of Demographics across Disease Status, w/ N=",
+#                    length(normData$map.id), ", N=", length(mciData$map.id),", and N=",
+#                    length(abData$map.id), " respectively", sep=""))
+
+@
+
+<<>>=
+ggplot(cvrdata, aes(x=systolic.rising.surge, fill = enrolled.dx.factor)) +
+  geom_histogram(alpha=0.4, position="identity", binwidth = 5) + 
+  xlab("Systolic Rising Surge") + scale_fill_discrete(name = "Diagnosis")
+
+ggplot(cvrdata, aes(x=systolic.prewaking.surge, fill = enrolled.dx.factor)) +
+  geom_histogram(alpha=0.4, position="identity", binwidth = 5) + 
+  xlab("Systolic Prewaking Surge") + scale_fill_discrete(name = "Diagnosis")
+
+ggplot(cvrdata, aes(x=nocturnal.systolic.diff.sleep.self.reported, fill = enrolled.dx.factor)) +
+  geom_histogram(alpha=0.4, position="identity", binwidth = 5) + 
+  xlab("Nocturnal Difference in Systolic BP") + scale_fill_discrete(name = "Diagnosis")
+
+
+@
+
+<<>>=
+predictors <- cvrdata[,c(2,16:18)]
+outcomes <- cvrdata[, 20:33]
+
+outlong <- c()
+for (out in names(outcomes)){
+  lab <- rep(out, length(outcomes[,out]))
+  temp <- cbind(outcomes[, out], lab, predictors)
+  outlong <- rbind(outlong, temp)
+}
+
+names(outlong)[1] <- "outcome"
+levels(outlong$lab) <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe", 
+                         "Right Frontal Lobe", "Full Frontal Lobe", "Left Occipital Lobe", 
+                         "Right Occipital Lobe", "Full Occipital Lobe", "Left Temporal Lobe", 
+                         "Right Temporal Lobe", "Full Temporal Lobe", "Left Parietal Lobe", 
+                         "Right Parietal Lobe", "Full Parietal Lobe")
+
+ggplot(outlong, aes(x=outcome, fill = enrolled.dx.factor)) +
+  geom_histogram(alpha=0.4, position="identity", binwidth = 1) + facet_wrap(~lab, ncol=3) +
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=10), axis.text.y  = element_text(size=10),
+        panel.grid.major.x=element_line(colour='grey')) + ylab("Count") +
+  xlab("Measured CVR") + scale_fill_discrete(name = "Diagnosis")
+@
+
+The following boxplots display the distribution of each of the outcome variables. Most of the outliers are in the upper half of the data. It should be noted that most outliers within each part of the brain are most likely highly correlated. Thus, if a patient is an outlier for left frontal loab, then she is probably an outlier for the right side as well. This can be seen in the lower outliers of the frontal lobe distribution which are all from the patient with id = 034. 
+
+<<>>=
+ggplot(outlong[c(1:174,349:1392),], aes(factor(lab), outcome)) +
+  geom_boxplot(outlier.colour = "purple") + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=11, angle = 80, hjust = 1), 
+        axis.text.y  = element_text(size=12),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Area Scanned")
+
+ggplot(outlong[c(175:348,1393:2436),], aes(factor(lab), outcome)) +
+  geom_boxplot(outlier.colour = "purple") + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=11, angle = 70, hjust = 1), 
+        axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Area Scanned")
+
+@
+
+<<>>=
+ggplot(outlong, aes(systolic.rising.surge, outcome)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
+
+ggplot(outlong, aes(systolic.prewaking.surge, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
+
+
+ggplot(outlong, aes(noc.sys.diff, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
+
+
+@
+As you can see from the previous sets of scatterplots, most of the outcomes have no trend over the predictors, with a slope around 0. The plots for nocturnal difference in systolic blood pressure has a slight downward slope on the left hand side. However, this is driven by only 3 points in that area so it is unclear if this is anything more than spurious. However, these are all univariate relationships; these trends may not hold in the adjusted analyses.
+
 
 <<describeAll, results= 'asis'>>=
 latex(describe(mydat0, descript= "All variables"), file= "")
@@ -508,6 +639,16 @@ impute.data <- aregImpute(~ systolic.rising.surge + systolic.prewaking.surge + n
                        enrolled.dx + sex + raceethnicity + apoe4pos + enrolled.dx + education +
                        htnrx + icv + left.hemisphere + right.hemisphere, data = cvrdata,
                      match = "closest")
+
+crvdata$sys.rising.impute <- crvdata$systolic.rising.surge
+crvdata$sys.prewaking.impute <- crvdata$systolic.prewaking.surge
+crvdata$noc.diff.impute <- crvdata$nocturnal.systolic.diff.sleep.self.reported
+
+crvdata$noc.diff.impute[is.na(crvdata$noc.diff.impute)] <- rowMeans(impute$imputed$nocturnal.systolic.diff.sleep.self.reported[,])
+crvdata$sys.rising.impute[is.na(crvdata$sys.rising.impute)] <- rowMeans(impute$imputed$systolic.rising.surge[,])
+crvdata$sys.prewaking.impute[is.na(crvdata$sys.prewaking.impute)] <- rowMeans(impute$imputed$systolic.prewaking.surge[,])
+
+
 @
 
 
@@ -801,6 +942,22 @@ print(xtable(linear.table, digits = 3,
       caption.placement = "top")
 @
 
+\section{Sensitivity Analysis}
+The following histograms show the distribution of each of the predictors with the distribution of the imputed values overlayed in blue. This is to display that the imputations are consistent with the observed data.
+<<>>=
+ggplot(crvdata, aes(x=sys.rising.impute, fill = is.na(systolic.rising.surge))) +
+  geom_histogram(alpha=0.4, position="identity") + 
+  xlab("Systolic Rising Surge") + scale_fill_discrete(name = "Imputed")
+
+ggplot(crvdata, aes(x=sys.prewaking.impute, fill = is.na(systolic.prewaking.surge))) +
+  geom_histogram(alpha=0.4, position="identity") + 
+  xlab("Systolic Prewaking Surge") + scale_fill_discrete(name = "Imputed")
+
+ggplot(crvdata, aes(x=noc.diff.impute, fill = is.na(noc.sys.diff))) +
+  geom_histogram(alpha=0.4, position="identity") + 
+  xlab("Nocturnal Difference in Surge") + scale_fill_discrete(name = "Imputed")
+
+@
 
 \section{Summary of Results}
 

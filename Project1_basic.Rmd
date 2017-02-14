@@ -12,27 +12,17 @@ totalData <- readRDS("dataForABP_CBF_2017-01-11.rds")
 library(Hmisc)
 library(knitr)
 
-crvdata <- totalData[totalData$asl.reac.usable == 1 & 
+crvdata <- cvrdata <- totalData[totalData$asl.reac.usable == 1 & 
                        totalData$enrolled.dx.factor != "Dementia",
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
-names(crvdata) <- sub("asl.reac.", "", names(crvdata), fixed = TRUE)
-names(crvdata) <- sub(".hct", "", names(crvdata), fixed = TRUE)
-names(crvdata) <- sub(".factor", "", names(crvdata), fixed = TRUE)
-names(crvdata) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
-                      names(crvdata), fixed = TRUE)
-crvdata <- crvdata[crvdata$time.reading.indicator == 'Yes' &
+crvdata <- cvrdata <- crvdata[crvdata$time.reading.indicator == 'Yes' &
                      !is.na(crvdata$time.reading.indicator),]
 
 exclude <- totalData[!(totalData$map.id %in% crvdata$map.id),
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
-names(exclude) <- sub("asl.reac.", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub(".hct", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub(".factor", "", names(exclude), fixed = TRUE)
-names(exclude) <- sub("turnal.systolic.diff.sleep.self.reported", ".sys.diff", 
-                      names(exclude), fixed = TRUE)
-names(crvdata$noc.sys.diff)
+
 
 
 #describe(crvdata)
@@ -40,7 +30,7 @@ names(crvdata$noc.sys.diff)
 #totalData$asl.reac.usable == 1,
                      
 
-cats <- names(crvdata)[2:18]
+cats <- names(crvdata)[3:18]
 comparison <- c(c(), c(), c(),c())
 is <- length(crvdata$map.id)
 xs <- length(exclude$map.id)
@@ -80,6 +70,48 @@ kable(comparison, width=3,
 
 
 ```
+```{r}
+cats <- cats[-4]
+comparison <- c(c(), c(), c(),c())
+mciData <- cvrdata[cvrdata$enrolled.dx.factor=="MCI",]
+normData <- cvrdata[cvrdata$enrolled.dx.factor=="Normal",]
+abData <- cvrdata[cvrdata$enrolled.dx.factor=="Ambiguous At Risk",]
+ms <- length(mciData$map.id)
+ns <- length(normData$map.id)
+as <- length(abData$map.id)
+for (cat in cats){
+  if (is.factor(cvrdata[,cat])){
+    comparison <- rbind(comparison, c(label(cvrdata[,cat]),'','',''))
+    for (lev in levels(cvrdata[,cat])){
+      comparison <- rbind(comparison, c(paste("--",lev ), 
+                      paste(s <- sum(normData[,cat]==lev, na.rm=T), " (", round(s*100/ms),
+                            "%)", sep=""),
+                      paste(s <- sum(mciData[,cat]==lev, na.rm=T), " (", round(s*100/ns),
+                            "%)", sep=""),
+                      paste(s <- sum(abData[,cat]==lev, na.rm=T), " (", round(s*100/as),
+                            "%)", sep="")))
+    }
+    next
+  }
+  comparison <- rbind(c(label(cvrdata[,cat]), 
+                paste(round(mean(normData[,cat], na.rm=T),1)," (",
+                      round(sd(normData[,cat],na.rm=T),1), ")",sep=""),
+                paste(round(mean(mciData[,cat], na.rm=T),1)," (",
+                      round(sd(mciData[,cat],na.rm=T),1), ")",sep=""),
+                paste(round(mean(abData[,cat], na.rm=T),1)," (",
+                      round(sd(abData[,cat],na.rm=T),1), ")",sep="")), comparison)
+}
+comparison <- as.data.frame(comparison)
+colnames(comparison) <- c("Variable","Normal", "MCI", "Ambiguous At-Risk")
+kable(comparison, width=3, 
+      caption=paste("Comparison of Demographics across Disease Status, w/ N=",
+                    length(normData$map.id), ", N=", length(mciData$map.id),", and N=",
+                    length(abData$map.id), " respectively", sep=""))
+
+
+
+
+```
 
 
 
@@ -104,7 +136,7 @@ kable(missing, width=3,
 ```
 
 
-```{r scatterplots,echo=F, fig.height=8, warning=F, message=F}
+```{r scatterplots,echo=F, fig.height=8, warning=F, message=F, eval=F}
 require(GGally)
 
 predictors <- crvdata[,16:18]
@@ -148,7 +180,7 @@ ggplot(outlong, aes(noc.sys.diff, outcome, group=1)) +
 
 ```
 
-```{r, boxplots, echo=F, warning=F, fig.height=4.5}
+```{r, boxplots, echo=F, warning=F, fig.height=4.5, eval=F}
 ggplot(outlong[1:1218,], aes(factor(lab), outcome)) +
   geom_boxplot(outlier.colour = "purple") + 
   theme(legend.position="none", strip.text = element_text(size=12), 
@@ -168,7 +200,7 @@ ggplot(outlong[1219:2436,], aes(factor(lab), outcome)) +
 ```
 
 
-```{r, imputation, warning=F, echo=F, message=F}
+```{r, imputation, warning=F, echo=F, message=F, eval=F}
 toPredict <- c("systolic.rising.surge", "systolic.prewaking.surge", 
                "noc.sys.diff")
 levels(crvdata$enrolled.dx) <- c("Normal","MCI", "Ambiguous At Risk", "Ambiguous At Risk")
