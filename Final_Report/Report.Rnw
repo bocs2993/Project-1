@@ -283,6 +283,15 @@ exclude <- totalData[!(totalData$map.id %in% cvrdata$map.id),
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
 
+label(cvrdata$echo.lvh.factor) <- "LV Hypertrophy"
+label(cvrdata$afib.factor) <- "A-fib"
+label(cvrdata$cvd.factor) <- "CVD"
+label(cvrdata$diabetes.factor) <- "Diabetic"
+label(cvrdata$systolic.prewaking.surge) <- "Diff. in SBP, Post-Wake Mean - Pre-Wake Mean"
+label(cvrdata$systolic.rising.surge) <- "Diff. in SBP, Post-Wake.1 - Pre-Wake.1"
+label(cvrdata$nocturnal.systolic.diff.sleep.self.reported) <- "Diff. in SBP, Wake - Sleep"
+
+
 @
 
 
@@ -333,6 +342,7 @@ kable(comparison, width=3,
 
 \section{Descriptive Statistics}
 \subsection{All variables}
+The table below displays all of the descriptive statistics for the patients divided by their diagnosis. Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). The third column is the p-value for the univariate comparison of the each variable between the different diagnoses (Chi-square test for discrete and Kruskal-Wallis for continuous). A significant p-value (< 0.05) indicates that at least one of the three categories is significantly different than the rest. Each of our predictor variables has a significant p-value. It appears, by looking at the below table, that those diagnosed with MCI have consistently lower systolic differences than the rest of the sample. However, these are all univariate relationships; these trends may not hold in the adjusted analyses.
 <<>>=
 cats <- cats[-4]
 comparison <- c(c(), c(), c(),c())
@@ -344,7 +354,11 @@ ns <- length(normData$map.id)
 as <- length(abData$map.id)
 for (cat in cats){
   if (is.factor(cvrdata[,cat])){
-    comparison <- rbind(comparison, c(label(cvrdata[,cat]),'','',''))
+    chiData <- rbind(cbind(normData[,cat],rep("ns", length(normData[,cat]))),
+                     cbind(mciData[,cat],rep("ms", length(mciData[,cat]))),
+                     cbind(abData[,cat],rep("as", length(abData[,cat]))))
+    pp <- chisq.test(table(chiData[,1], chiData[,2]))$p.value
+    comparison <- rbind(comparison, c(label(crvdata[,cat]),'','','', round(pp,4)))
     for (lev in levels(cvrdata[,cat])){
       comparison <- rbind(comparison, c(paste("--",lev ), 
                       paste(s <- sum(normData[,cat]==lev, na.rm=T), " (", round(s*100/ns),
@@ -352,20 +366,28 @@ for (cat in cats){
                       paste(s <- sum(mciData[,cat]==lev, na.rm=T), " (", round(s*100/ms),
                             "%)", sep=""),
                       paste(s <- sum(abData[,cat]==lev, na.rm=T), " (", round(s*100/as),
-                            "%)", sep="")))
+                            "%)", sep=""), ''))
     }
     next
   }
+  anovaData <- as.data.frame(rbind(cbind(normData[,cat],rep("ns", length(normData[,cat]))),
+                     cbind(mciData[,cat],rep("ms", length(mciData[,cat]))),
+                     cbind(abData[,cat],rep("as", length(abData[,cat])))))
+  anovaData[,1] <- as.numeric(as.character(anovaData[,1]))
+  pp <- kruskal.test(anovaData[,1] ~ anovaData[,2])$p.value
   comparison <- rbind(c(label(cvrdata[,cat]), 
                 paste(round(mean(normData[,cat], na.rm=T),1)," (",
                       round(sd(normData[,cat],na.rm=T),1), ")",sep=""),
                 paste(round(mean(mciData[,cat], na.rm=T),1)," (",
                       round(sd(mciData[,cat],na.rm=T),1), ")",sep=""),
                 paste(round(mean(abData[,cat], na.rm=T),1)," (",
-                      round(sd(abData[,cat],na.rm=T),1), ")",sep="")), comparison)
+                      round(sd(abData[,cat],na.rm=T),1), ")",sep=""),
+                round(pp, 4)), comparison)
 }
+comparison[,5][as.numeric(comparison[,5]) < 0.001] <- "<0.001"
 comparison <- as.data.frame(comparison)
-colnames(comparison) <- c("Variable","Normal//N = 101", "MCI//N = 62", "Ambiguous At-Risk//N = 11")
+colnames(comparison) <- c("Variable","Normal//N = 101", "MCI//N = 62", 
+                          "Ambiguous At-Risk//N = 11", "P-value")
 kable(comparison, width=3, caption="Comparison of Demographics across Diagnosis Status")
 #kable(comparison, width=3, 
 #      caption=paste("Comparison of Demographics across Disease Status, w/ N=",

@@ -23,6 +23,13 @@ exclude <- totalData[!(totalData$map.id %in% crvdata$map.id),
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
 
+label(crvdata$echo.lvh.factor) <- "LV Hypertrophy"
+label(crvdata$afib.factor) <- "A-fib"
+label(crvdata$cvd.factor) <- "CVD"
+label(crvdata$diabetes.factor) <- "Diabetic"
+label(crvdata$systolic.prewaking.surge) <- "Diff. in SBP, Post-Wake Mean - Pre-Wake Mean"
+label(crvdata$systolic.rising.surge) <- "Diff. in SBP, Post-Wake.1 - Pre-Wake.1"
+label(crvdata$nocturnal.systolic.diff.sleep.self.reported) <- "Diff. in SBP, Wake - Sleep"
 
 
 #describe(crvdata)
@@ -81,28 +88,39 @@ ns <- length(normData$map.id)
 as <- length(abData$map.id)
 for (cat in cats){
   if (is.factor(cvrdata[,cat])){
-    comparison <- rbind(comparison, c(label(cvrdata[,cat]),'','',''))
+    chiData <- rbind(cbind(normData[,cat],rep("ns", length(normData[,cat]))),
+                     cbind(mciData[,cat],rep("ms", length(mciData[,cat]))),
+                     cbind(abData[,cat],rep("as", length(abData[,cat]))))
+    pp <- chisq.test(table(chiData[,1], chiData[,2]))$p.value
+    comparison <- rbind(comparison, c(label(crvdata[,cat]),'','','', round(pp,4)))
     for (lev in levels(cvrdata[,cat])){
       comparison <- rbind(comparison, c(paste("--",lev ), 
-                      paste(s <- sum(normData[,cat]==lev, na.rm=T), " (", round(s*100/ms),
+                      paste(s <- sum(normData[,cat]==lev, na.rm=T), " (", round(s*100/ns),
                             "%)", sep=""),
-                      paste(s <- sum(mciData[,cat]==lev, na.rm=T), " (", round(s*100/ns),
+                      paste(s <- sum(mciData[,cat]==lev, na.rm=T), " (", round(s*100/ms),
                             "%)", sep=""),
                       paste(s <- sum(abData[,cat]==lev, na.rm=T), " (", round(s*100/as),
-                            "%)", sep="")))
+                            "%)", sep=""), ''))
     }
     next
   }
-  comparison <- rbind(c(label(cvrdata[,cat]), 
+  anovaData <- as.data.frame(rbind(cbind(normData[,cat],rep("ns", length(normData[,cat]))),
+                     cbind(mciData[,cat],rep("ms", length(mciData[,cat]))),
+                     cbind(abData[,cat],rep("as", length(abData[,cat])))))
+  anovaData[,1] <- as.numeric(as.character(anovaData[,1]))
+  pp <- kruskal.test(anovaData[,1] ~ anovaData[,2])$p.value
+  comparison <- rbind(c(label(crvdata[,cat]), 
                 paste(round(mean(normData[,cat], na.rm=T),1)," (",
                       round(sd(normData[,cat],na.rm=T),1), ")",sep=""),
                 paste(round(mean(mciData[,cat], na.rm=T),1)," (",
                       round(sd(mciData[,cat],na.rm=T),1), ")",sep=""),
                 paste(round(mean(abData[,cat], na.rm=T),1)," (",
-                      round(sd(abData[,cat],na.rm=T),1), ")",sep="")), comparison)
+                      round(sd(abData[,cat],na.rm=T),1), ")",sep=""),
+                round(pp, 4)), comparison)
 }
+comparison[,5][as.numeric(comparison[,5]) < 0.001] <- "<0.001"
 comparison <- as.data.frame(comparison)
-colnames(comparison) <- c("Variable","Normal", "MCI", "Ambiguous At-Risk")
+colnames(comparison) <- c("Variable","Normal", "MCI", "Ambiguous At-Risk", "P-value")
 kable(comparison, width=3, 
       caption=paste("Comparison of Demographics across Disease Status, w/ N=",
                     length(normData$map.id), ", N=", length(mciData$map.id),", and N=",
