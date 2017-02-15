@@ -1,0 +1,1811 @@
+\documentclass[10pt]{article}\usepackage[]{graphicx}\usepackage[]{color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\definecolor{fgcolor}{rgb}{0.345, 0.345, 0.345}
+\newcommand{\hlnum}[1]{\textcolor[rgb]{0.686,0.059,0.569}{#1}}%
+\newcommand{\hlstr}[1]{\textcolor[rgb]{0.192,0.494,0.8}{#1}}%
+\newcommand{\hlcom}[1]{\textcolor[rgb]{0.678,0.584,0.686}{\textit{#1}}}%
+\newcommand{\hlopt}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlstd}[1]{\textcolor[rgb]{0.345,0.345,0.345}{#1}}%
+\newcommand{\hlkwa}[1]{\textcolor[rgb]{0.161,0.373,0.58}{\textbf{#1}}}%
+\newcommand{\hlkwb}[1]{\textcolor[rgb]{0.69,0.353,0.396}{#1}}%
+\newcommand{\hlkwc}[1]{\textcolor[rgb]{0.333,0.667,0.333}{#1}}%
+\newcommand{\hlkwd}[1]{\textcolor[rgb]{0.737,0.353,0.396}{\textbf{#1}}}%
+\let\hlipl\hlkwb
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{lmodern} % Latin modern fonts
+\usepackage[T1]{fontenc} % font encodings
+\usepackage{etexcmds} % Avoid name clashes with e-TEX commands
+\usepackage{amsmath, amsfonts, amssymb, amsthm}
+\usepackage{listings} % Typeset source code listings using LATEX
+\usepackage{setspace, relsize, booktabs, needspace, epic} % need one or more of these to make latex(describe) & other rms stuff work
+\usepackage{longtable} % Allows long tables to break across pages
+\usepackage{ctable} % for option for Hmisc Latex tables
+\usepackage{colortbl} % allows coloring of individual cells
+\usepackage{here} % Provides the H option for floats 
+\usepackage{dcolumn} % allows alignment by decimal point in tables
+%\usepackage[usenames,dvipsnames,svgnames]{xcolor} % Driver- independent color extensions % gets loaded by something else here
+\usepackage{enumitem} % modify numbering style for enumerate
+\usepackage{framed} % for shading of whole sections
+\usepackage{parskip} % formats paragraphs the way I like
+\usepackage{pdflscape} % lets you have landscape sections
+\usepackage{graphicx} % for resizebox
+\usepackage[super]{nth} % for 1st, 2nd, etc
+\usepackage[hyphens]{url}
+\usepackage[pdftitle={MAP PWV and CBF Values},,
+            unicode=true,
+            pdfusetitle,
+            bookmarks=true,
+            bookmarksopenlevel=2,
+            breaklinks=true,
+            pdfborder={0 0 1},
+            backref=false]{hyperref} % support for hypertext
+\usepackage[fit]{truncate} % lets you truncate section headings for fancyhdr (and maybe other things)
+\usepackage{fancyhdr}
+%\usepackage[maxfloats= 44]{morefloats} %increases # of floats that can be held in memory at once
+
+\hypersetup{
+    bookmarksnumbered=false, % true means bookmarks in left window are numbered
+    bookmarksopen=false,     % true means only level 1 is displayed.
+    colorlinks=true,         % false: boxed links; true: colored links
+    linkcolor=blue,          % color of internal links
+    pdfstartview=FitH
+}
+
+\newcommand{\projtitl}{MAP: ABP and CBF/CVR}
+\newcommand{\studyLead}{Angela Jefferson, PhD; Katherine Gifford, PsyD}
+\newcommand{\code}[1]{\texttt{\smaller #1}}
+\newcommand{\scom}[1]{\rm\scriptsize \# #1}
+\newcommand{\R}{{\normalfont\textsf{R}}{}}    
+\renewcommand{\subsectionmark}[1]{}
+\providecommand{\shadeRow}{\rowcolor[gray]{.9}}
+\providecommand{\bitshape}{\bfseries\itshape}
+
+ 
+\title{\projtitl\\ Study Leads: \studyLead}
+\author{Hannah Weeks \\ \href{mailto:hannah.l.weeks@vanderbilt.edu}{\url{hannah.l.weeks@vanderbilt.edu}}\\ \& \\
+Brooklyn Stanley  \\ \href{mailto:b.stanley@vanderbilt.edu}{\url{b.stanley@vanderbilt.edu}}
+\\ \ \\ Department of Biostatistics \\ Vanderbilt University }
+\date{February 15, 2017}
+%\pagestyle{fancy}
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\begin{document}
+
+\maketitle
+\clearpage
+\tableofcontents     
+%\listoffigures
+%\listoftables
+\clearpage
+%\lhead{\small \truncate{.7\headwidth}{\projtitl}\\ 
+%    \truncate{.7\headwidth}{\nouppercase \leftmark}}
+%\rhead{\small \today\\ \truncate{.3\headwidth}{\rightmark}}
+
+
+
+
+
+
+
+
+
+
+
+
+\clearpage
+\section{Project Overview}
+
+\subsection{Background}
+
+\begin{itemize}
+  \item Alzheimer's disease (AD) impairs short-term memory and affects one's ability to manage through daily life. 
+  \item Disease progresses from normal cognition through a stage of mild cognitive impairment (MCI) and finally to AD. 
+  \item Since there are currently no treatments for AD, research focuses on prevention and early detection so that effective strategies may be implemented once treatments are available.
+  \item Cardiovascular measures may be associated with and useful in identifying early symptoms of AD.
+  \item Cerebral vascular reactivity (CVR), possibly useful in early identification of patients at risk for AD, is a measurement of the change in cerebral blood flow when the vascular system is challenged by presence of carbon dioxide.
+  \item The current project goal is to determine if there is an association between cardiovascular measures (based on ambulatory monitoring of systolic blood pressure) and cerebral vascular reactivity.
+\end{itemize}
+
+\subsection{Project Goals}
+
+{\it Primary Aim}
+\begin{itemize}
+  \item Characterize the associations between ambulatory blood pressure (ABP) monitoring measurements and cerebral vascular reactivity.
+  \item {\bf Hypothesis:} Patients with abnormal variability or surge patterns will be associated with decreased CVR.
+\end{itemize}
+
+{\it Secondary Aim}
+\begin{itemize}
+\item Investigate which ABP predictor is most predictive of cognitive function, as measured by CVR.
+\end{itemize}
+
+\subsection{Relevant Variables}
+\label{sec:vars}
+Outcomes: CVR measures for different regions of interest within the brain, derived from MRI scans.\\
+\begin{itemize}
+  \item \texttt{asl.reac.left.hemisphere.hct}
+  \item \texttt{asl.reac.right.hemisphere.hct}
+  \item \texttt{asl.reac.left.frontal.lobe.hct}
+  \item \texttt{asl.reac.right.frontal.lobe.hct}
+  \item \texttt{asl.reac.frontal.lobe.hct}
+  \item \texttt{asl.reac.left.occipital.lobe.hct}
+  \item \texttt{asl.reac.right.occipital.lobe.hct}
+  \item \texttt{asl.reac.occipital.lobe.hct}
+  \item \texttt{asl.reac.left.temporal.lobe.hct}
+  \item \texttt{asl.reac.right.temporal.lobe.hct}
+  \item \texttt{asl.reac.temporal.lobe.hct}
+  \item \texttt{asl.reac.left.parietal.lobe.hct}
+  \item \texttt{asl.reac.right.parietal.lobe.hct}
+  \item \texttt{asl.reac.parietal.lobe.hct}
+\end{itemize}
+
+Predictors: ABP measurements 
+\begin{itemize}
+  \item \texttt{systolic.prewaking.surge}: Mean SBP in two hours after self-reported wake time minus mean SBP in two hours prior to self-reported wake time 
+  \item \texttt{systolic.rising.surge}: First SBP reading after self-reported wake time minus last SBP before self-reported wake time
+  \item \texttt{nocturnal.systolic.diff.sleep.self.reported}: Mean SBP during self-reported wake time minus mean SBP from self-reported asleep time
+\end{itemize}
+
+Model Covariates\\
+{\it Variables corresponding to some comorbidities were not adjusted for in models due to low prevalence in the analyzed data (see \hyperref[sec:table]{section 3}).}
+\begin{itemize}
+  \item \texttt{age}
+  \item \texttt{education}
+  \item \texttt{sex.factor}
+  \item \texttt{enrolled.dx.factor}: diagnosis group (dementia excluded)
+  \begin{itemize}
+    \item Normal
+    \item MCI
+    \item Ambiguous at risk
+  \end{itemize}
+  \item \texttt{raceethnicity.factor}
+  \item \texttt{apoe4pos.factor}
+  \item \texttt{htnrx.factor}
+\end{itemize}
+
+Regional brain volume variables\\
+{\it Models for outcome in a given region are controlled for the corresponding variable for brain volume in that region}
+\begin{itemize}
+  \item \texttt{ma.left.hemisphere.vol}
+  \item \texttt{ma.right.hemisphere.vol}
+  \item \texttt{ma.left.frontal.lobe.vol}
+  \item \texttt{ma.right.frontal.lobe.vol}
+  \item \texttt{ma.frontal.lobe.vol}
+  \item \texttt{ma.left.occipital.lobe.vol}
+  \item \texttt{ma.right.occipital.lobe.vol}
+  \item \texttt{ma.occipital.lobe.vol}
+  \item \texttt{ma.left.temporal.lobe.vol}
+  \item \texttt{ma.right.temporal.lobe.vol}
+  \item \texttt{ma.temporal.lobe.vol}
+  \item \texttt{ma.left.parietal.lobe.vol}
+  \item \texttt{ma.right.parietal.lobe.vol}
+  \item \texttt{ma.parietal.lobe.vol}
+\end{itemize}
+
+\clearpage
+
+\section{Statistical Analysis Plan}
+
+\subsection{Primary Aim: CVR-ABP Association}
+
+\begin{itemize}
+  \item Cross-sectional analysis of patients from the Memory and Aging Project, conducted by the Vanderbilt Memory and Alzheimer's Center.
+  \item Ordinary least squares regression models for each of the 14 CVR outcomes against each of the 3 ABP variables (42 models), controlling for covariates listed in \hyperref[sec:vars]{section 1.3}.
+  \item To allow for a non-linear relationship between CVR outcomes and ABP predictors, we model ABP as a restricted cubic spline with 3 knots. 
+  \item Knots are placed at 0 and interquartile range values ($25^{th}$ and $75^{th}$ percentiles) of the positive ABP values to capture abnormal values (e.g. negative ABP surge measurements) and patients at the low and high ends of positive ABP values.
+  \item Wald tests for overall association and linearity of ABP measurements are performed 
+  \item Present partial effect plots for each ABP-CVR outcome pair: effect of ABP holding all other covariates constant.
+  \item Use multiple imputation to recover missing data in ABP predictors.
+\end{itemize}
+
+
+\subsection{Secondary Aim: Predictive Power of ABP}
+
+\begin{itemize}
+  \item Compare $R^2$ between the models fit for the primary aim.
+  \item Higher $R^2$ indicates that the model better explains variability/trends in CVR outcomes.
+  \item Present correlation matrix between ABP predictors and CVR outcomes.
+\end{itemize}
+
+\subsection{Sensitivity Analyses}
+
+\begin{itemize}
+  \item Graphically compare of observed and imputed values for ABP measurements to ensure distributions are consistent.
+  \item Fit a linear association between ABP and CVR outcomes.
+\end{itemize}
+
+\clearpage
+
+\section{Inclusion/Exclusion Criteria}
+
+\begin{itemize}
+  \item Exclude patients with dementia at baseline
+  \begin{itemize}
+      \item \code{enrolled.dx.factor}, exclude = ``Dementia'', n = 1 (\code{map.id} = 112)
+  \end{itemize} 
+  \item Quality check
+  \begin{itemize}
+    \item \code{asl.reac.usuable}, exclude = 0, n = 112
+  \end{itemize}
+  \item At least 39 readings
+  \begin{itemize}
+    \item \code{time.reading.indicator}, exclude = ``No'' or NA, n = 49
+  \end{itemize}  
+\end{itemize}
+
+
+\vspace{.5in}
+{\bf Excluded vs. Included Patients}\\
+\begin{itemize}
+  \item The following table displays all of the descriptive statistics for the excluded patients versus the patients in the analysis. 
+  \item Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). 
+  \item The p-value for the univariate comparison of the each variable between the excluded and included patients is presented. Kruskal-Wallis tests are used for continuous variables and Chi-square tests for categorical.
+  \item A significant p-value ($<$ 0.05) indicates that the excluded and included populations are significantly different for that variable.
+  \item Some Chi-square approximations may be inaccurate due to low counts in certain groups.
+\end{itemize}
+ \clearpage
+ \label{sec:table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:04 2017
+\begin{table}[ht]
+\centering
+\caption{Comparison of Demographics for Excluded and Included Data} 
+\begin{tabular}{llll}
+  \toprule
+Variable & \parbox{.5in}{Excluded N=162} & \parbox{.9in}{Analyzed Data N=174} & P-Value \\ 
+  \midrule
+Diff. in mean SBP, wake - sleep, self-reported periods & 14.5 (10.5) & 13.4 (9.4) & 0.6075 \\ 
+  systolic.post.wake.mean minus systolic.pre.wake.mean & 11.1 (12.3) & 12.3 (12.2) & 0.4331 \\ 
+  systolic.post.wake.1 minus systolic.pre.wake.1 & 8.6 (14.2) & 8.4 (13.6) & 0.8162 \\ 
+  ICV (calculated) & 1403.7 (144.4) & 1364.9 (138.4) & 0.0247 \\ 
+  Education (years) & 16.3 (2.6) & 15.5 (2.6) & 0.0095 \\ 
+  Age at medhx.date, recalculated & 73.1 (7.5) & 72.7 (7.1) & 0.6214 \\ 
+  Sex &  &  & 0.0103 \\ 
+  -- Male & 108 (67\%) & 91 (52\%) &  \\ 
+  -- Female & 54 (33\%) & 83 (48\%) &  \\ 
+  Two-level race/ethnicity &  &  & 0.3688 \\ 
+  -- Non-Hispanic White & 137 (85\%) & 154 (89\%) &  \\ 
+  -- Other & 25 (15\%) & 20 (11\%) &  \\ 
+  ApoE4+ (at least one E4 allele) &  &  & 0.7182 \\ 
+  -- Yes & 58 (36\%) & 58 (33\%) &  \\ 
+  -- No & 104 (64\%) & 116 (67\%) &  \\ 
+  Consensus Decision for Diagnosis &  &  & 0.1202 \\ 
+  -- Normal & 75 (46\%) & 101 (58\%) &  \\ 
+  -- MCI & 70 (43\%) & 62 (36\%) &  \\ 
+  -- Dementia & 1 (1\%) & 0 (0\%) &  \\ 
+  -- Ambiguous At Risk & 16 (10\%) & 11 (6\%) &  \\ 
+  Taking at least 1 anti-hypertensive med &  &  & 0.622 \\ 
+  -- Yes & 85 (52\%) & 97 (56\%) &  \\ 
+  -- No & 77 (48\%) & 77 (44\%) &  \\ 
+  Diabetic, determined by a1c, glucose, and/or rx &  &  & 0.1947 \\ 
+  -- Yes & 35 (22\%) & 27 (16\%) &  \\ 
+  -- No & 127 (78\%) & 147 (84\%) &  \\ 
+  Current smoker (or quit in this or last calendar yr) &  &  & 0.3898 \\ 
+  -- Yes & 5 (3\%) & 2 (1\%) &  \\ 
+  -- No & 157 (97\%) & 172 (99\%) &  \\ 
+  CVD, determined from variables in med hx &  &  & 0.622 \\ 
+  -- Yes & 4 (2\%) & 7 (4\%) &  \\ 
+  -- No & 158 (98\%) & 167 (96\%) &  \\ 
+  A-fib, determined by med hx and/or echo and/or cmr rhythm &  &  & 1 \\ 
+  -- Yes & 9 (6\%) & 10 (6\%) &  \\ 
+  -- No & 151 (93\%) & 164 (94\%) &  \\ 
+  LV hypertrophy, determined by sex and scaled LV mass &  &  & 0.6958 \\ 
+  -- Yes & 9 (6\%) & 7 (4\%) &  \\ 
+  -- No & 153 (94\%) & 166 (95\%) &  \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item Method for exclusion may not be random. Patients with a larger intracranial volume were unable to fit into the equipment to gather the readings. 
+  \item It follows that more men were excluded since men tend to be larger in general.
+  \item Included patients have a lower education level, though the difference is not large and may not be meaningful (mean difference: 0.74 years).
+\end{itemize}
+
+\clearpage
+
+\section{Descriptive Statistics}
+\subsection{All Variables by Diagnosis}
+In the following table:
+\begin{itemize}
+  \item Continuous variables have a mean (standard deviation), and discrete variables have a count (percentage). 
+  \item The p-value (significance $<$ 0.05) for the univariate comparison of the each variable between the diagnosis groups is presented. Kruskal-Wallis tests are used for continuous variables and Chi-square tests for categorical.
+  \item Some Chi-square approximations may be inaccurate due to low counts in certain groups.
+\end{itemize}
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:04 2017
+\begin{table}[ht]
+\centering
+\caption{Comparison of Demographics by Consensus Diagnosis (N = 174)} 
+\begin{tabular}{lllll}
+  \toprule
+Variable & \parbox{.5in}{Normal N=101} & \parbox{.41in}{MCI    N=62} & \parbox{.61in}{Ambiguous At-Risk      N=11} & P-value \\ 
+  \midrule
+nocturnal.systolic.diff.sleep.self.reported & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2) & 3e-04 \\ 
+  systolic.prewaking.surge & 14.1 (12.9) & 8.9 (10.3) & 12.4 (11.9) & 0.0529 \\ 
+  systolic.rising.surge & 11.4 (12.9) & 3.7 (12.5) & 4.9 (18.7) & 0.0011 \\ 
+  ICV (calculated) & 1369.2 (140) & 1345.9 (135.9) & 1431.9 (122.9) & 0.1649 \\ 
+  Education (years) & 16.1 (2.4) & 14.6 (2.6) & 15.5 (3.3) & 0.0021 \\ 
+  Age at medhx.date, recalculated & 72.6 (7.3) & 73.2 (7.2) & 71.4 (4.8) & 0.743 \\ 
+  Sex &  &  &  & 0.7049 \\ 
+  -- Male & 53 (52\%) & 31 (50\%) & 7 (64\%) &  \\ 
+  -- Female & 48 (48\%) & 31 (50\%) & 4 (36\%) &  \\ 
+  Two-level race/ethnicity &  &  &  & 0.896 \\ 
+  -- Non-Hispanic White & 90 (89\%) & 54 (87\%) & 10 (91\%) &  \\ 
+  -- Other & 11 (11\%) & 8 (13\%) & 1 (9\%) &  \\ 
+  ApoE4+ (at least one E4 allele) &  &  &  & 0.5298 \\ 
+  -- Yes & 34 (34\%) & 22 (35\%) & 2 (18\%) &  \\ 
+  -- No & 67 (66\%) & 40 (65\%) & 9 (82\%) &  \\ 
+  Taking at least 1 anti-hypertensive med &  &  &  & 0.9005 \\ 
+  -- Yes & 55 (54\%) & 36 (58\%) & 6 (55\%) &  \\ 
+  -- No & 46 (46\%) & 26 (42\%) & 5 (45\%) &  \\ 
+  Diabetic, determined by a1c, glucose, and/or rx &  &  &  & 0.0863 \\ 
+  -- Yes & 12 (12\%) & 11 (18\%) & 4 (36\%) &  \\ 
+  -- No & 89 (88\%) & 51 (82\%) & 7 (64\%) &  \\ 
+  Current smoker (or quit in this or last calendar yr) &  &  &  & 0.1608 \\ 
+  -- Yes & 0 (0\%) & 2 (3\%) & 0 (0\%) &  \\ 
+  -- No & 101 (100\%) & 60 (97\%) & 11 (100\%) &  \\ 
+  CVD, determined from variables in med hx &  &  &  & 0.6743 \\ 
+  -- Yes & 5 (5\%) & 2 (3\%) & 0 (0\%) &  \\ 
+  -- No & 96 (95\%) & 60 (97\%) & 11 (100\%) &  \\ 
+  A-fib, determined by med hx and/or echo and/or cmr rhythm &  &  &  & 0.1502 \\ 
+  -- Yes & 4 (4\%) & 4 (6\%) & 2 (18\%) &  \\ 
+  -- No & 97 (96\%) & 58 (94\%) & 9 (82\%) &  \\ 
+  LV hypertrophy, determined by sex and scaled LV mass &  &  &  & 0.576 \\ 
+  -- Yes & 3 (3\%) & 3 (5\%) & 1 (9\%) &  \\ 
+  -- No & 97 (96\%) & 59 (95\%) & 10 (91\%) &  \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+
+
+\begin{itemize}
+  \item Patients diagnosed with MCI appear to have some lower ABP measurements. However, these are all univariate relationships; these trends may not hold in the adjusted analyses.
+  \item We also see a difference in education level, with the apparent ordering of highest average years of education to lowest being Normal, Ambiguous At-Risk, then MCI.
+\end{itemize}
+
+\clearpage
+\subsection{CVR Outcome Distribution}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-cvr_dist-1} 
+
+}
+
+
+
+\end{knitrout}
+
+
+\begin{itemize}
+  \item Most of the outliers are for larger values of CVR. 
+  \item Outliers within each part of the brain are likely highly correlated. If a patient is an outlier for left frontal lobe, then she may be an outlier for the right side as well. 
+  \begin{itemize}
+    \item E.g. The low outliers of the frontal lobe regions: which are all from the patient with \code{map.id} = 034.
+  \end{itemize}
+\end{itemize}
+
+\clearpage
+\subsection{Distribution of CVR Outcomes by Diagnosis}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-histcvr_dx-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\begin{itemize}
+  \item Positive outliers in MCI group for some CVR outcomes.
+\end{itemize}
+
+\clearpage
+\subsection{ABP Measure Distribution by Diagnosis}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-hist_dx-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\clearpage
+\subsection{Unadjusted ABP-CVR Associations}
+\subsubsection{SBP Prewaking Surge}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-unadj_prewaking-1} 
+
+}
+
+
+
+\end{knitrout}
+\clearpage
+\subsubsection{SBP Rising Surge}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-unadj_rising-1} 
+
+}
+
+
+
+\end{knitrout}
+\clearpage
+\subsubsection{Nocturnal Decline in SBP}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-unadj_nocdiff-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\begin{itemize}
+  \item Most of the outcomes have no trend over the predictors, with a slope around 0.
+  \item The plots for nocturnal difference in systolic blood pressure has a slight downward slope on the left hand side (where data are very sparse). 
+  \item Univariate trends may not hold in the adjusted analyses.
+\end{itemize}
+
+
+
+\clearpage
+
+\section{Analysis Results}
+
+\subsection{Missing Data}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:13 2017
+\begin{table}[ht]
+\centering
+\caption{Variables with Missing Observations} 
+\begin{tabular}{ll}
+  \hline
+Variable & Missingness \\ 
+  \hline
+LV hypertrophy, determined by sex and scaled LV mass & 1 (0.57\%) \\ 
+  systolic.rising.surge & 23 (13.22\%) \\ 
+  systolic.prewaking.surge & 27 (15.52\%) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & 15 (8.62\%) \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item LV hypertrophy not included as a covariate
+  \item For this analysis: only missing data on the ABP measurements
+  \item Implement multiple imputation using predictive mean matching
+\end{itemize}
+
+
+
+
+\subsection{CVR Outcome Models}
+
+
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:16 2017
+\begin{table}[ht]
+\centering
+\caption{Coefficients for ABP with CVR: ABP Modeled as Restricted Cubic Spline with 3 Knots} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Systolic Prewaking Surge & Systolic Rising Surge & Nocturnal SBP Difference \\ 
+  \midrule
+Left Hemisphere & (-0.011,0.004) & (-0.023,0.03) & (-0.052,  0.033) \\ 
+  Right Hemisphere & (-0.017,0.023) & (-0.025,0.031) & (-0.041,  0.021) \\ 
+  Left Frontal Lobe & (-0.011,0.01) & (-0.026,0.038) & (-0.053,  0.031) \\ 
+  Right Frontal Lobe & (-0.023,0.037) & (-0.026,0.031) & (-0.056,  0.039) \\ 
+  Full Frontal Lobe & (-0.016,0.023) & (-0.025,0.034) & (-0.053,  0.034) \\ 
+  Left Occipital Lobe & (-0.008,-0.019) & (-0.044,0.053) & (-0.018,  0.005) \\ 
+  Right Occipital Lobe & (-0.021,0.02) & (-0.043,0.038) & (-0.03,  0.033) \\ 
+  Full Occipital Lobe & (-0.013,-0.001) & (-0.044,0.048) & (-0.024,  0.02) \\ 
+  Left Temporal Lobe & (0.007,-0.013) & (-0.009,0.019) & (-0.055,  0.044) \\ 
+  Right Temporal Lobe & (0.019,-0.019) & (-0.004,0.015) & (0.007,  -0.027) \\ 
+  Full Temporal Lobe & (0.012,-0.015) & (-0.006,0.016) & (-0.023,  0.008) \\ 
+  Left Parietal Lobe & (-0.037,0.028) & (-0.058,0.067) & (-0.057,  0.041) \\ 
+  Right Parietal Lobe & (-0.042,0.045) & (-0.048,0.059) & (-0.056,  0.039) \\ 
+  Full Parietal Lobe & (-0.039,0.036) & (-0.054,0.064) & (-0.055,  0.038) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item Since we are using 3 knots, each ABP variable has 2 associated coefficients
+\end{itemize}
+
+{\bf Note:} Coefficients from fitting a restricted cubic spline are not directly interpretable regarding effect on the CVR measurements in each region of interest. Rather than interpreting the table above, we provide:\\
+\begin{itemize}
+  \item results for tests of overall association between ABP and CVR measurements (``overall'' meaning using all coefficients affiliated with each ABP variable).
+  \item partial effect plots as a visual representation of ABP effect on CVR for each model.
+  \end{itemize}
+
+\clearpage
+\subsection{Test of Association between ABP and CVR}
+
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:17 2017
+\begin{table}[ht]
+\centering
+\caption{P-values for Test of Association Between ABP and CVR} 
+\begin{tabular}{rrrr}
+  \toprule
+ & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
+  \midrule
+Left Hemisphere & 0.787 & 0.494 & 0.215 \\ 
+  Right Hemisphere & 0.798 & 0.425 & 0.280 \\ 
+  Left Frontal Lobe & 0.931 & 0.495 & 0.243 \\ 
+  Right Frontal Lobe & 0.651 & 0.474 & 0.256 \\ 
+  Full Frontal Lobe & 0.836 & 0.481 & 0.246 \\ 
+  Left Occipital Lobe & 0.360 & 0.200 & 0.745 \\ 
+  Right Occipital Lobe & 0.741 & 0.148 & 0.808 \\ 
+  Full Occipital Lobe & 0.593 & 0.136 & 0.812 \\ 
+  Left Temporal Lobe & 0.921 & 0.791 & 0.250 \\ 
+  Right Temporal Lobe & 0.762 & 0.812 & 0.624 \\ 
+  Full Temporal Lobe & 0.880 & 0.793 & 0.537 \\ 
+  Left Parietal Lobe & 0.435 & 0.104 & 0.430 \\ 
+  Right Parietal Lobe & 0.409 & 0.124 & 0.314 \\ 
+  Full Parietal Lobe & 0.431 & 0.089 & 0.370 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item No significant p-values at the 0.05 level: Insufficient evidence that any of the ABP measurements have an effect on CVR in any brain region.
+  \item Generally, we would recommend a multiple comparisons adjustment for fitting the 42 models (e.g. using a Bonferroni-corrected significance level of $\frac{.05}{42} = .0012$). 
+\end{itemize}
+
+\clearpage
+\subsection{Partial Effect Plots}
+
+\begin{itemize}
+  \item Partial effect plots show the effect of each SBP measure on CVR outcome with other variables in the model fixed. 
+  \item A single plot is presented from each model for the predictor of interest against the CVR outcome for the specified region of interest, overall and stratified by diagnosis.
+  \item By default, continuous variables are fixed at their median and categorical variables are fixed at their mode.
+  \item Generally, all curves have a slight decline for lower ABP values then tend to level off.
+  \item  Normal Cognition group tends to have the highest CVR more often.
+  \item However, no consistent ordering of diagnosis group response across brain regions.
+\end{itemize}
+
+
+
+
+\begin{landscape}
+\subsubsection{SBP Prewaking Surge}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-pep_Sys_Prewaking-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+\begin{landscape}
+\subsubsection{SBP Rising Surge}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-pep_Sys_Rising-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+\begin{landscape}
+\subsubsection{Nocturnal Decline in SBP}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-pep_Noc_Diff-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+
+
+
+
+\begin{landscape}
+\subsubsection{SBP Prewaking Surge by Diagnosis}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-pep_Sys_Prewaking_dx-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+\begin{landscape}
+\subsubsection{SBP Rising Surge by Diagnosis}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-pep_Sys_Rising_dx-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+\begin{landscape}
+\subsubsection{Nocturnal Decline in SBP by Diagnosis}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-pep_Noc_Diff_dx-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+
+\subsection{Tests of Linearity for ABP Measures}
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:39 2017
+\begin{table}[ht]
+\centering
+\caption{P-values for test of linearity for ABP predictors} 
+\begin{tabular}{rrrr}
+  \hline
+ & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
+  \hline
+Left Hemisphere & 0.916 & 0.302 & 0.478 \\ 
+  Right Hemisphere & 0.534 & 0.278 & 0.649 \\ 
+  Left Frontal Lobe & 0.797 & 0.257 & 0.561 \\ 
+  Right Frontal Lobe & 0.356 & 0.326 & 0.451 \\ 
+  Full Frontal Lobe & 0.556 & 0.278 & 0.502 \\ 
+  Left Occipital Lobe & 0.678 & 0.141 & 0.930 \\ 
+  Right Occipital Lobe & 0.610 & 0.272 & 0.546 \\ 
+  Full Occipital Lobe & 0.979 & 0.143 & 0.698 \\ 
+  Left Temporal Lobe & 0.712 & 0.508 & 0.322 \\ 
+  Right Temporal Lobe & 0.621 & 0.668 & 0.605 \\ 
+  Full Temporal Lobe & 0.647 & 0.566 & 0.849 \\ 
+  Left Parietal Lobe & 0.592 & 0.095 & 0.522 \\ 
+  Right Parietal Lobe & 0.312 & 0.098 & 0.473 \\ 
+  Full Parietal Lobe & 0.455 & 0.082 & 0.507 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item No evidence to suggest the effect is truly non-linear for any model
+\end{itemize}
+
+\clearpage
+\subsection{Secondary Aim}
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:39 2017
+\begin{table}[ht]
+\centering
+\caption{R-squared for ABP predictor models} 
+\begin{tabular}{rrrr}
+  \hline
+ & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
+  \hline
+Left Hemisphere & 0.058 & 0.062 & 0.076 \\ 
+  Right Hemisphere & 0.045 & 0.051 & 0.059 \\ 
+  Left Frontal Lobe & 0.070 & 0.075 & 0.086 \\ 
+  Right Frontal Lobe & 0.065 & 0.065 & 0.076 \\ 
+  Full Frontal Lobe & 0.069 & 0.074 & 0.085 \\ 
+  Left Occipital Lobe & 0.096 & 0.099 & 0.084 \\ 
+  Right Occipital Lobe & 0.058 & 0.077 & 0.056 \\ 
+  Full Occipital Lobe & 0.066 & 0.082 & 0.061 \\ 
+  Left Temporal Lobe & 0.055 & 0.056 & 0.070 \\ 
+  Right Temporal Lobe & 0.027 & 0.026 & 0.029 \\ 
+  Full Temporal Lobe & 0.037 & 0.037 & 0.043 \\ 
+  Left Parietal Lobe & 0.042 & 0.057 & 0.041 \\ 
+  Right Parietal Lobe & 0.059 & 0.069 & 0.059 \\ 
+  Full Parietal Lobe & 0.050 & 0.066 & 0.050 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:39 2017
+\begin{table}[ht]
+\centering
+\caption{Correlation Matrix for ABP Predictors and CVR Outcomes} 
+\begin{tabular}{rrrr}
+  \toprule
+ & SBP Prewaking Surge & SBP Rising Surge & Nocturnal Decline in SBP \\ 
+  \midrule
+Left Hemisphere & -0.044 & 0.094 & 0.030 \\ 
+  Right Hemisphere & -0.014 & 0.088 & 0.026 \\ 
+  Left Frontal Lobe & -0.013 & 0.096 & 0.029 \\ 
+  Right Frontal Lobe & 0.018 & 0.117 & 0.039 \\ 
+  Full Frontal Lobe & 0.003 & 0.109 & 0.036 \\ 
+  Left Occipital Lobe & -0.064 & 0.109 & 0.114 \\ 
+  Right Occipital Lobe & -0.007 & 0.078 & 0.091 \\ 
+  Full Occipital Lobe & -0.035 & 0.098 & 0.108 \\ 
+  Left Temporal Lobe & 0.003 & 0.177 & 0.095 \\ 
+  Right Temporal Lobe & -0.026 & 0.044 & -0.004 \\ 
+  Full Temporal Lobe & 0.000 & 0.131 & 0.059 \\ 
+  Left Parietal Lobe & -0.087 & 0.046 & 0.030 \\ 
+  Right Parietal Lobe & -0.040 & 0.080 & 0.044 \\ 
+  Full Parietal Lobe & -0.068 & 0.063 & 0.039 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item Nocturnal decline in SBP has slightly higher $R^2$ in overall hemispheres, frontal, and temporal lobes. SBP rising surge is highest in the occipital and parietal lobes.
+  \item All $R^2$ values are very low, indicating these models generally do not have extensive predictive ability. In other words, less than 1\% of the variability in CVR outcomes is explained by any of the models fitted in this analysis.
+  \item SBP rising surge has all positive correlations, though numbers are small.
+\end{itemize}
+
+
+\clearpage
+\section{Sensitivity Analyses}
+
+\subsection{Model with Linear Effect of ABP Measures}
+
+\begin{itemize}
+  \item No evidence of an association
+  \item Coefficients are interpreted as the effect on CVR outcome for a one-mmHg increase in ABP measurement. 
+  \item Multiply coefficients by 10 to interpret the effect on CVR for a 10-mmHg increase in ABP measurement.
+  \begin{itemize}
+    \item E.g. For a 10-mmHg increase in the systolic blood pressure prewaking surge, CVR in the left hemisphere is expected to decrease by .083, holding other model variables constant. 
+  \end{itemize}
+\end{itemize}
+
+
+\begin{landscape}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Wed Feb 15 11:03:42 2017
+\begin{table}[ht]
+\centering
+\caption{Coefficients for Linear ABP with CVR} 
+\begin{tabular}{lrrrrrrrrr}
+  \toprule
+ &  \\ 
+  & \multicolumn{3}{c}{SBP Prewaking Surge} & 
+                      \multicolumn{3}{c}{SBP Rising Surge} & 
+                      \multicolumn{3}{c}{Nocturnal Decline in SBP} \\ & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \\ \midrule
+Left Hemisphere & -0.0083 & 0.0120 & 0.4930 & -0.0058 & 0.0105 & 0.5819 & -0.0262 & 0.0155 & 0.0931 \\ 
+  Right Hemisphere & -0.0028 & 0.0115 & 0.8054 & -0.0071 & 0.0104 & 0.4932 & -0.0240 & 0.0151 & 0.1133 \\ 
+  Left Frontal Lobe & -0.0041 & 0.0141 & 0.7705 & -0.0038 & 0.0120 & 0.7510 & -0.0289 & 0.0178 & 0.1050 \\ 
+  Right Frontal Lobe & 0.0002 & 0.0130 & 0.9870 & -0.0078 & 0.0115 & 0.4972 & -0.0262 & 0.0170 & 0.1238 \\ 
+  Full Frontal Lobe & -0.0016 & 0.0131 & 0.9024 & -0.0056 & 0.0113 & 0.6237 & -0.0268 & 0.0167 & 0.1114 \\ 
+  Left Occipital Lobe & -0.0202 & 0.0149 & 0.1772 & -0.0130 & 0.0127 & 0.3069 & -0.0144 & 0.0187 & 0.4435 \\ 
+  Right Occipital Lobe & -0.0079 & 0.0141 & 0.5756 & -0.0201 & 0.0125 & 0.1100 & -0.0044 & 0.0181 & 0.8095 \\ 
+  Full Occipital Lobe & -0.0136 & 0.0134 & 0.3125 & -0.0159 & 0.0117 & 0.1767 & -0.0088 & 0.0171 & 0.6072 \\ 
+  Left Temporal Lobe & -0.0015 & 0.0119 & 0.8993 & 0.0019 & 0.0103 & 0.8523 & -0.0207 & 0.0151 & 0.1708 \\ 
+  Right Temporal Lobe & 0.0066 & 0.0127 & 0.6055 & 0.0054 & 0.0111 & 0.6246 & -0.0140 & 0.0171 & 0.4150 \\ 
+  Full Temporal Lobe & 0.0024 & 0.0112 & 0.8298 & 0.0036 & 0.0098 & 0.7186 & -0.0165 & 0.0147 & 0.2650 \\ 
+  Left Parietal Lobe & -0.0189 & 0.0159 & 0.2373 & -0.0185 & 0.0143 & 0.1983 & -0.0254 & 0.0211 & 0.2303 \\ 
+  Right Parietal Lobe & -0.0125 & 0.0140 & 0.3736 & -0.0140 & 0.0126 & 0.2683 & -0.0254 & 0.0183 & 0.1670 \\ 
+  Full Parietal Lobe & -0.0157 & 0.0146 & 0.2828 & -0.0169 & 0.0132 & 0.2005 & -0.0251 & 0.0192 & 0.1936 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+\end{landscape}
+
+
+\clearpage
+\begin{landscape}
+\subsection{Imputation Validity}
+
+\begin{itemize}
+  \item Distribution of each of the predictors with the distribution of the imputed values overlayed in blue. 
+  \item This is to display that the imputations are consistent with the observed data.
+\end{itemize}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-imputeSens-1} 
+
+}
+
+
+
+\end{knitrout}
+\end{landscape}
+
+
+
+
+
+
+\clearpage
+\section{R session information}
+\small
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{verbatim}
+R version 3.3.2 (2016-10-31) 
+Packages:
+          Version
+Formula     1.2-1
+ggplot2     2.2.1
+gridExtra   2.2.1
+Hmisc       4.0-2
+knitr      1.15.1
+rms         5.1-0
+SparseM      1.72
+xtable      1.8-2
+                                                                              Depends
+Formula                                                           R (>= 2.0.0), stats
+ggplot2                                                                    R (>= 3.1)
+gridExtra                                                                        <NA>
+Hmisc                        lattice, survival (>= 2.40-1), Formula, ggplot2 (>= 2.2)
+knitr                                                                    R (>= 3.1.0)
+rms       Hmisc (>= 4.0-2), survival (>= 2.40-1), lattice, ggplot2 (>=\n2.2), SparseM
+SparseM                                                          R (>= 2.15), methods
+xtable                                                                  R (>= 2.10.0)
+\end{verbatim}
+\end{kframe}
+\end{knitrout}
+
+\section{Roles and Responsibilities}
+
+Hannah Weeks\\
+\begin{itemize}
+  \item Project overview and statistical analysis plan
+  \item Model fitting and partial effect plots
+  \item Tests of association and linearity
+  \item Sensitivity analysis for linear effect
+  \item Secondary aim
+\end{itemize}
+
+Brooklyn Stanley\\
+\begin{itemize}
+  \item Data cleaning
+  \item Application of inclusion/exclusion criteria
+  \item Descriptive statistics
+  \item Imputation and associated sensitivity analysis
+\end{itemize}
+
+\clearpage
+\section{Code Appendix}
+
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
+\begin{alltt}
+\hlcom{# R options}
+\hlcom{#options(scipen= 8)}
+\hlkwd{library}\hlstd{(knitr)}
+\hlcom{# options for knitr}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{tidy}\hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{highlight}\hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{comment}\hlstd{=} \hlnum{NA}\hlstd{)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}
+    \hlkwc{fig.path}   \hlstd{=} \hlstr{'figure/graphics-'}\hlstd{,}
+    \hlkwc{cache.path} \hlstd{=} \hlstr{'cache/graphics-'}\hlstd{,}
+    \hlkwc{fig.align}  \hlstd{=} \hlstr{'center'}\hlstd{,}
+    \hlcom{#dev        = 'postscript',}
+    \hlkwc{dev}        \hlstd{=} \hlstr{'pdf'}\hlstd{,}
+    \hlkwc{fig.width}  \hlstd{=} \hlnum{5}\hlstd{,}
+    \hlkwc{fig.height} \hlstd{=} \hlnum{5}\hlstd{,}
+    \hlkwc{fig.show}   \hlstd{=} \hlstr{'hold'}\hlstd{,}
+    \hlkwc{cache}      \hlstd{=} \hlnum{FALSE}\hlstd{,}
+    \hlkwc{par}        \hlstd{=} \hlnum{TRUE}
+    \hlstd{)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{echo}\hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{warning}\hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlstd{opts_chunk}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{message}\hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlcom{#opts_chunk$set(results= 'hide') }
+
+\hlstd{knit_hooks}\hlopt{$}\hlkwd{set}\hlstd{(}
+    \hlkwc{par}\hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{before}\hlstd{,} \hlkwc{options}\hlstd{,} \hlkwc{envir}\hlstd{)\{}
+        \hlkwa{if} \hlstd{(before} \hlopt{&&} \hlstd{options}\hlopt{$}\hlstd{fig.show} \hlopt{!=} \hlstr{'none'}\hlstd{) \{}
+            \hlkwd{par}\hlstd{(}
+                \hlkwc{mar}      \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{4}\hlstd{,} \hlnum{4}\hlstd{,} \hlnum{2.1}\hlstd{,} \hlnum{.1}\hlstd{),}
+                \hlkwc{cex.lab}  \hlstd{=} \hlnum{.95}\hlstd{,}
+                \hlkwc{cex.axis} \hlstd{=} \hlnum{.9}\hlstd{,}
+                \hlkwc{mgp}      \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{2}\hlstd{,} \hlnum{.7}\hlstd{,} \hlnum{0}\hlstd{),}
+                \hlkwc{tcl}      \hlstd{=} \hlopt{-}\hlnum{.3}\hlstd{)}
+        \hlstd{\}}
+    \hlstd{\}}
+\hlstd{)}
+
+\hlstd{knit_hooks}\hlopt{$}\hlkwd{set}\hlstd{(}\hlkwc{inline} \hlstd{=} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) \{}
+   \hlkwa{if} \hlstd{(}\hlkwd{is.numeric}\hlstd{(x))} \hlkwd{round}\hlstd{(x,} \hlnum{3}\hlstd{)} \hlkwa{else} \hlstd{x\})}
+\hlcom{# Setting up R}
+\hlkwd{rm}\hlstd{(}\hlkwc{list}\hlstd{=} \hlkwd{ls}\hlstd{())}
+\hlkwd{options}\hlstd{(}\hlkwc{datadist}\hlstd{=} \hlkwa{NULL}\hlstd{)}
+
+\hlcom{# So that rms functions will work correctly with ordered factors}
+\hlkwd{options}\hlstd{(}\hlkwc{contrasts}\hlstd{=}\hlkwd{c}\hlstd{(}\hlstr{"contr.treatment"}\hlstd{,}\hlstr{"contr.treatment"}\hlstd{))}
+
+
+\hlcom{# other libraries}
+\hlkwd{library}\hlstd{(Hmisc)}
+\hlkwd{library}\hlstd{(rms)}
+\hlkwd{library}\hlstd{(xtable)}
+\hlkwd{library}\hlstd{(ggplot2)}
+\hlkwd{library}\hlstd{(grid)}
+\hlkwd{library}\hlstd{(gridExtra)} \hlcom{# for grid.arrange}
+
+\hlkwd{set.seed}\hlstd{(}\hlnum{20170215}\hlstd{)}
+\hlstd{runPlot}\hlkwb{=}\hlnum{TRUE}
+\hlstd{runAnalyses}\hlkwb{=}\hlnum{TRUE}
+\hlcom{#######################################}
+\hlcom{#  File Directory                     #}
+\hlcom{#######################################}
+\hlstd{proj.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(}\hlstr{"~"}\hlstd{,} \hlstr{"Documents"}\hlstd{,} \hlstr{"BIOS7352"}\hlstd{,} \hlstr{"Project1"}\hlstd{)}
+\hlstd{data.dir} \hlkwb{<-} \hlkwd{file.path}\hlstd{(proj.dir,} \hlstr{"dataForABP_CBF_2017-01-11.rds"}\hlstd{)}
+
+\hlstd{datfile}  \hlkwb{<-} \hlkwd{file.path}\hlstd{(data.dir)}
+
+\hlcom{#######################################}
+\hlcom{#  Variables                          #}
+\hlcom{#######################################}
+
+\hlcom{# Descriptive and Adjusting Variables}
+\hlstd{cov.con} \hlkwb{<-} \hlkwd{Cs}\hlstd{(age, education)}
+\hlstd{cov.cat} \hlkwb{<-} \hlkwd{Cs}\hlstd{(enrolled.dx.factor, sex.factor, raceethnicity.factor,}
+              \hlstd{apoe4pos.factor, enrolled.dx.factor,}
+              \hlstd{htnrx.factor, diabetes.factor, currentsmoking.factor, cvd.factor, afib.factor,  echo.lvh.factor)}
+
+\hlstd{desc.cov} \hlkwb{<-} \hlkwd{c}\hlstd{(cov.cat,}
+              \hlstd{cov.con)}
+
+\hlcom{#covariates for model}
+\hlstd{model.cov} \hlkwb{<-} \hlkwd{Cs}\hlstd{(age, raceethnicity.factor, education, enrolled.dx.factor, apoe4pos.factor)}
+
+\hlcom{#Predictors}
+\hlstd{predictors} \hlkwb{<-} \hlkwd{Cs}\hlstd{(}
+    \hlstd{systolic.prewaking.surge,}
+    \hlstd{systolic.rising.surge,}
+    \hlstd{nocturnal.systolic.diff.sleep.self.reported}
+\hlstd{)}
+
+\hlcom{#Outcomes}
+\hlstd{outcomes.reac} \hlkwb{<-} \hlkwd{Cs}\hlstd{(asl.reac.left.hemisphere,}
+                    \hlstd{asl.reac.right.hemisphere,}
+                    \hlstd{asl.reac.left.frontal.lobe,}
+                    \hlstd{asl.reac.right.frontal.lobe,}
+                    \hlstd{asl.reac.frontal.lobe,}
+                    \hlstd{asl.reac.left.occipital.lobe,}
+                    \hlstd{asl.reac.right.occipital.lobe,}
+                    \hlstd{asl.reac.occipital.lobe,}
+                    \hlstd{asl.reac.left.temporal.lobe,}
+                    \hlstd{asl.reac.right.temporal.lobe,}
+                    \hlstd{asl.reac.temporal.lobe,}
+                    \hlstd{asl.reac.left.parietal.lobe,}
+                    \hlstd{asl.reac.right.parietal.lobe,}
+                    \hlstd{asl.reac.parietal.lobe)}
+\hlstd{outcomes.reac}\hlkwb{=}\hlkwd{paste0}\hlstd{(outcomes.reac,} \hlstr{'.hct'}\hlstd{)}
+
+\hlstd{ma.vars} \hlkwb{<-} \hlkwd{Cs}\hlstd{(     ma.left.hemisphere,}
+                   \hlstd{ma.right.hemisphere,}
+                   \hlstd{ma.left.frontal.lobe.vol,}
+                   \hlstd{ma.right.frontal.lobe.vol,}
+                   \hlstd{ma.frontal.lobe.vol,}
+                   \hlstd{ma.left.occipital.lobe.vol,}
+                   \hlstd{ma.right.occipital.lobe.vol,}
+                   \hlstd{ma.occipital.lobe.vol,}
+                   \hlstd{ma.left.temporal.lobe.vol,}
+                   \hlstd{ma.right.temporal.lobe.vol,}
+                   \hlstd{ma.temporal.lobe.vol,}
+                   \hlstd{ma.left.parietal.lobe.vol,}
+                   \hlstd{ma.right.parietal.lobe.vol,}
+                   \hlstd{ma.parietal.lobe.vol)}
+
+\hlstd{outcomes.list}\hlkwb{=}\hlkwd{vector}\hlstd{(}\hlstr{"list"}\hlstd{,} \hlnum{1}\hlstd{)}
+\hlkwd{names}\hlstd{(outcomes.list)}\hlkwb{=}\hlkwd{c}\hlstd{(}\hlstr{"ASL.Reac"}\hlstd{)}
+\hlstd{outcomes.list[[}\hlstr{'ASL.Reac'}\hlstd{]]}\hlkwb{=}\hlstd{outcomes.reac}
+
+\hlstd{outcomes}\hlkwb{=}\hlkwd{unlist}\hlstd{(outcomes.list)}
+
+\hlcom{# Exclusion Criteria Variables}
+\hlstd{excl.var} \hlkwb{<-} \hlkwd{Cs}\hlstd{(time.reading.indicator, asl.reac.usable)}
+
+\hlcom{#Read in the data}
+\hlstd{totalData} \hlkwb{<-} \hlkwd{readRDS}\hlstd{(datfile)}
+\hlcom{#######################################}
+\hlcom{#  Inclusion/Exclusion                #}
+\hlcom{#######################################}
+
+\hlcom{#Dementia}
+\hlstd{cvrdata} \hlkwb{<-} \hlstd{totalData[totalData}\hlopt{$}\hlstd{enrolled.dx.factor} \hlopt{!=} \hlstr{"Dementia"}\hlstd{,}
+                     \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{18}\hlstd{,} \hlkwd{grep}\hlstd{(}\hlstr{"asl.reac"}\hlstd{,} \hlkwd{names}\hlstd{(totalData)),}
+                       \hlkwd{grep}\hlstd{(}\hlstr{"ma."}\hlstd{,} \hlkwd{names}\hlstd{(totalData)))]}
+\hlcom{#Quality check}
+\hlstd{cvrdata} \hlkwb{<-} \hlstd{totalData[totalData}\hlopt{$}\hlstd{asl.reac.usable} \hlopt{==} \hlnum{1}\hlstd{,]}
+\hlcom{#At least 39 readings}
+\hlstd{cvrdata} \hlkwb{<-} \hlstd{cvrdata[cvrdata}\hlopt{$}\hlstd{time.reading.indicator} \hlopt{==} \hlstr{'Yes'} \hlopt{&}
+                     \hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{time.reading.indicator),]}
+
+\hlcom{#Excluded patients}
+\hlstd{exclude} \hlkwb{<-} \hlstd{totalData[}\hlopt{!}\hlstd{(totalData}\hlopt{$}\hlstd{map.id} \hlopt{%in%} \hlstd{cvrdata}\hlopt{$}\hlstd{map.id),}
+                     \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{18}\hlstd{,} \hlnum{61}\hlstd{,} \hlkwd{grep}\hlstd{(}\hlstr{"asl.reac"}\hlstd{,} \hlkwd{names}\hlstd{(totalData)),}
+                       \hlkwd{grep}\hlstd{(}\hlstr{"ma."}\hlstd{,} \hlkwd{names}\hlstd{(totalData)))]}
+\hlcom{#######################################}
+\hlcom{#  Inclusion/Exclusion Comparison     #}
+\hlcom{#######################################}
+
+\hlstd{cats} \hlkwb{<-} \hlkwd{names}\hlstd{(cvrdata)[}\hlnum{3}\hlopt{:}\hlnum{18}\hlstd{]}
+\hlstd{comparison} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{c}\hlstd{(),} \hlkwd{c}\hlstd{(),} \hlkwd{c}\hlstd{(),}\hlkwd{c}\hlstd{())}
+\hlstd{is} \hlkwb{<-} \hlkwd{length}\hlstd{(cvrdata}\hlopt{$}\hlstd{map.id)}
+\hlstd{xs} \hlkwb{<-} \hlkwd{length}\hlstd{(exclude}\hlopt{$}\hlstd{map.id)}
+\hlkwa{for} \hlstd{(cat} \hlkwa{in} \hlstd{cats)\{}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.factor}\hlstd{(cvrdata[,cat]))\{}
+    \hlstd{chiData} \hlkwb{<-} \hlkwd{rbind}\hlstd{(}\hlkwd{cbind}\hlstd{(cvrdata[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"is"}\hlstd{,} \hlkwd{length}\hlstd{(cvrdata[,cat]))),}
+                     \hlkwd{cbind}\hlstd{(exclude[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"xs"}\hlstd{,} \hlkwd{length}\hlstd{(exclude[,cat]))))}
+    \hlstd{pp} \hlkwb{<-} \hlkwd{chisq.test}\hlstd{(}\hlkwd{table}\hlstd{(chiData[,}\hlnum{1}\hlstd{], chiData[,}\hlnum{2}\hlstd{]))}\hlopt{$}\hlstd{p.value}
+    \hlstd{comparison} \hlkwb{<-} \hlkwd{rbind}\hlstd{(comparison,} \hlkwd{c}\hlstd{(}\hlkwd{label}\hlstd{(cvrdata[,cat]),}\hlstr{''}\hlstd{,}\hlstr{''}\hlstd{,} \hlkwd{round}\hlstd{(pp,}\hlnum{4}\hlstd{)))}
+    \hlkwa{for} \hlstd{(lev} \hlkwa{in} \hlkwd{levels}\hlstd{(cvrdata[,cat]))\{}
+      \hlstd{comparison} \hlkwb{<-} \hlkwd{rbind}\hlstd{(comparison,} \hlkwd{c}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"--"}\hlstd{,lev ),}
+                      \hlkwd{paste}\hlstd{(s} \hlkwb{<-} \hlkwd{sum}\hlstd{(cvrdata[,cat]}\hlopt{==}\hlstd{lev,} \hlkwc{na.rm}\hlstd{=T),} \hlstr{" ("}\hlstd{,} \hlkwd{round}\hlstd{(s}\hlopt{*}\hlnum{100}\hlopt{/}\hlstd{is),}
+                            \hlstr{"%)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                      \hlkwd{paste}\hlstd{(s} \hlkwb{<-} \hlkwd{sum}\hlstd{(exclude[,cat]}\hlopt{==}\hlstd{lev,} \hlkwc{na.rm}\hlstd{=T),} \hlstr{" ("}\hlstd{,} \hlkwd{round}\hlstd{(s}\hlopt{*}\hlnum{100}\hlopt{/}\hlstd{xs),}
+                            \hlstr{"%)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}\hlstr{""}\hlstd{))}
+    \hlstd{\}}
+    \hlkwa{next}
+  \hlstd{\}}
+  \hlstd{anovaData} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{rbind}\hlstd{(}\hlkwd{cbind}\hlstd{(cvrdata[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"is"}\hlstd{,} \hlkwd{length}\hlstd{(cvrdata[,cat]))),}
+                     \hlkwd{cbind}\hlstd{(exclude[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"xs"}\hlstd{,} \hlkwd{length}\hlstd{(exclude[,cat])))))}
+  \hlstd{anovaData[,}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{as.character}\hlstd{(anovaData[,}\hlnum{1}\hlstd{]))}
+  \hlstd{pp} \hlkwb{<-} \hlkwd{kruskal.test}\hlstd{(anovaData[,}\hlnum{1}\hlstd{]} \hlopt{~} \hlstd{anovaData[,}\hlnum{2}\hlstd{])}\hlopt{$}\hlstd{p.value}
+  \hlstd{comparison} \hlkwb{<-} \hlkwd{rbind}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwd{label}\hlstd{(cvrdata[,cat]),}
+                \hlkwd{paste}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(cvrdata[,cat],} \hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),}\hlstr{" ("}\hlstd{,}
+                      \hlkwd{round}\hlstd{(}\hlkwd{sd}\hlstd{(cvrdata[,cat],}\hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),} \hlstr{")"}\hlstd{,}\hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                \hlkwd{paste}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(exclude[,cat],} \hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),}\hlstr{" ("}\hlstd{,}
+                      \hlkwd{round}\hlstd{(}\hlkwd{sd}\hlstd{(exclude[,cat],}\hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),} \hlstr{")"}\hlstd{,}\hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                \hlkwd{round}\hlstd{(pp,}\hlnum{4}\hlstd{)), comparison)}
+\hlstd{\}}
+\hlstd{comparison} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(comparison[,}\hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{3}\hlstd{,}\hlnum{2}\hlstd{,}\hlnum{4}\hlstd{)])}
+
+\hlkwd{colnames}\hlstd{(comparison)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Variable"}\hlstd{,}
+                             \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}parbox\{.5in\}\{Excluded N="}\hlstd{,} \hlkwd{nrow}\hlstd{(exclude),} \hlstr{"\}"}\hlstd{),}
+                             \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}parbox\{.9in\}\{Analyzed Data N="}\hlstd{,} \hlkwd{nrow}\hlstd{(cvrdata),} \hlstr{"\}"}\hlstd{),}
+                             \hlstr{"P-Value"}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(comparison,}
+      \hlkwc{caption}\hlstd{=}\hlstr{"Comparison of Demographics for Excluded and Included Data"}\hlstd{),}
+      \hlkwc{include.rownames} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{table.placement} \hlstd{=} \hlstr{"ht"}\hlstd{,}
+      \hlkwc{sanitize.colnames.function} \hlstd{= force,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Table of Covariates by dx Group    #}
+\hlcom{#######################################}
+
+\hlstd{cats} \hlkwb{<-} \hlkwd{names}\hlstd{(cvrdata)[}\hlnum{3}\hlopt{:}\hlnum{18}\hlstd{][}\hlopt{-}\hlnum{4}\hlstd{]}
+\hlstd{comparison.dx} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{c}\hlstd{(),} \hlkwd{c}\hlstd{(),} \hlkwd{c}\hlstd{(),}\hlkwd{c}\hlstd{())}
+\hlstd{mciData} \hlkwb{<-} \hlstd{cvrdata[cvrdata}\hlopt{$}\hlstd{enrolled.dx.factor}\hlopt{==}\hlstr{"MCI"}\hlstd{,]}
+\hlstd{normData} \hlkwb{<-} \hlstd{cvrdata[cvrdata}\hlopt{$}\hlstd{enrolled.dx.factor}\hlopt{==}\hlstr{"Normal"}\hlstd{,]}
+\hlstd{abData} \hlkwb{<-} \hlstd{cvrdata[cvrdata}\hlopt{$}\hlstd{enrolled.dx.factor}\hlopt{==}\hlstr{"Ambiguous At Risk"}\hlstd{,]}
+\hlstd{ms} \hlkwb{<-} \hlkwd{length}\hlstd{(mciData}\hlopt{$}\hlstd{map.id)}
+\hlstd{ns} \hlkwb{<-} \hlkwd{length}\hlstd{(normData}\hlopt{$}\hlstd{map.id)}
+\hlstd{as} \hlkwb{<-} \hlkwd{length}\hlstd{(abData}\hlopt{$}\hlstd{map.id)}
+\hlkwa{for} \hlstd{(cat} \hlkwa{in} \hlstd{cats)\{}
+  \hlkwa{if} \hlstd{(}\hlkwd{is.factor}\hlstd{(cvrdata[,cat]))\{}
+    \hlstd{chiData} \hlkwb{<-} \hlkwd{rbind}\hlstd{(}\hlkwd{cbind}\hlstd{(normData[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"ns"}\hlstd{,} \hlkwd{length}\hlstd{(normData[,cat]))),}
+                     \hlkwd{cbind}\hlstd{(mciData[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"ms"}\hlstd{,} \hlkwd{length}\hlstd{(mciData[,cat]))),}
+                     \hlkwd{cbind}\hlstd{(abData[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"as"}\hlstd{,} \hlkwd{length}\hlstd{(abData[,cat]))))}
+    \hlstd{pp} \hlkwb{<-} \hlkwd{chisq.test}\hlstd{(}\hlkwd{table}\hlstd{(chiData[,}\hlnum{1}\hlstd{], chiData[,}\hlnum{2}\hlstd{]))}\hlopt{$}\hlstd{p.value}
+    \hlstd{comparison.dx} \hlkwb{<-} \hlkwd{rbind}\hlstd{(comparison.dx,} \hlkwd{c}\hlstd{(}\hlkwd{label}\hlstd{(cvrdata[,cat]),}\hlstr{''}\hlstd{,}\hlstr{''}\hlstd{,}\hlstr{''}\hlstd{,} \hlkwd{round}\hlstd{(pp,}\hlnum{4}\hlstd{)))}
+    \hlkwa{for} \hlstd{(lev} \hlkwa{in} \hlkwd{levels}\hlstd{(cvrdata[,cat]))\{}
+      \hlstd{comparison.dx} \hlkwb{<-} \hlkwd{rbind}\hlstd{(comparison.dx,} \hlkwd{c}\hlstd{(}\hlkwd{paste}\hlstd{(}\hlstr{"--"}\hlstd{,lev ),}
+                      \hlkwd{paste}\hlstd{(s} \hlkwb{<-} \hlkwd{sum}\hlstd{(normData[,cat]}\hlopt{==}\hlstd{lev,} \hlkwc{na.rm}\hlstd{=T),} \hlstr{" ("}\hlstd{,} \hlkwd{round}\hlstd{(s}\hlopt{*}\hlnum{100}\hlopt{/}\hlstd{ns),}
+                            \hlstr{"%)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                      \hlkwd{paste}\hlstd{(s} \hlkwb{<-} \hlkwd{sum}\hlstd{(mciData[,cat]}\hlopt{==}\hlstd{lev,} \hlkwc{na.rm}\hlstd{=T),} \hlstr{" ("}\hlstd{,} \hlkwd{round}\hlstd{(s}\hlopt{*}\hlnum{100}\hlopt{/}\hlstd{ms),}
+                            \hlstr{"%)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                      \hlkwd{paste}\hlstd{(s} \hlkwb{<-} \hlkwd{sum}\hlstd{(abData[,cat]}\hlopt{==}\hlstd{lev,} \hlkwc{na.rm}\hlstd{=T),} \hlstr{" ("}\hlstd{,} \hlkwd{round}\hlstd{(s}\hlopt{*}\hlnum{100}\hlopt{/}\hlstd{as),}
+                            \hlstr{"%)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),} \hlstr{''}\hlstd{))}
+    \hlstd{\}}
+    \hlkwa{next}
+  \hlstd{\}}
+  \hlstd{anovaData} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{rbind}\hlstd{(}\hlkwd{cbind}\hlstd{(normData[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"ns"}\hlstd{,} \hlkwd{length}\hlstd{(normData[,cat]))),}
+                     \hlkwd{cbind}\hlstd{(mciData[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"ms"}\hlstd{,} \hlkwd{length}\hlstd{(mciData[,cat]))),}
+                     \hlkwd{cbind}\hlstd{(abData[,cat],}\hlkwd{rep}\hlstd{(}\hlstr{"as"}\hlstd{,} \hlkwd{length}\hlstd{(abData[,cat])))))}
+  \hlstd{anovaData[,}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlkwd{as.numeric}\hlstd{(}\hlkwd{as.character}\hlstd{(anovaData[,}\hlnum{1}\hlstd{]))}
+  \hlstd{pp} \hlkwb{<-} \hlkwd{kruskal.test}\hlstd{(anovaData[,}\hlnum{1}\hlstd{]} \hlopt{~} \hlstd{anovaData[,}\hlnum{2}\hlstd{])}\hlopt{$}\hlstd{p.value}
+  \hlstd{comparison.dx} \hlkwb{<-} \hlkwd{rbind}\hlstd{(}\hlkwd{c}\hlstd{(}\hlkwd{label}\hlstd{(cvrdata[,cat]),}
+                \hlkwd{paste}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(normData[,cat],} \hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),}\hlstr{" ("}\hlstd{,}
+                      \hlkwd{round}\hlstd{(}\hlkwd{sd}\hlstd{(normData[,cat],}\hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),} \hlstr{")"}\hlstd{,}\hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                \hlkwd{paste}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(mciData[,cat],} \hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),}\hlstr{" ("}\hlstd{,}
+                      \hlkwd{round}\hlstd{(}\hlkwd{sd}\hlstd{(mciData[,cat],}\hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),} \hlstr{")"}\hlstd{,}\hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                \hlkwd{paste}\hlstd{(}\hlkwd{round}\hlstd{(}\hlkwd{mean}\hlstd{(abData[,cat],} \hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),}\hlstr{" ("}\hlstd{,}
+                      \hlkwd{round}\hlstd{(}\hlkwd{sd}\hlstd{(abData[,cat],}\hlkwc{na.rm}\hlstd{=T),}\hlnum{1}\hlstd{),} \hlstr{")"}\hlstd{,}\hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{),}
+                \hlkwd{round}\hlstd{(pp,} \hlnum{4}\hlstd{)), comparison.dx)}
+\hlstd{\}}
+\hlstd{comparison.dx} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(comparison.dx)}
+\hlkwd{colnames}\hlstd{(comparison.dx)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Variable"}\hlstd{,}
+                             \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}parbox\{.5in\}\{Normal N="}\hlstd{,} \hlkwd{nrow}\hlstd{(normData),} \hlstr{"\}"}\hlstd{),}
+                             \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}parbox\{.41in\}\{MCI    N="}\hlstd{,} \hlkwd{nrow}\hlstd{(mciData),} \hlstr{"\}"}\hlstd{),}
+                             \hlkwd{paste0}\hlstd{(}\hlstr{"\textbackslash{}\textbackslash{}parbox\{.61in\}\{Ambiguous At-Risk      N="}\hlstd{,} \hlkwd{nrow}\hlstd{(abData),} \hlstr{"\}"}\hlstd{),}
+                             \hlstr{"P-value"}\hlstd{)}
+
+\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable} \hlkwb{<-} \hlkwd{as.character}\hlstd{(comparison.dx}\hlopt{$}\hlstd{Variable)}
+\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"pre.wake.mean"}\hlstd{, comparison.dx}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{1}\hlstd{]}
+\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"pre.wake.1"}\hlstd{, comparison.dx}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{2}\hlstd{]}
+\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"Diff"}\hlstd{, comparison.dx}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{3}\hlstd{]}
+
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(comparison.dx,} \hlkwc{caption} \hlstd{=}
+               \hlkwd{paste0}\hlstd{(}\hlstr{"Comparison of Demographics by Consensus Diagnosis (N = "}\hlstd{,}
+                      \hlkwd{nrow}\hlstd{(cvrdata),} \hlstr{")"}\hlstd{)),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{include.rownames} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+      \hlkwc{sanitize.colnames.function} \hlstd{= force,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{all.predictors} \hlkwb{<-} \hlstd{cvrdata[,}\hlkwd{c}\hlstd{(predictors, model.cov)]}
+\hlstd{all.outcomes} \hlkwb{<-} \hlstd{cvrdata[, outcomes.reac]}
+
+\hlstd{outlong} \hlkwb{<-} \hlkwd{c}\hlstd{()}
+\hlkwa{for} \hlstd{(out} \hlkwa{in} \hlkwd{names}\hlstd{(all.outcomes))\{}
+  \hlstd{lab} \hlkwb{<-} \hlkwd{rep}\hlstd{(out,} \hlkwd{length}\hlstd{(all.outcomes[,out]))}
+  \hlstd{temp} \hlkwb{<-} \hlkwd{cbind}\hlstd{(all.outcomes[, out], lab, all.predictors)}
+  \hlstd{outlong} \hlkwb{<-} \hlkwd{rbind}\hlstd{(outlong, temp)}
+\hlstd{\}}
+
+\hlkwd{names}\hlstd{(outlong)[}\hlnum{1}\hlstd{]} \hlkwb{<-} \hlstr{"outcome"}
+\hlkwd{levels}\hlstd{(outlong}\hlopt{$}\hlstd{lab)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Left Hemisphere"}\hlstd{,} \hlstr{"Right Hemisphere"}\hlstd{,} \hlstr{"Left Frontal Lobe"}\hlstd{,}
+                         \hlstr{"Right Frontal Lobe"}\hlstd{,} \hlstr{"Full Frontal Lobe"}\hlstd{,} \hlstr{"Left Occipital Lobe"}\hlstd{,}
+                         \hlstr{"Right Occipital Lobe"}\hlstd{,} \hlstr{"Full Occipital Lobe"}\hlstd{,} \hlstr{"Left Temporal Lobe"}\hlstd{,}
+                         \hlstr{"Right Temporal Lobe"}\hlstd{,} \hlstr{"Full Temporal Lobe"}\hlstd{,} \hlstr{"Left Parietal Lobe"}\hlstd{,}
+                         \hlstr{"Right Parietal Lobe"}\hlstd{,} \hlstr{"Full Parietal Lobe"}\hlstd{)}
+
+\hlcom{#######################################}
+\hlcom{#  Outcome Boxplots                   #}
+\hlcom{#######################################}
+
+\hlcom{#Left hemisphere, frontal lobe, occipital lobe}
+\hlstd{box1} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(outlong[}\hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{174}\hlstd{,}\hlnum{349}\hlopt{:}\hlnum{1392}\hlstd{),],} \hlkwd{aes}\hlstd{(}\hlkwd{factor}\hlstd{(lab), outcome))} \hlopt{+}
+  \hlkwd{geom_boxplot}\hlstd{(}\hlkwc{outlier.colour} \hlstd{=} \hlstr{"purple"}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position}\hlstd{=}\hlstr{"none"}\hlstd{,} \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{11}\hlstd{,} \hlkwc{angle} \hlstd{=} \hlnum{80}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{1}\hlstd{),}
+        \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{""}\hlstd{)}
+
+\hlcom{#Right hemisphere, temporal lobe, parietal lobe}
+\hlstd{box2} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(outlong[}\hlkwd{c}\hlstd{(}\hlnum{175}\hlopt{:}\hlnum{348}\hlstd{,}\hlnum{1393}\hlopt{:}\hlnum{2436}\hlstd{),],} \hlkwd{aes}\hlstd{(}\hlkwd{factor}\hlstd{(lab), outcome))} \hlopt{+}
+  \hlkwd{geom_boxplot}\hlstd{(}\hlkwc{outlier.colour} \hlstd{=} \hlstr{"purple"}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position}\hlstd{=}\hlstr{"none"}\hlstd{,} \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{11}\hlstd{,} \hlkwc{angle} \hlstd{=} \hlnum{70}\hlstd{,} \hlkwc{hjust} \hlstd{=} \hlnum{1}\hlstd{),}
+        \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Area Scanned"}\hlstd{)}
+
+\hlkwd{grid.arrange}\hlstd{(box1, box2,} \hlkwc{ncol} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Outcome Histograms                 #}
+\hlcom{#######################################}
+
+\hlkwd{ggplot}\hlstd{(outlong,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=outcome,} \hlkwc{fill} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.3}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{1}\hlstd{)} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme_bw}\hlstd{()} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+          \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{10}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{10}\hlstd{))} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Count"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Predictor Histograms               #}
+\hlcom{#######################################}
+
+\hlstd{hist1} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(cvrdata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=systolic.prewaking.surge,} \hlkwc{fill} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.3}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{5}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()} \hlopt{+}
+  \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Prewaking Surge"}\hlstd{)} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"Count"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)}
+
+\hlstd{hist2} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(cvrdata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=systolic.rising.surge,} \hlkwc{fill} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.3}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{5}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()} \hlopt{+}
+  \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Rising Surge"}\hlstd{)} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"Count"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)}
+
+\hlstd{hist3} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(cvrdata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=nocturnal.systolic.diff.sleep.self.reported,} \hlkwc{fill} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.3}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{5}\hlstd{)} \hlopt{+} \hlkwd{theme_bw}\hlstd{()} \hlopt{+}
+  \hlkwd{xlab}\hlstd{(}\hlstr{"Nocturnal Difference in Systolic BP"}\hlstd{)} \hlopt{+} \hlkwd{ylab}\hlstd{(}\hlstr{"Count"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)}
+
+\hlkwd{grid.arrange}\hlstd{(hist1, hist2, hist3,} \hlkwc{ncol} \hlstd{=} \hlnum{1}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Unadjusted Association             #}
+\hlcom{#######################################}
+
+\hlkwd{ggplot}\hlstd{(outlong,} \hlkwd{aes}\hlstd{(systolic.prewaking.surge, outcome,} \hlkwc{group}\hlstd{=}\hlnum{1}\hlstd{))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position}\hlstd{=}\hlstr{"none"}\hlstd{,} \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Prewaking Surge Blood Pressure"}\hlstd{)}
+\hlkwd{ggplot}\hlstd{(outlong,} \hlkwd{aes}\hlstd{(systolic.rising.surge, outcome))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position}\hlstd{=}\hlstr{"none"}\hlstd{,} \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Rising Surge Blood Pressure"}\hlstd{)}
+\hlkwd{ggplot}\hlstd{(outlong,} \hlkwd{aes}\hlstd{(nocturnal.systolic.diff.sleep.self.reported, outcome,} \hlkwc{group}\hlstd{=}\hlnum{1}\hlstd{))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{()} \hlopt{+} \hlkwd{geom_smooth}\hlstd{()} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position}\hlstd{=}\hlstr{"none"}\hlstd{,} \hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Difference in Awake/Sleeping Systolic Blood Pressure"}\hlstd{)}
+
+\hlcom{#######################################}
+\hlcom{#  Missing Data                       #}
+\hlcom{#######################################}
+
+\hlstd{missing} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{c}\hlstd{(),} \hlkwd{c}\hlstd{())}
+\hlcom{#comparison[,c("Variable", "Analyzed Data")]}
+\hlkwa{for} \hlstd{(cat} \hlkwa{in} \hlstd{cats)\{}
+    \hlstd{missing} \hlkwb{<-} \hlkwd{rbind}\hlstd{(missing,} \hlkwd{c}\hlstd{(}\hlkwd{label}\hlstd{(cvrdata[,cat]),}
+                                \hlkwd{paste}\hlstd{(s} \hlkwb{<-} \hlkwd{sum}\hlstd{(}\hlkwd{is.na}\hlstd{(cvrdata[,cat])),}
+                                      \hlstr{" ("}\hlstd{,} \hlkwd{round}\hlstd{(s}\hlopt{*}\hlnum{100}\hlopt{/}\hlstd{is,} \hlnum{2}\hlstd{),} \hlstr{"%)"}\hlstd{,} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)))}
+ \hlstd{\}}
+
+\hlstd{missing} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(missing)}
+\hlkwd{colnames}\hlstd{(missing)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Variable"}\hlstd{,} \hlstr{"Missingness"}\hlstd{)}
+\hlstd{missing}\hlopt{$}\hlstd{Variable} \hlkwb{<-} \hlkwd{as.character}\hlstd{(missing}\hlopt{$}\hlstd{Variable)}
+
+\hlstd{missing}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"pre.wake.mean"}\hlstd{, missing}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{1}\hlstd{]}
+\hlstd{missing}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"pre.wake.1"}\hlstd{, missing}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{2}\hlstd{]}
+\hlstd{missing}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"Diff"}\hlstd{, missing}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{3}\hlstd{]}
+
+\hlcom{#Only print variables that actually have values missing}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(missing[missing}\hlopt{$}\hlstd{Missingness} \hlopt{!=} \hlstr{"0 (0%)"}\hlstd{,],}
+             \hlkwc{caption}\hlstd{=} \hlstr{"Variables with Missing Observations"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{include.rownames} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Multiple-Imputation                #}
+\hlcom{#######################################}
+
+\hlcom{#Need to re-factor since we removed patients with dementia}
+\hlstd{cvrdata}\hlopt{$}\hlstd{enrolled.dx.factor} \hlkwb{<-}\hlkwd{factor}\hlstd{(cvrdata}\hlopt{$}\hlstd{enrolled.dx.factor)}
+
+\hlcom{#Use ICV and just left and right hemisphere}
+\hlcom{#  since we don't have the degrees of freedom to control for ROI all volumes}
+\hlstd{impute.data} \hlkwb{<-} \hlkwd{aregImpute}\hlstd{(}\hlopt{~} \hlstd{systolic.rising.surge} \hlopt{+} \hlstd{systolic.prewaking.surge} \hlopt{+}
+                            \hlstd{nocturnal.systolic.diff.sleep.self.reported} \hlopt{+}
+                            \hlstd{enrolled.dx.factor} \hlopt{+} \hlstd{sex.factor} \hlopt{+} \hlstd{raceethnicity.factor} \hlopt{+}
+                            \hlstd{apoe4pos.factor} \hlopt{+} \hlstd{education} \hlopt{+} \hlstd{age} \hlopt{+}
+                            \hlstd{htnrx.factor} \hlopt{+} \hlstd{icv} \hlopt{+}
+                            \hlstd{asl.reac.left.hemisphere.hct} \hlopt{+}
+                            \hlstd{asl.reac.right.hemisphere.hct,}
+                          \hlkwc{data} \hlstd{= cvrdata)}
+\hlcom{#######################################}
+\hlcom{#  Model Fitting                      #}
+\hlcom{#######################################}
+\hlstd{modelFit} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{,} \hlkwc{knot}\hlstd{)\{}
+
+  \hlstd{fit} \hlkwb{<-} \hlkwd{fit.mult.impute}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~ rcs("}\hlstd{, predictor,} \hlstr{", c("}\hlstd{,}
+                                           \hlstd{knot[}\hlnum{1}\hlstd{],}\hlstr{","}\hlstd{, knot[}\hlnum{2}\hlstd{],}\hlstr{","}\hlstd{,}
+                                           \hlstd{knot[}\hlnum{3}\hlstd{],}\hlstr{")) +"}\hlstd{,}
+                                           \hlstd{ma,} \hlstr{"+"}\hlstd{,}
+\hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
+\hlstr{"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor"}\hlstd{)),}
+                         \hlkwc{fitter} \hlstd{= ols,} \hlkwc{xtrans} \hlstd{= impute.data,} \hlkwc{data} \hlstd{= cvrdata)}
+
+  \hlkwd{return}\hlstd{(fit)}
+\hlstd{\}}
+
+\hlcom{#Knot locations for each predictor}
+\hlstd{prewaking.knot} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}
+                    \hlkwd{quantile}\hlstd{(}\hlkwd{subset}\hlstd{(cvrdata, systolic.prewaking.surge} \hlopt{>} \hlnum{0}\hlstd{)}\hlopt{$}\hlstd{systolic.prewaking.surge,}
+                             \hlkwc{probs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.25}\hlstd{,} \hlnum{.75}\hlstd{),} \hlkwc{na.rm} \hlstd{= T))}
+
+\hlstd{rising.knot} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}
+                 \hlkwd{quantile}\hlstd{(}\hlkwd{subset}\hlstd{(cvrdata, systolic.rising.surge} \hlopt{>} \hlnum{0}\hlstd{)}\hlopt{$}\hlstd{systolic.rising.surge,}
+                          \hlkwc{probs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.25}\hlstd{,} \hlnum{.75}\hlstd{),} \hlkwc{na.rm} \hlstd{= T))}
+
+\hlstd{noc.knot} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}
+              \hlkwd{quantile}\hlstd{(}\hlkwd{subset}\hlstd{(cvrdata,}
+       \hlstd{nocturnal.systolic.diff.sleep.self.reported} \hlopt{>} \hlnum{0}\hlstd{)}\hlopt{$}\hlstd{nocturnal.systolic.diff.sleep.self.reported,}
+                       \hlkwc{probs} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{.25}\hlstd{,} \hlnum{.75}\hlstd{),} \hlkwc{na.rm} \hlstd{= T))}
+
+\hlcom{#Print to see knot values}
+\hlstd{knots} \hlkwb{<-} \hlkwd{rbind}\hlstd{(prewaking.knot, rising.knot, noc.knot);} \hlkwd{colnames}\hlstd{(knots)} \hlkwb{=} \hlkwa{NULL}
+
+\hlcom{#Define datadist for model fitting}
+\hlstd{dd} \hlkwb{<-} \hlkwd{datadist}\hlstd{(cvrdata)}
+\hlkwd{options}\hlstd{(}\hlkwc{datadist} \hlstd{=} \hlstr{"dd"}\hlstd{)}
+
+\hlcom{#Systolic prewaking surge}
+\hlstd{mod.sys.prewaking.surge} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.prewaking.surge[[i]]} \hlkwb{<-} \hlkwd{modelFit}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{1}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i],}
+                                           \hlkwc{knot} \hlstd{= prewaking.knot)}
+\hlstd{\}}
+
+\hlcom{#Systolic rising surge}
+\hlstd{mod.sys.rising.surge} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.rising.surge[[i]]} \hlkwb{<-} \hlkwd{modelFit}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{2}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i],}
+                                        \hlkwc{knot} \hlstd{= rising.knot)}
+\hlstd{\}}
+
+\hlcom{#Nocturnal Difference}
+\hlstd{mod.noc.sys.diff} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.noc.sys.diff[[i]]} \hlkwb{<-} \hlkwd{modelFit}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{3}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i],}
+                                    \hlkwc{knot} \hlstd{= noc.knot)}
+\hlstd{\}}
+\hlstd{outcomeNames} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Left Hemisphere"}\hlstd{,} \hlstr{"Right Hemisphere"}\hlstd{,} \hlstr{"Left Frontal Lobe"}\hlstd{,}
+                         \hlstr{"Right Frontal Lobe"}\hlstd{,} \hlstr{"Full Frontal Lobe"}\hlstd{,} \hlstr{"Left Occipital Lobe"}\hlstd{,}
+                         \hlstr{"Right Occipital Lobe"}\hlstd{,} \hlstr{"Full Occipital Lobe"}\hlstd{,} \hlstr{"Left Temporal Lobe"}\hlstd{,}
+                         \hlstr{"Right Temporal Lobe"}\hlstd{,} \hlstr{"Full Temporal Lobe"}\hlstd{,} \hlstr{"Left Parietal Lobe"}\hlstd{,}
+                         \hlstr{"Right Parietal Lobe"}\hlstd{,} \hlstr{"Full Parietal Lobe"}\hlstd{)}
+
+\hlcom{#Extract coefficients associated with ABP measures}
+\hlstd{sys.prewaking.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]))}
+\hlstd{sys.prewaking.coef.vec} \hlkwb{<-} \hlkwd{apply}\hlstd{(sys.prewaking.coef,} \hlkwc{MARGIN} \hlstd{=} \hlnum{1}\hlstd{,}
+                                \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste0}\hlstd{(}\hlstr{"("}\hlstd{,} \hlkwd{round}\hlstd{(x[}\hlnum{1}\hlstd{],} \hlnum{3}\hlstd{),} \hlstr{","}\hlstd{,}
+                                                   \hlkwd{round}\hlstd{(x[}\hlnum{2}\hlstd{],} \hlnum{3}\hlstd{),}\hlstr{")"}\hlstd{))}
+
+\hlstd{sys.rising.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]))}
+\hlstd{sys.rising.coef.vec} \hlkwb{<-} \hlkwd{apply}\hlstd{(sys.rising.coef,} \hlkwc{MARGIN} \hlstd{=} \hlnum{1}\hlstd{,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste0}\hlstd{(}\hlstr{"("}\hlstd{,} \hlkwd{round}\hlstd{(x[}\hlnum{1}\hlstd{],} \hlnum{3}\hlstd{),} \hlstr{","}\hlstd{,}
+                                                \hlkwd{round}\hlstd{(x[}\hlnum{2}\hlstd{],} \hlnum{3}\hlstd{),}\hlstr{")"}\hlstd{))}
+
+\hlstd{noc.diff.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]))}
+\hlstd{noc.diff.coef.vec} \hlkwb{<-} \hlkwd{apply}\hlstd{(noc.diff.coef,} \hlkwc{MARGIN} \hlstd{=} \hlnum{1}\hlstd{,}
+                           \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{paste0}\hlstd{(}\hlstr{"("}\hlstd{,} \hlkwd{round}\hlstd{(x[}\hlnum{1}\hlstd{],} \hlnum{3}\hlstd{),} \hlstr{",  "}\hlstd{,}
+                                              \hlkwd{round}\hlstd{(x[}\hlnum{2}\hlstd{],} \hlnum{3}\hlstd{),}\hlstr{")"}\hlstd{))}
+
+
+\hlstd{coef.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"Systolic Prewaking Surge"} \hlstd{= sys.prewaking.coef.vec,}
+                         \hlstr{"Systolic Rising Surge"} \hlstd{= sys.rising.coef.vec,}
+                         \hlstr{"Nocturnal SBP Difference"} \hlstd{= noc.diff.coef.vec,}
+                          \hlkwc{row.names} \hlstd{= outcomeNames,} \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(coef.table,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{3}\hlstd{)),}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Coefficients for ABP with CVR: ABP Modeled as Restricted Cubic Spline with 3 Knots"}\hlstd{)),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Tests of Association               #}
+\hlcom{#######################################}
+
+\hlcom{#Extract p-values for test of association}
+
+\hlstd{sys.prewaking.pval} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.prewaking.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+\hlstd{sys.rising.pval} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.rising.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+\hlstd{noc.sys.diff.pval} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"nocturnal.systolic.diff.sleep.self.reported"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+
+\hlstd{assoc.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"SBP Prewaking Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.prewaking.pval),}
+                          \hlstr{"SBP Rising Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.rising.pval),}
+                          \hlstr{"Nocturnal SBP Difference"} \hlstd{=} \hlkwd{unlist}\hlstd{(noc.sys.diff.pval),}
+                          \hlkwc{row.names} \hlstd{= outcomeNames,}
+                          \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(assoc.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlstr{"P-values for Test of Association Between ABP and CVR"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{#Default plotting values for partial effect plots}
+\hlstd{subset_cvrdata} \hlkwb{<-} \hlkwd{subset}\hlstd{(cvrdata,} \hlkwc{select} \hlstd{=} \hlkwd{c}\hlstd{(age, education, sex.factor,}
+                                             \hlstd{enrolled.dx.factor, raceethnicity.factor,}
+                                             \hlstd{apoe4pos.factor, htnrx.factor))}
+
+\hlstd{adj_tab} \hlkwb{<-} \hlkwd{xtable}\hlstd{(}\hlkwd{datadist}\hlstd{(subset_cvrdata)}\hlopt{$}\hlstd{limits[}\hlstr{"Adjust to"}\hlstd{,],}
+                           \hlkwc{caption} \hlstd{=} \hlstr{"Default Partial Effect Plot Covariate Values"}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Partial Effect Plots               #}
+\hlcom{#######################################}
+
+\hlcom{#Systolic prewaking surge}
+\hlstd{sys.prewaking.PEP} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(x, systolic.prewaking.surge),}
+                                                \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                                                \hlkwc{anova} \hlstd{=} \hlkwd{anova}\hlstd{(x),} \hlkwc{size.anova} \hlstd{=} \hlnum{3}\hlstd{,}
+                                                \hlkwc{pval} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{xlab} \hlstd{=} \hlstr{"SBP Prewaking Surge"}\hlstd{,}
+                                                \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{])))}
+
+
+
+\hlkwd{do.call}\hlstd{(grid.arrange, sys.prewaking.PEP)}
+\hlcom{#Systolic rising surge}
+\hlstd{sys.rising.PEP} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(x, systolic.rising.surge),}
+                                                \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                                                \hlkwc{anova} \hlstd{=} \hlkwd{anova}\hlstd{(x),} \hlkwc{size.anova} \hlstd{=} \hlnum{3}\hlstd{,}
+                                                \hlkwc{pval} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{xlab} \hlstd{=} \hlstr{"SBP Rising Surge"}\hlstd{,}
+                                                \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{])))}
+\hlkwd{do.call}\hlstd{(grid.arrange, sys.rising.PEP)}
+\hlcom{#Nocturnal difference}
+\hlstd{noc.sys.diff.PEP} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(x, nocturnal.systolic.diff.sleep.self.reported),}
+                                                \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                                                \hlkwc{anova} \hlstd{=} \hlkwd{anova}\hlstd{(x),} \hlkwc{size.anova} \hlstd{=} \hlnum{3}\hlstd{,}
+                                                \hlkwc{pval} \hlstd{=} \hlnum{TRUE}\hlstd{,}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{1}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{xlab} \hlstd{=} \hlstr{"Nocturnal Difference in SBP"}\hlstd{,}
+                                                \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{])))}
+\hlkwd{do.call}\hlstd{(grid.arrange, noc.sys.diff.PEP)}
+\hlcom{#######################################}
+\hlcom{#  Partial Effect Plots by Diagnosis  #}
+\hlcom{#######################################}
+
+\hlcom{#Function obtained from:}
+\hlcom{# http://stackoverflow.com/questions/11883844/inserting-a-table-under-the-legend-in-a-ggplot2-histogram}
+
+\hlcom{#create common legend for stratified plots }
+\hlstd{g_legend}\hlkwb{<-}\hlkwa{function}\hlstd{(}\hlkwc{a.gplot}\hlstd{)\{}
+  \hlstd{tmp} \hlkwb{<-} \hlkwd{ggplot_gtable}\hlstd{(}\hlkwd{ggplot_build}\hlstd{(a.gplot))}
+  \hlstd{leg} \hlkwb{<-} \hlkwd{which}\hlstd{(}\hlkwd{sapply}\hlstd{(tmp}\hlopt{$}\hlstd{grobs,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{name)} \hlopt{==} \hlstr{"guide-box"}\hlstd{)}
+  \hlstd{legend} \hlkwb{<-} \hlstd{tmp}\hlopt{$}\hlstd{grobs[[leg]]}
+  \hlkwd{return}\hlstd{(legend)\}}
+
+\hlstd{legend.dx} \hlkwb{<-} \hlkwd{g_legend}\hlstd{(}\hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(mod.noc.sys.diff[[}\hlnum{1}\hlstd{]],}
+                                     \hlstd{nocturnal.systolic.diff.sleep.self.reported,}
+                 \hlkwc{enrolled.dx} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Normal"}\hlstd{,} \hlstr{"MCI"}\hlstd{,} \hlstr{"Ambiguous At Risk"}\hlstd{))))}
+\hlcom{#Systolic prewaking surge}
+\hlstd{sys.prewaking.PEP.dx} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(x, systolic.prewaking.surge,}
+                                                \hlkwc{enrolled.dx.factor} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Normal"}\hlstd{,}
+                                                                       \hlstr{"MCI"}\hlstd{,}
+                                                                       \hlstr{"Ambiguous At Risk"}\hlstd{)),}
+                                                \hlkwc{colfill} \hlstd{=} \hlstr{"grey60"}\hlstd{,}
+                                                \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{xlab} \hlstd{=} \hlstr{"SBP prewaking"}\hlstd{,}
+                                                \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{]))} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{))}
+
+\hlstd{sys.prewaking.PEP.dx[[}\hlnum{15}\hlstd{]]} \hlkwb{<-} \hlstd{legend.dx}
+\hlkwd{do.call}\hlstd{(grid.arrange, sys.prewaking.PEP.dx)}
+\hlcom{#Systolic rising surge}
+\hlstd{sys.rising.PEP.dx} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(x, systolic.rising.surge,}
+                                                \hlkwc{enrolled.dx.factor} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Normal"}\hlstd{,}
+                                                                        \hlstr{"MCI"}\hlstd{,}
+                                                                        \hlstr{"Ambiguous At Risk"}\hlstd{)),}
+                                                \hlkwc{colfill} \hlstd{=} \hlstr{"grey60"}\hlstd{,}
+                                                \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{xlab} \hlstd{=} \hlstr{"SBP rising"}\hlstd{,}
+                                                \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{]))} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{))}
+
+\hlstd{sys.rising.PEP.dx[[}\hlnum{15}\hlstd{]]} \hlkwb{<-} \hlstd{legend.dx}
+\hlkwd{do.call}\hlstd{(grid.arrange, sys.rising.PEP.dx)}
+\hlcom{#Nocturnal difference}
+\hlstd{noc.sys.diff.PEP.dx} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{ggplot}\hlstd{(}\hlkwd{Predict}\hlstd{(x, nocturnal.systolic.diff.sleep.self.reported,}
+                                                \hlkwc{enrolled.dx.factor} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"Normal"}\hlstd{,}
+                                                                        \hlstr{"MCI"}\hlstd{,}
+                                                                        \hlstr{"Ambiguous At Risk"}\hlstd{)),}
+                                                \hlkwc{colfill} \hlstd{=} \hlstr{"grey60"}\hlstd{,}
+                                                \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{xlab} \hlstd{=} \hlstr{"Nocturnal Difference"}\hlstd{,}
+                                                \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{]))} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{))}
+
+
+\hlstd{noc.sys.diff.PEP.dx[[}\hlnum{15}\hlstd{]]} \hlkwb{<-} \hlstd{legend.dx}
+\hlkwd{do.call}\hlstd{(grid.arrange, noc.sys.diff.PEP.dx)}
+\hlcom{#######################################}
+\hlcom{#  Tests of Linearity                 #}
+\hlcom{#######################################}
+
+\hlcom{#Select p-values for test of linearity}
+\hlstd{sys.prewaking.nonlin} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{" Nonlinear"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+\hlstd{sys.rising.nonlin} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{" Nonlinear"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+\hlstd{noc.sys.diff.nonlin} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{" Nonlinear"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+
+
+\hlstd{linear.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"SBP Prewaking Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.prewaking.nonlin),}
+                          \hlstr{"SBP Rising Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.rising.nonlin),}
+                          \hlstr{"Nocturnal SBP Difference"} \hlstd{=} \hlkwd{unlist}\hlstd{(noc.sys.diff.nonlin),}
+                          \hlkwc{row.names} \hlstd{= outcomeNames,}
+                          \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(linear.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlstr{"P-values for test of linearity for ABP predictors"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
+\hlcom{#Select R^2 values for each model}
+\hlstd{sys.prewaking.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
+\hlstd{sys.rising.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
+\hlstd{noc.sys.diff.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
+
+
+\hlstd{r2.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"SBP Prewaking Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.prewaking.r2),}
+                          \hlstr{"SBP Rising Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.rising.r2),}
+                          \hlstr{"Nocturnal SBP Difference"} \hlstd{=} \hlkwd{unlist}\hlstd{(noc.sys.diff.r2),}
+                          \hlkwc{row.names} \hlstd{= outcomeNames,}
+                          \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(r2.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlstr{"R-squared for ABP predictor models"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
+\hlstd{corMat} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{cor}\hlstd{(cvrdata[,outcomes.reac],} \hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata[,predictors])),} \hlkwc{row.names} \hlstd{= outcomeNames)}
+\hlkwd{names}\hlstd{(corMat)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SBP Prewaking Surge"}\hlstd{,} \hlstr{"SBP Rising Surge"}\hlstd{,} \hlstr{"Nocturnal Decline in SBP"}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(corMat,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{caption} \hlstd{=} \hlstr{"Correlation Matrix for ABP Predictors and CVR Outcomes"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Model Fitting: Linear Effect       #}
+\hlcom{#######################################}
+
+\hlstd{modelFitLinear} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{)\{}
+
+  \hlstd{fit} \hlkwb{<-} \hlkwd{fit.mult.impute}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~"}\hlstd{, predictor,} \hlstr{"+"}\hlstd{, ma,} \hlstr{"+"}\hlstd{,}
+\hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
+\hlstr{"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor"}\hlstd{)),}
+                         \hlkwc{fitter} \hlstd{= ols,} \hlkwc{xtrans} \hlstd{= impute.data,} \hlkwc{data} \hlstd{= cvrdata)}
+
+  \hlkwd{return}\hlstd{(fit)}
+\hlstd{\}}
+
+
+\hlcom{#Systolic prewaking surge}
+\hlstd{mod.sys.prewaking.surge.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.prewaking.surge.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{1}\hlstd{],}
+                                                   \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlcom{#Systolic rising surge}
+\hlstd{mod.sys.rising.surge.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.rising.surge.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{2}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlcom{#Nocturnal Difference}
+\hlstd{mod.noc.sys.diff.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.noc.sys.diff.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{3}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlstd{sys.prewaking.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
+                                                      \hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.prewaking.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{sys.rising.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
+                                                      \hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.rising.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{noc.diff.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
+                                                      \hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"nocturnal.systolic.diff.sleep.self.reported"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+\hlstd{prewaking.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.prewaking.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{rising.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.rising.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{noc.diff.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(noc.diff.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{addtorow} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{1}\hlstd{]]} \hlkwb{<-} \hlnum{0}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{2}\hlstd{]]} \hlkwb{<-} \hlnum{0}
+\hlstd{addtorow}\hlopt{$}\hlstd{command} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'& \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Prewaking Surge\} & 
+                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Rising Surge\} & 
+                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{Nocturnal Decline in SBP\} \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{,}
+                      \hlkwd{c}\hlstd{(}\hlstr{'& Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{))}
+
+\hlstd{full.table} \hlkwb{<-} \hlkwd{cbind}\hlstd{(prewaking.coef.table, rising.coef.table, noc.diff.coef.table)}
+\hlkwd{names}\hlstd{(full.table)} \hlkwb{<-} \hlkwa{NULL}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(full.table,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{9}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{4}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Coefficients for Linear ABP with CVR"}\hlstd{)),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{add.to.row} \hlstd{= addtorow,}
+      \hlkwc{sanitize.text.function} \hlstd{= force,} \hlkwc{table.placement} \hlstd{=} \hlstr{"ht"}\hlstd{)}
+\hlstd{cvrdata}\hlopt{$}\hlstd{sys.rising.impute} \hlkwb{<-} \hlstd{cvrdata}\hlopt{$}\hlstd{systolic.rising.surge}
+\hlstd{cvrdata}\hlopt{$}\hlstd{sys.prewaking.impute} \hlkwb{<-} \hlstd{cvrdata}\hlopt{$}\hlstd{systolic.prewaking.surge}
+\hlstd{cvrdata}\hlopt{$}\hlstd{noc.diff.impute} \hlkwb{<-} \hlstd{cvrdata}\hlopt{$}\hlstd{nocturnal.systolic.diff.sleep.self.reported}
+
+\hlstd{cvrdata}\hlopt{$}\hlstd{noc.diff.impute[}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{noc.diff.impute)]} \hlkwb{<-}
+  \hlkwd{rowMeans}\hlstd{(impute.data}\hlopt{$}\hlstd{imputed}\hlopt{$}\hlstd{nocturnal.systolic.diff.sleep.self.reported[,])}
+\hlstd{cvrdata}\hlopt{$}\hlstd{sys.rising.impute[}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{sys.rising.impute)]} \hlkwb{<-}
+  \hlkwd{rowMeans}\hlstd{(impute.data}\hlopt{$}\hlstd{imputed}\hlopt{$}\hlstd{systolic.rising.surge[,])}
+\hlstd{cvrdata}\hlopt{$}\hlstd{sys.prewaking.impute[}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{sys.prewaking.impute)]} \hlkwb{<-}
+  \hlkwd{rowMeans}\hlstd{(impute.data}\hlopt{$}\hlstd{imputed}\hlopt{$}\hlstd{systolic.prewaking.surge[,])}
+
+\hlstd{sens1} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(cvrdata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=sys.rising.impute,} \hlkwc{fill} \hlstd{=} \hlkwd{is.na}\hlstd{(systolic.rising.surge)))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.4}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{5}\hlstd{)} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Count"}\hlstd{)} \hlopt{+} \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)} \hlopt{+}
+  \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Rising Surge"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Imputed"}\hlstd{)}
+
+\hlstd{sens2} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(cvrdata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=sys.prewaking.impute,} \hlkwc{fill} \hlstd{=} \hlkwd{is.na}\hlstd{(systolic.prewaking.surge)))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.4}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{5}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{)} \hlopt{+}
+  \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Prewaking Surge"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Imputed"}\hlstd{)}
+
+\hlstd{sens3} \hlkwb{<-} \hlkwd{ggplot}\hlstd{(cvrdata,} \hlkwd{aes}\hlstd{(}\hlkwc{x}\hlstd{=noc.diff.impute,} \hlkwc{fill} \hlstd{=} \hlkwd{is.na}\hlstd{(nocturnal.systolic.diff.sleep.self.reported)))} \hlopt{+}
+  \hlkwd{geom_histogram}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.4}\hlstd{,} \hlkwc{position}\hlstd{=}\hlstr{"identity"}\hlstd{,} \hlkwc{binwidth} \hlstd{=} \hlnum{5}\hlstd{)} \hlopt{+}
+  \hlkwd{xlab}\hlstd{(}\hlstr{"Nocturnal Difference in Surge"}\hlstd{)} \hlopt{+} \hlkwd{scale_fill_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Imputed"}\hlstd{)}
+
+\hlkwd{grid.arrange}\hlstd{(sens1, sens2, sens3,} \hlkwc{ncol} \hlstd{=} \hlnum{3}\hlstd{)}
+\hlcom{#########################################}
+\hlcom{#  Model Fitting: Complete Observations #}
+\hlcom{#  (ignoring missing data)              #}
+\hlcom{#########################################}
+
+\hlcom{#Results available if desired but suppressed since conclusions do not change}
+\hlcom{#  (results still not significant at 0.05 level)}
+
+\hlstd{modelFitComplete} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{,} \hlkwc{knot}\hlstd{)\{}
+
+  \hlstd{fit} \hlkwb{<-} \hlkwd{ols}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~ rcs("}\hlstd{, predictor,} \hlstr{", c("}\hlstd{,}
+                                           \hlstd{knot[}\hlnum{1}\hlstd{],}\hlstr{","}\hlstd{, knot[}\hlnum{2}\hlstd{],}\hlstr{","}\hlstd{,}
+                                           \hlstd{knot[}\hlnum{3}\hlstd{],}\hlstr{")) +"}\hlstd{,}
+                                           \hlstd{ma,} \hlstr{"+"}\hlstd{,}
+\hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
+\hlstr{"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor"}\hlstd{)),} \hlkwc{data} \hlstd{= cvrdata)}
+
+  \hlkwd{return}\hlstd{(fit)}
+\hlstd{\}}
+
+
+\hlcom{#Systolic prewaking surge}
+\hlstd{mod.sys.prewaking.surge.comp} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.prewaking.surge.comp[[i]]} \hlkwb{<-} \hlkwd{modelFitComplete}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{1}\hlstd{],}
+                                                   \hlkwc{ma} \hlstd{= ma.vars[i],}
+                                                   \hlkwc{knot} \hlstd{= prewaking.knot)}
+\hlstd{\}}
+
+\hlcom{#Systolic rising surge}
+\hlstd{mod.sys.rising.surge.comp} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.rising.surge.comp[[i]]} \hlkwb{<-} \hlkwd{modelFitComplete}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{2}\hlstd{],}
+                                                   \hlkwc{ma} \hlstd{= ma.vars[i],}
+                                                   \hlkwc{knot} \hlstd{= rising.knot)}
+\hlstd{\}}
+
+\hlcom{#Nocturnal Difference}
+\hlstd{mod.noc.sys.diff.comp} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.noc.sys.diff.comp[[i]]} \hlkwb{<-} \hlkwd{modelFitComplete}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{3}\hlstd{],}
+                                                   \hlkwc{ma} \hlstd{= ma.vars[i],}
+                                                   \hlkwc{knot} \hlstd{= noc.knot)}
+\hlstd{\}}
+
+\hlstd{sys.prewaking.comp} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge.comp,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.prewaking.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+
+
+\hlstd{sys.rising.comp} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.rising.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+
+
+\hlstd{noc.diff.comp} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"nocturnal.systolic.diff.sleep.self.reported"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+\hlcom{#Summary of analysis results if we had ignored missing values for each predictor}
+\hlstd{complete.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwd{unlist}\hlstd{(sys.prewaking.comp),}
+                             \hlkwd{unlist}\hlstd{(sys.rising.comp),}
+                             \hlkwd{unlist}\hlstd{(noc.diff.comp),}
+                          \hlkwc{row.names} \hlstd{= outcomeNames,} \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{names}\hlstd{(complete.table)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlkwd{paste0}\hlstd{(}\hlstr{"SBP Prewaking (N = "}\hlstd{,}
+                                    \hlkwd{nrow}\hlstd{(cvrdata[}\hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{systolic.prewaking.surge),]),}
+                                    \hlstr{")"}\hlstd{),}
+                           \hlkwd{paste0}\hlstd{(}\hlstr{"SBP Rising (N = "}\hlstd{,}
+                                 \hlkwd{nrow}\hlstd{(cvrdata[}\hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{systolic.rising.surge),]),}
+                                    \hlstr{")"}\hlstd{),}
+                           \hlkwd{paste0}\hlstd{(}\hlstr{"Nocturnal Diff. (N = "}\hlstd{,}
+                                 \hlkwd{nrow}\hlstd{(cvrdata[}\hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata}\hlopt{$}\hlstd{nocturnal.systolic.diff.sleep.self.reported),]),}
+                                    \hlstr{")"}\hlstd{))}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(complete.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlstr{"Complete Observation Associations for ABP and CVR"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Session Information                #}
+\hlcom{#######################################}
+
+    \hlkwd{cat}\hlstd{(version[}\hlstr{'version.string'}\hlstd{][[}\hlnum{1}\hlstd{]],} \hlstr{"\textbackslash{}n"}\hlstd{)}
+    \hlstd{pack} \hlkwb{<-} \hlkwd{installed.packages}\hlstd{()}
+    \hlstd{pack.out} \hlkwb{<-} \hlstd{pack[,} \hlkwd{c}\hlstd{(}\hlstr{'Package'}\hlstd{,} \hlstr{'Version'}\hlstd{,} \hlstr{'Priority'}\hlstd{,}
+        \hlstr{'Depends'}\hlstd{)]}
+    \hlstd{pack.in.session} \hlkwb{<-} \hlstd{(}\hlkwd{.packages}\hlstd{())}
+    \hlstd{pack.out2} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(pack.out[pack.out[,} \hlnum{1}\hlstd{]} \hlopt{%in%}
+        \hlstd{pack.in.session, ])[,} \hlopt{-}\hlnum{1}\hlstd{]}
+    \hlkwd{cat}\hlstd{(}\hlstr{"Packages:\textbackslash{}n"}\hlstd{)}
+    \hlstd{pack.out2[}\hlopt{!}\hlstd{pack.out2}\hlopt{$}\hlstd{Priority}\hlopt{%in%}\hlkwd{c}\hlstd{(}\hlstr{'base'}\hlstd{,}\hlstr{'recommended'}\hlstd{),}\hlopt{-}\hlnum{2}\hlstd{,}
+        \hlkwc{drop}\hlstd{=}\hlnum{FALSE}\hlstd{]}
+\end{alltt}
+\end{kframe}
+\end{knitrout}
+
+
+\end{document}
+
