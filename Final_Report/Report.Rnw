@@ -58,6 +58,7 @@ Brooklyn Stanley  \\ \href{mailto:b.stanley@vanderbilt.edu}{\url{b.stanley@vande
 
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
 \maketitle
 \clearpage
@@ -572,6 +573,7 @@ box2 <- ggplot(outlong[c(175:348,1393:2436),], aes(factor(lab), outcome)) +
 grid.arrange(box1, box2, ncol = 1)
 @
 
+<<<<<<< Updated upstream
 
 \begin{itemize}
   \item Most of the outliers are for larger values of CVR. 
@@ -580,6 +582,58 @@ grid.arrange(box1, box2, ncol = 1)
     \item E.g. The low outliers of the frontal lobe regions: which are all from the patient with \code{map.id} = 034.
   \end{itemize}
 \end{itemize}
+=======
+<<>>=
+ggplot(outlong, aes(systolic.rising.surge, outcome)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
+
+ggplot(outlong, aes(systolic.prewaking.surge, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
+
+
+ggplot(outlong, aes(noc.sys.diff, outcome, group=1)) +
+  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(legend.position="none", strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) +
+  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
+
+@
+As you can see from the previous sets of scatterplots, most of the outcomes have no trend over the predictors, with a slope around 0. The plots for nocturnal difference in systolic blood pressure has a slight downward slope on the left hand side. However, this is driven by only 3 points in that area so it is unclear if this is anything more than spurious. However, these are all univariate relationships; these trends may not hold in the adjusted analyses.
+
+<<>>=
+outlong.interaciton <- outlong[outlong$enrolled.dx.factor != "Ambiguous at Risk",]
+ggplot(outlong.interaction, aes(systolic.rising.surge, outcome, color = enrolled.dx.factor)) +
+  geom_point(alpha=0.4) + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
+  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
+ggplot(outlong.interaction, aes(systolic.prewaking.surge, outcome, color = enrolled.dx.factor)) +
+  geom_point(alpha=0.4) + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
+  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
+ggplot(outlong.interaction, aes(nocturnal.systolic.diff.sleep.self.reported, outcome, 
+                                color = enrolled.dx.factor)) +
+  geom_point(alpha=0.4) + geom_smooth() + facet_wrap(~lab, ncol=3) + 
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
+  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
+
+
+@
+
 
 \clearpage
 \subsection{Distribution of CVR Outcomes by Diagnosis}
