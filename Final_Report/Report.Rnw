@@ -377,6 +377,16 @@ cvrdata <- cvrdata[cvrdata$time.reading.indicator == 'Yes' &
 exclude <- totalData[!(totalData$map.id %in% cvrdata$map.id),
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
+
+label(crvdata$echo.lvh.factor) <- "LV Hypertrophy"
+label(crvdata$afib.factor) <- "A-fib"
+label(crvdata$cvd.factor) <- "CVD"
+label(crvdata$diabetes.factor) <- "Diabetic"
+label(crvdata$systolic.prewaking.surge) <- "Systolic Prewaking Surge"
+label(crvdata$systolic.rising.surge) <- "Systolic Rising Surge"
+label(crvdata$nocturnal.systolic.diff.sleep.self.reported) <- "Nocturnal Systolic Difference"
+
+
 @
 \vspace{.5in}
 {\bf Excluded vs. Included Patients}\\
@@ -508,9 +518,6 @@ colnames(comparison.dx) <- c("Variable",
                              "P-value")
 
 comparison.dx$Variable <- as.character(comparison.dx$Variable)
-comparison.dx$Variable[grep("pre.wake.mean", comparison.dx$Variable)] <- predictors[1]
-comparison.dx$Variable[grep("pre.wake.1", comparison.dx$Variable)] <- predictors[2]
-comparison.dx$Variable[grep("Diff", comparison.dx$Variable)] <- predictors[3]
 
 
 print(xtable(comparison.dx, caption = 
@@ -848,6 +855,26 @@ for(i in seq_along(outcomes.reac)){
                                     knot = noc.knot)
 }
 @
+
+<<regressionTables, echo=F>>=
+for (i in 1:14){
+  coef <- mod.noc.sys.diff[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = coef, StdError = se, ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), 
+             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+
+
+
+@
+
 
 <<coefTable, results = 'asis'>>=
 outcomeNames <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe",
