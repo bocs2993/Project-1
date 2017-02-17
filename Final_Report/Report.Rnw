@@ -856,25 +856,6 @@ for(i in seq_along(outcomes.reac)){
 }
 @
 
-<<regressionTables, echo=F>>=
-for (i in 1:14){
-  coef <- mod.noc.sys.diff[[i]]$coefficients
-  se <- sqrt(diag(mod.noc.sys.diff[[i]]$var))
-  confUp <- coef + qnorm(0.975)*se
-  confLow <- coef - qnorm(0.975)*se
-  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
-                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
-  results <- data.frame(Coefficient = coef, StdError = se, ConfInt=confInt)
-  colnames(results)[3] <- "95% Conf. Int."
-  print(xtable(results, align = c("l", rep("r", 3)), 
-             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
-      caption.placement = "top", booktabs = TRUE)
-}
-
-
-
-@
-
 
 <<coefTable, results = 'asis'>>=
 outcomeNames <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe",
@@ -1259,6 +1240,53 @@ noc.diff.lin.coef <- do.call(rbind, lapply(mod.noc.sys.diff.linear,
                                            anova(x)["nocturnal.systolic.diff.sleep.self.reported","P"])))
 @
 \begin{landscape}
+
+<<regressionTables, echo=F, results=as.is>>=
+for (i in 1:14){
+  coef <- mod.sys.rising.surge.linear[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), 
+             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+for (i in 1:14){
+  coef <- mod.sys.prewaking.surge.linear[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), 
+             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+for (i in 1:14){
+  coef <- mod.noc.sys.diff.linear[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), 
+             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+
+
+
+@
+
+
 <<linassocTable, results = 'asis'>>=
 
 prewaking.coef.table <- as.data.frame(sys.prewaking.lin.coef, row.names = outcomeNames)
