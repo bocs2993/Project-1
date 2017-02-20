@@ -1034,7 +1034,7 @@ print(xtable(corMat, digits = 3, caption = "Correlation Matrix for ABP Predictor
 \subsection{Full Regression Output for Linear Models}
 \label{sec:fullOutput}
 
-The following tables provide full regression outputs for our primary results: ordinary least squares models on the data with multiply imputed ABP predictors to account for missing data. Since all the data are utilized (i.e. Ambiguous At Risk is not excluded), these models do not contain the predictor-diagnosis interaction.
+The following tables provide full regression outputs for our primary results: ordinary least squares models on the data with multiply imputed ABP predictors to account for missing data. Since all the data are utilized (i.e. Ambiguous At Risk is not excluded), these models do not contain the predictor-diagnosis interaction. Confidence intervals marked with $^{*}$ indicate significance at the 0.05 level.
 
 <<regressionTables, echo=F, results = 'asis'>>=
 for (i in 1:14){

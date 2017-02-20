@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  20 FEB 2017 13:12
+This is pdfTeX, Version 3.14159265-2.6-1.40.17 (TeX Live 2016) (preloaded format=pdflatex 2016.5.22)  20 FEB 2017 13:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1396,7 +1396,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 1782--1783
 
 Package xcolor Warning: Incompatible color definition on input line 1802.
 
-<figure/graphics-pep_Sys_Prewaking-1.pdf, id=540, 722.7pt x 490.83376pt>
+<figure/graphics-pep_Sys_Prewaking-1.pdf, id=541, 722.7pt x 490.83376pt>
 File: figure/graphics-pep_Sys_Prewaking-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-pep_Sys_Prewaking-1.pdf>
@@ -1409,7 +1409,7 @@ line 1804.
 
 Package xcolor Warning: Incompatible color definition on input line 1815.
 
-<figure/graphics-pep_Sys_Rising-1.pdf, id=554, 722.7pt x 490.83376pt>
+<figure/graphics-pep_Sys_Rising-1.pdf, id=555, 722.7pt x 490.83376pt>
 File: figure/graphics-pep_Sys_Rising-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-pep_Sys_Rising-1.pdf>
@@ -1423,7 +1423,7 @@ e 1817.
 
 Package xcolor Warning: Incompatible color definition on input line 1828.
 
-<figure/graphics-pep_Noc_Diff-1.pdf, id=568, 722.7pt x 490.83376pt>
+<figure/graphics-pep_Noc_Diff-1.pdf, id=569, 722.7pt x 490.83376pt>
 File: figure/graphics-pep_Noc_Diff-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-pep_Noc_Diff-1.pdf>
@@ -1437,7 +1437,7 @@ Package pdftex.def Info: figure/graphics-pep_Noc_Diff-1.pdf used on input line
 
 Package xcolor Warning: Incompatible color definition on input line 1845.
 
-<figure/graphics-pep_Sys_Prewaking_dx-1.pdf, id=582, 722.7pt x 490.83376pt>
+<figure/graphics-pep_Sys_Prewaking_dx-1.pdf, id=583, 722.7pt x 490.83376pt>
 File: figure/graphics-pep_Sys_Prewaking_dx-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-pep_Sys_Prewaking_dx-1.pdf>
@@ -1451,7 +1451,7 @@ ut line 1847.
 
 Package xcolor Warning: Incompatible color definition on input line 1858.
 
-<figure/graphics-pep_Sys_Rising_dx-1.pdf, id=596, 722.7pt x 490.83376pt>
+<figure/graphics-pep_Sys_Rising_dx-1.pdf, id=597, 722.7pt x 490.83376pt>
 File: figure/graphics-pep_Sys_Rising_dx-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-pep_Sys_Rising_dx-1.pdf>
@@ -1465,7 +1465,7 @@ line 1860.
 
 Package xcolor Warning: Incompatible color definition on input line 1871.
 
-<figure/graphics-pep_Noc_Diff_dx-1.pdf, id=609, 722.7pt x 490.83376pt>
+<figure/graphics-pep_Noc_Diff_dx-1.pdf, id=610, 722.7pt x 490.83376pt>
 File: figure/graphics-pep_Noc_Diff_dx-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-pep_Noc_Diff_dx-1.pdf>
@@ -1482,7 +1482,7 @@ ne 1873.
 
 Package xcolor Warning: Incompatible color definition on input line 1933.
 
-<figure/graphics-imputeSens-1.pdf, id=627, 722.7pt x 397.485pt>
+<figure/graphics-imputeSens-1.pdf, id=628, 722.7pt x 397.485pt>
 File: figure/graphics-imputeSens-1.pdf Graphic file (type pdf)
 
 <use figure/graphics-imputeSens-1.pdf>
@@ -1716,26 +1716,27 @@ Here is how much of TeX's memory you used:
  35i,11n,53p,837b,421s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/local/texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{/usr/local
 /texlive/2016/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{/usr/local/texlive/2016/
-texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2016/texmf-dist/fon
-ts/enc/dvips/lm/lm-mathit.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/p
-ublic/lm/lmbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/l
-mbx12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmmi10.pfb>
-</usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local
-/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/20
-16/texmf-dist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2016/texmf-di
-st/fonts/type1/public/lm/lmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/ty
-pe1/public/lm/lmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/l
-m/lmr9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmri10.pfb
-></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/loc
-al/texlive/2016/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive
-/2016/texmf-dist/fonts/type1/public/lm/lmtt12.pfb></usr/local/texlive/2016/texm
-f-dist/fonts/type1/public/lm/lmtt8.pfb></usr/local/texlive/2016/texmf-dist/font
-s/type1/public/lm/lmtt9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/pub
-lic/lm/lmtti10.pfb>
-Output written on Report.pdf (65 pages, 1908204 bytes).
+texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2016/texmf-dist
+/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2016/texmf-dist/fonts/enc/dvi
+ps/lm/lm-mathit.enc}</usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/l
+mbx10.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmbx12.pfb>
+</usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/loca
+l/texlive/2016/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texlive/2
+016/texmf-dist/fonts/type1/public/lm/lmr10.pfb></usr/local/texlive/2016/texmf-d
+ist/fonts/type1/public/lm/lmr12.pfb></usr/local/texlive/2016/texmf-dist/fonts/t
+ype1/public/lm/lmr17.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public
+/lm/lmr7.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmr9.pfb
+></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmri10.pfb></usr/loc
+al/texlive/2016/texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/
+2016/texmf-dist/fonts/type1/public/lm/lmtk10.pfb></usr/local/texlive/2016/texmf
+-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/texlive/2016/texmf-dist/font
+s/type1/public/lm/lmtt12.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/pu
+blic/lm/lmtt8.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmt
+t9.pfb></usr/local/texlive/2016/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
+Output written on Report.pdf (65 pages, 1911126 bytes).
 PDF statistics:
- 821 PDF objects out of 1000 (max. 8388607)
- 699 compressed objects within 7 object streams
+ 827 PDF objects out of 1000 (max. 8388607)
+ 703 compressed objects within 8 object streams
  161 named destinations out of 1000 (max. 500000)
  425 words of extra memory for PDF output out of 10000 (max. 10000000)
 
