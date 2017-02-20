@@ -58,7 +58,7 @@ Brooklyn Stanley  \\ \href{mailto:b.stanley@vanderbilt.edu}{\url{b.stanley@vande
 
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+%\SweaveOpts{concordance=TRUE}
 
 \maketitle
 \clearpage
@@ -318,8 +318,8 @@ Regional brain volume variables\\
   \item Ordinary least squares regression models for each of the 14 CVR outcomes against each of the 3 ABP variables (42 models), controlling for covariates listed in \hyperref[sec:vars]{section 1.3}.
   \item To allow for a non-linear relationship between CVR outcomes and ABP predictors, we model ABP as a restricted cubic spline with 3 knots. 
   \item Knots are placed at 0 and interquartile range values ($25^{th}$ and $75^{th}$ percentiles) of the positive ABP values to capture abnormal values (e.g. negative ABP surge measurements) and patients at the low and high ends of positive ABP values.
-  \item Wald tests for overall association and linearity of ABP measurements are performed 
-  \item Present partial effect plots for each ABP-CVR outcome pair: effect of ABP holding all other covariates constant.
+  \item Wald tests for linearity of ABP measurements are performed. 
+  \item Since tests for linearity suggested a lack of evidence for associations being truly non-linear, we present results for models with a linear association between ABP measurements and CVR outcomes.
   \item Use multiple imputation to recover missing data in ABP predictors.
 \end{itemize}
 
@@ -332,7 +332,7 @@ Regional brain volume variables\\
   \item Present correlation matrix between ABP predictors and CVR outcomes.
 \end{itemize}
 
-\subsection{Sensitivity Analyses}
+\subsection{Supplemental Analyses}
 
 \begin{itemize}
   \item Graphically compare of observed and imputed values for ABP measurements to ensure distributions are consistent.
@@ -378,13 +378,13 @@ exclude <- totalData[!(totalData$map.id %in% cvrdata$map.id),
                      c(1:18, 61, grep("asl.reac", names(totalData)),
                        grep("ma.", names(totalData)))]
 
-label(crvdata$echo.lvh.factor) <- "LV Hypertrophy"
-label(crvdata$afib.factor) <- "A-fib"
-label(crvdata$cvd.factor) <- "CVD"
-label(crvdata$diabetes.factor) <- "Diabetic"
-label(crvdata$systolic.prewaking.surge) <- "Systolic Prewaking Surge"
-label(crvdata$systolic.rising.surge) <- "Systolic Rising Surge"
-label(crvdata$nocturnal.systolic.diff.sleep.self.reported) <- "Nocturnal Systolic Difference"
+label(cvrdata$echo.lvh.factor) <- "LV Hypertrophy"
+label(cvrdata$afib.factor) <- "A-fib"
+label(cvrdata$cvd.factor) <- "CVD"
+label(cvrdata$diabetes.factor) <- "Diabetic"
+label(cvrdata$systolic.prewaking.surge) <- "Systolic Prewaking Surge"
+label(cvrdata$systolic.rising.surge) <- "Systolic Rising Surge"
+label(cvrdata$nocturnal.systolic.diff.sleep.self.reported) <- "Nocturnal Systolic Difference"
 
 
 @
@@ -580,7 +580,6 @@ box2 <- ggplot(outlong[c(175:348,1393:2436),], aes(factor(lab), outcome)) +
 grid.arrange(box1, box2, ncol = 1)
 @
 
-<<<<<<< Updated upstream
 
 \begin{itemize}
   \item Most of the outliers are for larger values of CVR. 
@@ -589,58 +588,6 @@ grid.arrange(box1, box2, ncol = 1)
     \item E.g. The low outliers of the frontal lobe regions: which are all from the patient with \code{map.id} = 034.
   \end{itemize}
 \end{itemize}
-=======
-<<>>=
-ggplot(outlong, aes(systolic.rising.surge, outcome)) +
-  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
-  theme(legend.position="none", strip.text = element_text(size=12), 
-        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
-        panel.grid.major.x=element_line(colour='grey')) +
-  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
-
-ggplot(outlong, aes(systolic.prewaking.surge, outcome, group=1)) +
-  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
-  theme(legend.position="none", strip.text = element_text(size=12), 
-        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
-        panel.grid.major.x=element_line(colour='grey')) +
-  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
-
-
-ggplot(outlong, aes(noc.sys.diff, outcome, group=1)) +
-  geom_point() + geom_smooth() + facet_wrap(~lab, ncol=3) + 
-  theme(legend.position="none", strip.text = element_text(size=12), 
-        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
-        panel.grid.major.x=element_line(colour='grey')) +
-  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
-
-@
-As you can see from the previous sets of scatterplots, most of the outcomes have no trend over the predictors, with a slope around 0. The plots for nocturnal difference in systolic blood pressure has a slight downward slope on the left hand side. However, this is driven by only 3 points in that area so it is unclear if this is anything more than spurious. However, these are all univariate relationships; these trends may not hold in the adjusted analyses.
-
-<<>>=
-outlong.interaciton <- outlong[outlong$enrolled.dx.factor != "Ambiguous at Risk",]
-ggplot(outlong.interaction, aes(systolic.rising.surge, outcome, color = enrolled.dx.factor)) +
-  geom_point(alpha=0.4) + geom_smooth() + facet_wrap(~lab, ncol=3) + 
-  theme(strip.text = element_text(size=12), 
-        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
-        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
-  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
-ggplot(outlong.interaction, aes(systolic.prewaking.surge, outcome, color = enrolled.dx.factor)) +
-  geom_point(alpha=0.4) + geom_smooth() + facet_wrap(~lab, ncol=3) + 
-  theme(strip.text = element_text(size=12), 
-        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
-        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
-  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
-ggplot(outlong.interaction, aes(nocturnal.systolic.diff.sleep.self.reported, outcome, 
-                                color = enrolled.dx.factor)) +
-  geom_point(alpha=0.4) + geom_smooth() + facet_wrap(~lab, ncol=3) + 
-  theme(strip.text = element_text(size=12), 
-        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
-        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
-  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
-
-
-@
-
 
 \clearpage
 \subsection{Distribution of CVR Outcomes by Diagnosis}
@@ -727,6 +674,47 @@ ggplot(outlong, aes(nocturnal.systolic.diff.sleep.self.reported, outcome, group=
   \item Univariate trends may not hold in the adjusted analyses.
 \end{itemize}
 
+\subsection{Unadjusted ABP-CVR Associations by Diagnosis}
+
+To examine whether or not an interaction between the ABP predictors of interest and diagnosis group seems to be present. Since our interaction analysis will not include the ``Ambiguous At Risk'' group, the plots are restricted to data for the MCI and Normal cognition groups.
+
+\subsubsection{SBP Prewaking Surge}
+<<int.unadj.prewaking, fig.width = 7.5, fig.height = 8.6>>=
+outlong.interaction <- outlong[outlong$enrolled.dx.factor != "Ambiguous at Risk",]
+ggplot(outlong.interaction, aes(systolic.prewaking.surge, outcome, color = enrolled.dx.factor)) +
+  geom_point(alpha=0.4) + geom_smooth(se = FALSE) + facet_wrap(~lab, ncol=3) + 
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
+  ylab("Measured CVR") + xlab("Systolic Prewaking Surge Blood Pressure")
+@
+\clearpage
+\subsubsection{SBP Rising Surge}
+<<int.unadj.rising, fig.width = 7.5, fig.height = 9>>=
+ggplot(outlong.interaction, aes(systolic.rising.surge, outcome, color = enrolled.dx.factor)) +
+  geom_point(alpha=0.4) + geom_smooth(se = FALSE) + facet_wrap(~lab, ncol=3) + 
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
+  ylab("Measured CVR") + xlab("Systolic Rising Surge Blood Pressure")
+@
+\clearpage
+\subsubsection{Nocturnal Difference in SBP}
+<<int.unadj.noc.diff, fig.width = 7.5, fig.height = 8.5>>=
+ggplot(outlong.interaction, aes(nocturnal.systolic.diff.sleep.self.reported, outcome, 
+                                color = enrolled.dx.factor)) +
+  geom_point(alpha=0.4) + geom_smooth(se = FALSE) + facet_wrap(~lab, ncol=3) + 
+  theme(strip.text = element_text(size=12), 
+        axis.text.x = element_text(size=14), axis.text.y  = element_text(size=14),
+        panel.grid.major.x=element_line(colour='grey')) + scale_colour_discrete(name = "Diagnosis") +
+  ylab("Measured CVR") + xlab("Difference in Awake/Sleeping Systolic Blood Pressure")
+@
+
+\begin{itemize}
+  \item It does not appear an interaction is present. All lines generally follow the same flat trend. 
+  \item For some brain regions, the MCI and Normal trends differ slightly in the tails of the ABP distribution, though this is driven by few data points.
+  \item Lines for the Ambiguous At Risk group have more variability. However, there are only 11 patients in this group, and this diagnosis category will ultimately be excluded in the interaction analysis.
+\end{itemize}
 
 
 \clearpage
@@ -788,390 +776,18 @@ impute.data <- aregImpute(~ systolic.rising.surge + systolic.prewaking.surge +
                           data = cvrdata)
 @
 
+\clearpage
 \subsection{CVR Outcome Models}
 
-<<results = 'hide'>>=
-#######################################
-#  Model Fitting                      #
-#######################################
-modelFit <- function(outcome, predictor, ma, knot){
-  
-  fit <- fit.mult.impute(as.formula(paste0(outcome, "~ rcs(", predictor, ", c(", 
-                                           knot[1],",", knot[2],",", 
-                                           knot[3],")) +", 
-                                           ma, "+",
-"age + sex.factor + raceethnicity.factor + education",
-"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor")),
-                         fitter = ols, xtrans = impute.data, data = cvrdata)
-  
-  return(fit)
-}
+\subsubsection{Model with Linear Effect of ABP Predictors}
+Original models were fit with restricted cubic splines. However, tests of linearity indicated a lack of evidence that effects were truly non-linear. Thus, primary results are presented for a linear association between ABP predictors and CVR outcomes. \\
 
-#Knot locations for each predictor
-prewaking.knot <- c(0, 
-                    quantile(subset(cvrdata, systolic.prewaking.surge > 0)$systolic.prewaking.surge,
-                             probs = c(.25, .75), na.rm = T))
-
-rising.knot <- c(0, 
-                 quantile(subset(cvrdata, systolic.rising.surge > 0)$systolic.rising.surge, 
-                          probs = c(.25, .75), na.rm = T))
-
-noc.knot <- c(0, 
-              quantile(subset(cvrdata, 
-       nocturnal.systolic.diff.sleep.self.reported > 0)$nocturnal.systolic.diff.sleep.self.reported, 
-                       probs = c(.25, .75), na.rm = T))
-
-#Print to see knot values
-knots <- rbind(prewaking.knot, rising.knot, noc.knot); colnames(knots) = NULL
-
-#Define datadist for model fitting
-dd <- datadist(cvrdata)
-options(datadist = "dd")
-
-#Systolic prewaking surge
-mod.sys.prewaking.surge <- list()
-for(i in seq_along(outcomes.reac)){
-  mod.sys.prewaking.surge[[i]] <- modelFit(outcome = outcomes.reac[i], 
-                                           predictor = predictors[1],
-                                           ma = ma.vars[i],
-                                           knot = prewaking.knot)
-}
-
-#Systolic rising surge
-mod.sys.rising.surge <- list()
-for(i in seq_along(outcomes.reac)){
-  mod.sys.rising.surge[[i]] <- modelFit(outcome = outcomes.reac[i],
-                                           predictor = predictors[2],
-                                           ma = ma.vars[i],
-                                        knot = rising.knot)
-}
-
-#Nocturnal Difference
-mod.noc.sys.diff <- list()
-for(i in seq_along(outcomes.reac)){
-  mod.noc.sys.diff[[i]] <- modelFit(outcome = outcomes.reac[i],
-                                           predictor = predictors[3],
-                                           ma = ma.vars[i],
-                                    knot = noc.knot)
-}
-@
-
-
-<<coefTable, results = 'asis'>>=
-outcomeNames <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe",
-                         "Right Frontal Lobe", "Full Frontal Lobe", "Left Occipital Lobe",
-                         "Right Occipital Lobe", "Full Occipital Lobe", "Left Temporal Lobe",
-                         "Right Temporal Lobe", "Full Temporal Lobe", "Left Parietal Lobe",
-                         "Right Parietal Lobe", "Full Parietal Lobe")
-
-#Extract coefficients associated with ABP measures
-sys.prewaking.coef <- do.call(rbind, lapply(mod.sys.prewaking.surge,
-                             function(x) x$coef[grep("prewaking", names(x$coef))]))
-sys.prewaking.coef.vec <- apply(sys.prewaking.coef, MARGIN = 1, 
-                                function(x) paste0("(", round(x[1], 3), ",", 
-                                                   round(x[2], 3),")"))
-  
-sys.rising.coef <- do.call(rbind, lapply(mod.sys.rising.surge,
-                             function(x) x$coef[grep("rising", names(x$coef))]))
-sys.rising.coef.vec <- apply(sys.rising.coef, MARGIN = 1,
-                             function(x) paste0("(", round(x[1], 3), ",", 
-                                                round(x[2], 3),")"))
-
-noc.diff.coef <- do.call(rbind, lapply(mod.noc.sys.diff,
-                             function(x) x$coef[grep("noc", names(x$coef))]))
-noc.diff.coef.vec <- apply(noc.diff.coef, MARGIN = 1,
-                           function(x) paste0("(", round(x[1], 3), ",  ", 
-                                              round(x[2], 3),")"))
-
-
-coef.table <- data.frame("Systolic Prewaking Surge" = sys.prewaking.coef.vec,
-                         "Systolic Rising Surge" = sys.rising.coef.vec,
-                         "Nocturnal SBP Difference" = noc.diff.coef.vec,
-                          row.names = outcomeNames, check.names = FALSE)
-
-
-print(xtable(coef.table, align = c("l", rep("r", 3)), 
-             caption = paste0("Coefficients for ABP with CVR: ABP Modeled as Restricted Cubic Spline with 3 Knots")), 
-      caption.placement = "top", booktabs = TRUE)
-@
+Visual representations (partial effect plots) of ABP-CVR associations both overall and stratified by diagnosis can be found in \hyperref[sec:PEP]{section 6.3}.
 
 \begin{itemize}
-  \item Since we are using 3 knots, each ABP variable has 2 associated coefficients
-\end{itemize}
-
-{\bf Note:} Coefficients from fitting a restricted cubic spline are not directly interpretable regarding effect on the CVR measurements in each region of interest. Rather than interpreting the table above, we provide:\\
-\begin{itemize}
-  \item results for tests of overall association between ABP and CVR measurements (``overall'' meaning using all coefficients affiliated with each ABP variable).
-  \item partial effect plots as a visual representation of ABP effect on CVR for each model.
-  \end{itemize}
-
-\clearpage
-\subsection{Test of Association between ABP and CVR}
-
-
-<<assocTable, results = 'asis'>>=
-#######################################
-#  Tests of Association               #
-#######################################
-
-#Extract p-values for test of association
-
-sys.prewaking.pval <- lapply(mod.sys.prewaking.surge,
-                             function(x) anova(x)["systolic.prewaking.surge","P"])
-sys.rising.pval <- lapply(mod.sys.rising.surge,
-                             function(x) anova(x)["systolic.rising.surge","P"])
-noc.sys.diff.pval <- lapply(mod.noc.sys.diff,
-                             function(x) anova(x)["nocturnal.systolic.diff.sleep.self.reported","P"])
-
-assoc.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.pval),
-                          "SBP Rising Surge" = unlist(sys.rising.pval),
-                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.pval),
-                          row.names = outcomeNames,
-                          check.names = FALSE)
-
-print(xtable(assoc.table, digits = 3,
-             caption = "P-values for Test of Association Between ABP and CVR"),
-      caption.placement = "top", booktabs = TRUE)
-@
-
-\begin{itemize}
+  \item Results for the coefficients associated with predictors of interest (ABP measurements) are presented on the next page. Full regression outputs of all 42 models are provided as supplementary results (see \hyperref[sec:fullOutput]{section 6.1}).
   \item No significant p-values at the 0.05 level: Insufficient evidence that any of the ABP measurements have an effect on CVR in any brain region.
-  \item Generally, we would recommend a multiple comparisons adjustment for fitting the 42 models (e.g. using a Bonferroni-corrected significance level of $\frac{.05}{42} = .0012$). 
-\end{itemize}
-
-\clearpage
-\subsection{Partial Effect Plots}
-
-\begin{itemize}
-  \item Partial effect plots show the effect of each SBP measure on CVR outcome with other variables in the model fixed. 
-  \item A single plot is presented from each model for the predictor of interest against the CVR outcome for the specified region of interest, overall and stratified by diagnosis.
-  \item By default, continuous variables are fixed at their median and categorical variables are fixed at their mode.
-  \item Generally, all curves have a slight decline for lower ABP values then tend to level off.
-  \item  Normal Cognition group tends to have the highest CVR more often.
-  \item However, no consistent ordering of diagnosis group response across brain regions.
-\end{itemize}
-
-<<adjustVals, results = 'asis'>>=
-#Default plotting values for partial effect plots
-subset_cvrdata <- subset(cvrdata, select = c(age, education, sex.factor, 
-                                             enrolled.dx.factor, raceethnicity.factor, 
-                                             apoe4pos.factor, htnrx.factor))
-
-adj_tab <- xtable(datadist(subset_cvrdata)$limits["Adjust to",],
-                           caption = "Default Partial Effect Plot Covariate Values")
-@
-
-
-\begin{landscape}
-\subsubsection{SBP Prewaking Surge}
-<<pep.Sys.Prewaking, fig.width = 10, fig.height = 6.8>>=
-#######################################
-#  Partial Effect Plots               #
-#######################################
-
-#Systolic prewaking surge
-sys.prewaking.PEP <- lapply(mod.sys.prewaking.surge,
-                             function(x) ggplot(Predict(x, systolic.prewaking.surge),
-                                                adj.subtitle = FALSE,
-                                                anova = anova(x), size.anova = 3,
-                                                pval = TRUE,
-                                                ylim. = c(1,5),
-                                                xlab = "SBP Prewaking Surge",
-                                                ylab = gsub("asl.reac.", "", x$sformula[2])))
-
-
-
-do.call(grid.arrange, sys.prewaking.PEP)
-@
-\end{landscape}
-\begin{landscape}
-\subsubsection{SBP Rising Surge}
-<<pep.Sys.Rising, fig.width = 10, fig.height = 6.8>>=
-#Systolic rising surge
-sys.rising.PEP <- lapply(mod.sys.rising.surge,
-                             function(x) ggplot(Predict(x, systolic.rising.surge),
-                                                adj.subtitle = FALSE,
-                                                anova = anova(x), size.anova = 3,
-                                                pval = TRUE,
-                                                ylim. = c(1,5),
-                                                xlab = "SBP Rising Surge",
-                                                ylab = gsub("asl.reac.", "", x$sformula[2])))
-do.call(grid.arrange, sys.rising.PEP)
-@
-\end{landscape}
-\begin{landscape}
-\subsubsection{Nocturnal Decline in SBP}
-<<pep.Noc.Diff, fig.width = 10, fig.height = 6.8>>=
-#Nocturnal difference
-noc.sys.diff.PEP <- lapply(mod.noc.sys.diff,
-                             function(x) ggplot(Predict(x, nocturnal.systolic.diff.sleep.self.reported),
-                                                adj.subtitle = FALSE,
-                                                anova = anova(x), size.anova = 3,
-                                                pval = TRUE,
-                                                ylim. = c(1,5),
-                                                xlab = "Nocturnal Difference in SBP",
-                                                ylab = gsub("asl.reac.", "", x$sformula[2])))
-do.call(grid.arrange, noc.sys.diff.PEP)
-@
-\end{landscape}
-
-<<commonLegend>>=
-#######################################
-#  Partial Effect Plots by Diagnosis  #
-#######################################
-
-#Function obtained from:
-# http://stackoverflow.com/questions/11883844/inserting-a-table-under-the-legend-in-a-ggplot2-histogram
-
-#create common legend for stratified plots 
-g_legend<-function(a.gplot){ 
-  tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
-  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
-  legend <- tmp$grobs[[leg]] 
-  return(legend)} 
-
-legend.dx <- g_legend(ggplot(Predict(mod.noc.sys.diff[[1]], 
-                                     nocturnal.systolic.diff.sleep.self.reported,
-                 enrolled.dx = c("Normal", "MCI", "Ambiguous At Risk"))))
-@
-
-
-\begin{landscape}
-\subsubsection{SBP Prewaking Surge by Diagnosis}
-<<pep.Sys.Prewaking.dx, fig.width = 10, fig.height = 6.8>>=
-#Systolic prewaking surge
-sys.prewaking.PEP.dx <- lapply(mod.sys.prewaking.surge,
-                             function(x) ggplot(Predict(x, systolic.prewaking.surge,
-                                                enrolled.dx.factor = c("Normal",
-                                                                       "MCI",
-                                                                       "Ambiguous At Risk")),
-                                                colfill = "grey60",
-                                                adj.subtitle = FALSE,
-                                                ylim. = c(0,5),
-                                                xlab = "SBP prewaking",
-                                                ylab = gsub("asl.reac.", "", x$sformula[2])) + 
-  theme(legend.position = "none"))
-
-sys.prewaking.PEP.dx[[15]] <- legend.dx
-do.call(grid.arrange, sys.prewaking.PEP.dx)
-@
-\end{landscape}
-\begin{landscape}
-\subsubsection{SBP Rising Surge by Diagnosis}
-<<pep.Sys.Rising.dx, fig.width = 10, fig.height = 6.8>>=
-#Systolic rising surge
-sys.rising.PEP.dx <- lapply(mod.sys.rising.surge,
-                             function(x) ggplot(Predict(x, systolic.rising.surge,
-                                                enrolled.dx.factor = c("Normal",
-                                                                        "MCI",
-                                                                        "Ambiguous At Risk")),
-                                                colfill = "grey60",
-                                                adj.subtitle = FALSE,
-                                                ylim. = c(0,5),
-                                                xlab = "SBP rising",
-                                                ylab = gsub("asl.reac.", "", x$sformula[2])) + 
-  theme(legend.position = "none"))
-
-sys.rising.PEP.dx[[15]] <- legend.dx
-do.call(grid.arrange, sys.rising.PEP.dx)
-@
-\end{landscape}
-\begin{landscape}
-\subsubsection{Nocturnal Decline in SBP by Diagnosis}
-<<pep.Noc.Diff.dx, fig.width = 10, fig.height = 6.8>>=
-#Nocturnal difference
-noc.sys.diff.PEP.dx <- lapply(mod.noc.sys.diff,
-                             function(x) ggplot(Predict(x, nocturnal.systolic.diff.sleep.self.reported,
-                                                enrolled.dx.factor = c("Normal",
-                                                                        "MCI",
-                                                                        "Ambiguous At Risk")),
-                                                colfill = "grey60",
-                                                adj.subtitle = FALSE,
-                                                ylim. = c(0,5),
-                                                xlab = "Nocturnal Difference",
-                                                ylab = gsub("asl.reac.", "", x$sformula[2])) + 
-  theme(legend.position = "none"))
-
-
-noc.sys.diff.PEP.dx[[15]] <- legend.dx
-do.call(grid.arrange, noc.sys.diff.PEP.dx)
-@
-\end{landscape}
-
-\subsection{Tests of Linearity for ABP Measures}
-
-<<results='asis'>>=
-#######################################
-#  Tests of Linearity                 #
-#######################################
-
-#Select p-values for test of linearity
-sys.prewaking.nonlin <- lapply(mod.sys.prewaking.surge,
-                             function(x) anova(x)[" Nonlinear","P"])
-sys.rising.nonlin <- lapply(mod.sys.rising.surge,
-                             function(x) anova(x)[" Nonlinear","P"])
-noc.sys.diff.nonlin <- lapply(mod.noc.sys.diff,
-                             function(x) anova(x)[" Nonlinear","P"])
-
-
-linear.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.nonlin),
-                          "SBP Rising Surge" = unlist(sys.rising.nonlin),
-                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.nonlin),
-                          row.names = outcomeNames,
-                          check.names = FALSE)
-
-print(xtable(linear.table, digits = 3,
-             caption = "P-values for test of linearity for ABP predictors"),
-      caption.placement = "top")
-@
-
-\begin{itemize}
-  \item No evidence to suggest the effect is truly non-linear for any model
-\end{itemize}
-
-\clearpage
-\subsection{Secondary Aim}
-
-<<r2table, results = 'asis'>>=
-#Select R^2 values for each model
-sys.prewaking.r2 <- lapply(mod.sys.prewaking.surge, function(x) x$stats["R2"])
-sys.rising.r2 <- lapply(mod.sys.rising.surge, function(x) x$stats["R2"])
-noc.sys.diff.r2 <- lapply(mod.noc.sys.diff, function(x) x$stats["R2"])
-
-
-r2.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.r2),
-                          "SBP Rising Surge" = unlist(sys.rising.r2),
-                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.r2),
-                          row.names = outcomeNames,
-                          check.names = FALSE)
-
-print(xtable(r2.table, digits = 3,
-             caption = "R-squared for ABP predictor models"),
-      caption.placement = "top")
-@
-
-<<corMat, results = 'asis'>>=
-corMat <- as.data.frame(cor(cvrdata[,outcomes.reac], !is.na(cvrdata[,predictors])), row.names = outcomeNames)
-names(corMat) <- c("SBP Prewaking Surge", "SBP Rising Surge", "Nocturnal Decline in SBP")
-
-print(xtable(corMat, digits = 3, caption = "Correlation Matrix for ABP Predictors and CVR Outcomes"),
-      caption.placement = "top", booktabs = TRUE)
-@
-
-\begin{itemize}
-  \item Nocturnal decline in SBP has slightly higher $R^2$ in overall hemispheres, frontal, and temporal lobes. SBP rising surge is highest in the occipital and parietal lobes.
-  \item All $R^2$ values are very low, indicating these models generally do not have extensive predictive ability. In other words, less than 1\% of the variability in CVR outcomes is explained by any of the models fitted in this analysis.
-  \item SBP rising surge has all positive correlations, though numbers are small.
-\end{itemize}
-
-
-\clearpage
-\section{Sensitivity Analyses}
-
-\subsection{Model with Linear Effect of ABP Measures}
-
-\begin{itemize}
-  \item No evidence of an association
+  \item Generally, we would recommend a multiple comparisons adjustment for fitting the 42 models (e.g. using a Bonferroni-corrected significance level of $\frac{.05}{42} = .0012$).
   \item Coefficients are interpreted as the effect on CVR outcome for a one-mmHg increase in ABP measurement. 
   \item Multiply coefficients by 10 to interpret the effect on CVR for a 10-mmHg increase in ABP measurement.
   \begin{itemize}
@@ -1239,55 +855,15 @@ noc.diff.lin.coef <- do.call(rbind, lapply(mod.noc.sys.diff.linear,
                                                       grep("noc", names(x$coef))]),
                                            anova(x)["nocturnal.systolic.diff.sleep.self.reported","P"])))
 @
+
+
 \begin{landscape}
-
-<<regressionTables, echo=F, results=as.is>>=
-for (i in 1:14){
-  coef <- mod.sys.rising.surge.linear[[i]]$coefficients
-  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
-  confUp <- coef + qnorm(0.975)*se
-  confLow <- coef - qnorm(0.975)*se
-  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
-                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
-  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
-  colnames(results)[3] <- "95% Conf. Int."
-  print(xtable(results, align = c("l", rep("r", 3)), 
-             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
-      caption.placement = "top", booktabs = TRUE)
-}
-for (i in 1:14){
-  coef <- mod.sys.prewaking.surge.linear[[i]]$coefficients
-  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
-  confUp <- coef + qnorm(0.975)*se
-  confLow <- coef - qnorm(0.975)*se
-  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
-                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
-  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
-  colnames(results)[3] <- "95% Conf. Int."
-  print(xtable(results, align = c("l", rep("r", 3)), 
-             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
-      caption.placement = "top", booktabs = TRUE)
-}
-for (i in 1:14){
-  coef <- mod.noc.sys.diff.linear[[i]]$coefficients
-  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
-  confUp <- coef + qnorm(0.975)*se
-  confLow <- coef - qnorm(0.975)*se
-  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
-                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
-  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
-  colnames(results)[3] <- "95% Conf. Int."
-  print(xtable(results, align = c("l", rep("r", 3)), 
-             caption = paste0("Coefficients for ABP with CVR: ", levels(outlong$lab)[i])), 
-      caption.placement = "top", booktabs = TRUE)
-}
-
-
-
-@
-
-
 <<linassocTable, results = 'asis'>>=
+outcomeNames <- c("Left Hemisphere", "Right Hemisphere", "Left Frontal Lobe",
+                         "Right Frontal Lobe", "Full Frontal Lobe", "Left Occipital Lobe",
+                         "Right Occipital Lobe", "Full Occipital Lobe", "Left Temporal Lobe",
+                         "Right Temporal Lobe", "Full Temporal Lobe", "Left Parietal Lobe",
+                         "Right Parietal Lobe", "Full Parietal Lobe")
 
 prewaking.coef.table <- as.data.frame(sys.prewaking.lin.coef, row.names = outcomeNames)
 
@@ -1314,6 +890,536 @@ print(xtable(full.table, align = c("l", rep("r", 9)), digits = 4,
       sanitize.text.function = force, table.placement = "ht")
 @
 \end{landscape}
+
+\clearpage
+\begin{landscape}
+\subsubsection{Linear CVR Outcome Models with Interaction}
+
+\begin{itemize}
+  \item For the interaction results, patients who were diagnosed as "Ambiguous At Risk" were excluded from analysis (n = 11).
+  \item Results suggest no evidence for the presence of an interaction between any of the SBP predictors and CVR outcomes at the 0.05 level.
+\end{itemize}
+
+<<modelInteraction, results = 'hide'>>=
+#######################################
+#  Model Fitting: Interaction         #
+#######################################
+
+modelFitInter <- function(outcome, predictor, ma){
+  
+  fit <- fit.mult.impute(as.formula(paste0(outcome, "~", predictor, "*enrolled.dx.factor +", ma, "+",
+"age + sex.factor + raceethnicity.factor + education",
+" + apoe4pos.factor + htnrx.factor")),
+                         fitter = ols, xtrans = impute.data, 
+data = cvrdata[cvrdata$enrolled.dx.factor != "Ambiguous At Risk",])
+  
+  return(fit)
+}
+
+
+#Systolic prewaking surge
+mod.sys.prewaking.surge.int <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.sys.prewaking.surge.int[[i]] <- modelFitInter(outcome = outcomes.reac[i], 
+                                                   predictor = predictors[1],
+                                                   ma = ma.vars[i])
+}
+
+#Systolic rising surge
+mod.sys.rising.surge.int <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.sys.rising.surge.int[[i]] <- modelFitInter(outcome = outcomes.reac[i],
+                                           predictor = predictors[2],
+                                           ma = ma.vars[i])
+}
+
+#Nocturnal Difference
+mod.noc.sys.diff.int <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.noc.sys.diff.int[[i]] <- modelFitInter(outcome = outcomes.reac[i],
+                                           predictor = predictors[3],
+                                           ma = ma.vars[i])
+}
+@
+
+<<intCoef, results = 'asis'>>=
+#Grab coefficients associated with interaction
+sys.prewaking.int.coef <- do.call(rbind, lapply(mod.sys.prewaking.surge.int,
+                             function(x) c(x$coef[length(x$coef)],
+                                           sqrt(x$var[length(x$coef),
+                                                      length(x$coef)]),
+                                           anova(x)[" All Interactions","P"])))
+  
+
+sys.rising.int.coef <- do.call(rbind, lapply(mod.sys.rising.surge.int,
+                             function(x) c(x$coef[length(x$coef)],
+                                           sqrt(x$var[length(x$coef),
+                                                      length(x$coef)]),
+                                           anova(x)[" All Interactions","P"])))
+
+
+noc.diff.int.coef <- do.call(rbind, lapply(mod.noc.sys.diff.int,
+                             function(x) c(x$coef[length(x$coef)],
+                                           sqrt(x$var[length(x$coef),
+                                                      length(x$coef)]),
+                                           anova(x)[" All Interactions","P"])))
+
+
+prewaking.int.table <- as.data.frame(sys.prewaking.int.coef, row.names = outcomeNames)
+
+rising.int.table <- as.data.frame(sys.rising.int.coef, row.names = outcomeNames)
+
+noc.diff.int.table <- as.data.frame(noc.diff.int.coef, row.names = outcomeNames)
+
+addtorow <- list()
+addtorow$pos <- list()
+addtorow$pos[[1]] <- 0
+addtorow$pos[[2]] <- 0
+addtorow$command <- c('& \\multicolumn{3}{c}{SBP Prewaking Surge} & 
+                      \\multicolumn{3}{c}{SBP Rising Surge} & 
+                      \\multicolumn{3}{c}{Nocturnal Decline in SBP} \\\\',
+                      c('& Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \\\\'))
+
+int.table <- cbind(prewaking.int.table, rising.int.table, noc.diff.int.table)
+names(int.table) <- NULL
+print(xtable(int.table, align = c("l", rep("r", 9)), digits = 4, 
+             caption = paste0("Coefficients for ABP:CVR Interaction")), 
+      caption.placement = "top", booktabs = TRUE, add.to.row = addtorow,
+      sanitize.text.function = force, table.placement = "ht")
+@
+\end{landscape}
+
+\clearpage
+\subsection{Secondary Aim}
+
+<<r2table, results = 'asis'>>=
+#Select R^2 values for each model
+sys.prewaking.r2 <- lapply(mod.sys.prewaking.surge.linear, function(x) x$stats["R2"])
+sys.rising.r2 <- lapply(mod.sys.rising.surge.linear, function(x) x$stats["R2"])
+noc.sys.diff.r2 <- lapply(mod.noc.sys.diff.linear, function(x) x$stats["R2"])
+
+r2.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.r2),
+                          "SBP Rising Surge" = unlist(sys.rising.r2),
+                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.r2),
+                          row.names = outcomeNames,
+                          check.names = FALSE)
+
+print(xtable(r2.table, digits = 3,
+             caption = "R-squared for ABP predictor models"),
+      caption.placement = "top")
+@
+
+<<corMat, results = 'asis'>>=
+corMat <- as.data.frame(cor(cvrdata[,outcomes.reac], !is.na(cvrdata[,predictors])), 
+                        row.names = outcomeNames)
+names(corMat) <- c("SBP Prewaking Surge", "SBP Rising Surge", "Nocturnal Decline in SBP")
+
+print(xtable(corMat, digits = 3, caption = "Correlation Matrix for ABP Predictors and CVR Outcomes"),
+      caption.placement = "top", booktabs = TRUE)
+@
+
+\begin{itemize}
+  \item Nocturnal decline in SBP has slightly higher $R^2$ in overall hemispheres, frontal, and temporal lobes. SBP rising surge is highest in the occipital and parietal lobes.
+  \item All $R^2$ values are very low, indicating these models generally do not have extensive predictive ability. In other words, less than 1\% of the variability in CVR outcomes is explained by any of the models fitted in this analysis.
+  \item SBP rising surge has all positive correlations, though numbers are small.
+  \item No correlations were statistically significant at the 0.05 level.
+\end{itemize}
+
+
+\clearpage
+\section{Supplemental Analyses}
+
+\subsection{Full Regression Output for Linear Models}
+\label{sec:fullOutput}
+
+The following tables provide full regression outputs for our primary results: ordinary least squares models on the data with multiply imputed ABP predictors to account for missing data. Since all the data are utilized (i.e. Ambiguous At Risk is not excluded), these models do not contain the predictor-diagnosis interaction.
+
+<<regressionTables, echo=F, results = 'asis'>>=
+for (i in 1:14){
+  coef <- mod.sys.prewaking.surge.linear[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), digits = 3,
+             caption = paste0("Regression for ABP with CVR: SBP Prewaking Surge and ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+for (i in 1:14){
+  coef <- mod.sys.rising.surge.linear[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), digits = 3, 
+             caption = paste0("Regression for ABP with CVR: SBP Rising Surge and ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+for (i in 1:14){
+  coef <- mod.noc.sys.diff.linear[[i]]$coefficients
+  se <- sqrt(diag(mod.noc.sys.diff.linear[[i]]$var))
+  confUp <- coef + qnorm(0.975)*se
+  confLow <- coef - qnorm(0.975)*se
+  confInt <- paste("(", signif(confLow,3), ", ", signif(confUp,3), ")", 
+                   ifelse(0 < confUp & 0 > confLow, "", "*"), sep="")
+  results <- data.frame(Coefficient = signif(coef,3), StdError = signif(se,3), ConfInt=confInt)
+  colnames(results)[3] <- "95% Conf. Int."
+  print(xtable(results, align = c("l", rep("r", 3)), digits = 3,
+             caption = paste0("Regression for ABP with CVR: SBP Nocturnal Difference and ", levels(outlong$lab)[i])), 
+      caption.placement = "top", booktabs = TRUE)
+}
+@
+
+\clearpage
+\subsection{Restricted Cubic Spline Model Output}
+
+The following table presents coefficient results for the models originally fit with ABP predictors modeled as restricted cubic splines.  
+
+<<results = 'hide'>>=
+#######################################
+#  Model Fitting                      #
+#######################################
+modelFit <- function(outcome, predictor, ma, knot){
+  
+  fit <- fit.mult.impute(as.formula(paste0(outcome, "~ rcs(", predictor, ", c(", 
+                                           knot[1],",", knot[2],",", 
+                                           knot[3],"))*enrolled.dx.factor +", 
+                                           ma, "+",
+"age + sex.factor + raceethnicity.factor + education",
+"+ apoe4pos.factor + htnrx.factor")),
+                         fitter = ols, xtrans = impute.data, data = cvrdata)
+  
+  return(fit)
+}
+
+#Knot locations for each predictor
+prewaking.knot <- c(0, 
+                    quantile(subset(cvrdata, systolic.prewaking.surge > 0)$systolic.prewaking.surge,
+                             probs = c(.25, .75), na.rm = T))
+
+rising.knot <- c(0, 
+                 quantile(subset(cvrdata, systolic.rising.surge > 0)$systolic.rising.surge, 
+                          probs = c(.25, .75), na.rm = T))
+
+noc.knot <- c(0, 
+              quantile(subset(cvrdata, 
+       nocturnal.systolic.diff.sleep.self.reported > 0)$nocturnal.systolic.diff.sleep.self.reported, 
+                       probs = c(.25, .75), na.rm = T))
+
+#Print to see knot values
+knots <- rbind(prewaking.knot, rising.knot, noc.knot); colnames(knots) = NULL
+
+#Define datadist for model fitting
+dd <- datadist(cvrdata)
+options(datadist = "dd")
+
+#Systolic prewaking surge
+mod.sys.prewaking.surge <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.sys.prewaking.surge[[i]] <- modelFit(outcome = outcomes.reac[i], 
+                                           predictor = predictors[1],
+                                           ma = ma.vars[i],
+                                           knot = prewaking.knot)
+}
+
+#Systolic rising surge
+mod.sys.rising.surge <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.sys.rising.surge[[i]] <- modelFit(outcome = outcomes.reac[i],
+                                           predictor = predictors[2],
+                                           ma = ma.vars[i],
+                                        knot = rising.knot)
+}
+
+#Nocturnal Difference
+mod.noc.sys.diff <- list()
+for(i in seq_along(outcomes.reac)){
+  mod.noc.sys.diff[[i]] <- modelFit(outcome = outcomes.reac[i],
+                                           predictor = predictors[3],
+                                           ma = ma.vars[i],
+                                    knot = noc.knot)
+}
+@
+
+
+<<coefTable, results = 'asis'>>=
+
+#Extract coefficients associated with ABP measures
+sys.prewaking.coef <- do.call(rbind, lapply(mod.sys.prewaking.surge,
+                             function(x) x$coef[grep("prewaking", names(x$coef))]))
+sys.prewaking.coef.vec <- apply(sys.prewaking.coef, MARGIN = 1, 
+                                function(x) paste0("(", round(x[1], 3), ",", 
+                                                   round(x[2], 3),")"))
+  
+sys.rising.coef <- do.call(rbind, lapply(mod.sys.rising.surge,
+                             function(x) x$coef[grep("rising", names(x$coef))]))
+sys.rising.coef.vec <- apply(sys.rising.coef, MARGIN = 1,
+                             function(x) paste0("(", round(x[1], 3), ",", 
+                                                round(x[2], 3),")"))
+
+noc.diff.coef <- do.call(rbind, lapply(mod.noc.sys.diff,
+                             function(x) x$coef[grep("noc", names(x$coef))]))
+noc.diff.coef.vec <- apply(noc.diff.coef, MARGIN = 1,
+                           function(x) paste0("(", round(x[1], 3), ",  ", 
+                                              round(x[2], 3),")"))
+
+
+coef.table <- data.frame("Systolic Prewaking Surge" = sys.prewaking.coef.vec,
+                         "Systolic Rising Surge" = sys.rising.coef.vec,
+                         "Nocturnal SBP Difference" = noc.diff.coef.vec,
+                          row.names = outcomeNames, check.names = FALSE)
+
+
+print(xtable(coef.table, align = c("l", rep("r", 3)), 
+             caption = paste0("Coefficients for ABP with CVR: ABP Modeled as Restricted Cubic Spline with 3 Knots")), 
+      caption.placement = "top", booktabs = TRUE)
+@
+
+\begin{itemize}
+  \item Since we are using 3 knots, each ABP variable has 2 associated coefficients
+\end{itemize}
+
+{\bf Note:} Coefficients from fitting a restricted cubic spline are not directly interpretable regarding effect on the CVR measurements in each region of interest. Rather than interpreting the table above, we provide partial effect plots as a visual representation of ABP effect on CVR for each model.
+  
+%\clearpage
+%\subsection{Test of Association between ABP (RCS) and CVR}
+
+
+<<assocTable, results = 'asis'>>=
+#########################################
+#  Tests of Association for RCS Models  #
+#########################################
+#Not printed since primary results were based on linear model,
+#  but this is how the test results would be extracted if needed
+#  in the future
+
+#Extract p-values for test of association
+
+sys.prewaking.pval <- lapply(mod.sys.prewaking.surge,
+                             function(x) anova(x)[1,"P"])
+sys.rising.pval <- lapply(mod.sys.rising.surge,
+                             function(x) anova(x)[1,"P"])
+noc.sys.diff.pval <- lapply(mod.noc.sys.diff,
+                             function(x) anova(x)[1,"P"])
+
+assoc.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.pval),
+                          "SBP Rising Surge" = unlist(sys.rising.pval),
+                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.pval),
+                          row.names = outcomeNames,
+                          check.names = FALSE)
+
+# print(xtable(assoc.table, digits = 3,
+#              caption = "P-values for Test of Association Between ABP and CVR"),
+#       caption.placement = "top", booktabs = TRUE)
+@
+
+
+\clearpage
+\subsection{Partial Effect Plots}
+\label{sec:PEP}
+Partial effect plots show the effect of each ABP measure on CVR outcome with other variables in the model fixed. Due to the exploratory nature of this analysis, these plots are presented for the models in which ABP predictors were represented as restricted cubic splines. This is to allow effects to differ at different values of the systolic blood pressure measurement distributions.\\
+
+\begin{itemize}
+  \item ABP:diagnosis interactions were included in these models to make the stratified partial effect plots more informative.
+  \item A single plot is presented from each model for the predictor of interest against the CVR outcome for the specified region of interest, overall and stratified by diagnosis.
+  \item By default, continuous variables are fixed at their median and categorical variables are fixed at their mode.
+\end{itemize}
+{\it Plot comments:}
+\begin{itemize}
+  \item Generally, all curves have a slight decline for lower ABP values then tend to level off.
+  \item No consistent ordering of diagnosis group response across brain regions, and curves for all diagnosis groups are highly similar.
+  \item The Ambiguous At Risk group had the largest variability for Nocturnal Difference in SBP. However, since there are only 11 patients in this group, this may be spurious.
+\end{itemize}
+
+<<adjustVals, results = 'asis'>>=
+#Default plotting values for partial effect plots
+subset_cvrdata <- subset(cvrdata, select = c(age, education, sex.factor, 
+                                             enrolled.dx.factor, raceethnicity.factor, 
+                                             apoe4pos.factor, htnrx.factor))
+
+adj_tab <- xtable(datadist(subset_cvrdata)$limits["Adjust to",],
+                           caption = "Default Partial Effect Plot Covariate Values")
+@
+
+
+\begin{landscape}
+\subsubsection{SBP Prewaking Surge}
+<<pep.Sys.Prewaking, fig.width = 10, fig.height = 6.8, cache = T>>=
+#######################################
+#  Partial Effect Plots               #
+#######################################
+
+#Systolic prewaking surge
+sys.prewaking.PEP <- lapply(mod.sys.prewaking.surge,
+                             function(x) ggplot(Predict(x, systolic.prewaking.surge),
+                                                adj.subtitle = FALSE,
+                                                anova = anova(x), size.anova = 3,
+                                                pval = TRUE,
+                                                ylim. = c(1,5),
+                                                xlab = "SBP Prewaking Surge",
+                                                ylab = gsub("asl.reac.", "", x$sformula[2])))
+
+
+
+do.call(grid.arrange, sys.prewaking.PEP)
+@
+\end{landscape}
+\begin{landscape}
+\subsubsection{SBP Rising Surge}
+<<pep.Sys.Rising, fig.width = 10, fig.height = 6.8, cache = T>>=
+#Systolic rising surge
+sys.rising.PEP <- lapply(mod.sys.rising.surge,
+                             function(x) ggplot(Predict(x, systolic.rising.surge),
+                                                adj.subtitle = FALSE,
+                                                anova = anova(x), size.anova = 3,
+                                                pval = TRUE,
+                                                ylim. = c(1,5),
+                                                xlab = "SBP Rising Surge",
+                                                ylab = gsub("asl.reac.", "", x$sformula[2])))
+do.call(grid.arrange, sys.rising.PEP)
+@
+\end{landscape}
+\begin{landscape}
+\subsubsection{Nocturnal Decline in SBP}
+<<pep.Noc.Diff, fig.width = 10, fig.height = 6.8, cache = T>>=
+#Nocturnal difference
+noc.sys.diff.PEP <- lapply(mod.noc.sys.diff,
+                             function(x) ggplot(Predict(x, nocturnal.systolic.diff.sleep.self.reported),
+                                                adj.subtitle = FALSE,
+                                                anova = anova(x), size.anova = 3,
+                                                pval = TRUE,
+                                                ylim. = c(1,5),
+                                                xlab = "Nocturnal Difference in SBP",
+                                                ylab = gsub("asl.reac.", "", x$sformula[2])))
+do.call(grid.arrange, noc.sys.diff.PEP)
+@
+\end{landscape}
+
+<<commonLegend>>=
+#######################################
+#  Partial Effect Plots by Diagnosis  #
+#######################################
+
+#Function obtained from:
+# http://stackoverflow.com/questions/11883844/inserting-a-table-under-the-legend-in-a-ggplot2-histogram
+
+#create common legend for stratified plots 
+g_legend<-function(a.gplot){ 
+  tmp <- ggplot_gtable(ggplot_build(a.gplot)) 
+  leg <- which(sapply(tmp$grobs, function(x) x$name) == "guide-box") 
+  legend <- tmp$grobs[[leg]] 
+  return(legend)} 
+
+legend.dx <- g_legend(ggplot(Predict(mod.noc.sys.diff[[1]], 
+                                     nocturnal.systolic.diff.sleep.self.reported,
+                 enrolled.dx = c("Normal", "MCI", "Ambiguous At Risk"))))
+@
+
+
+\begin{landscape}
+\subsubsection{SBP Prewaking Surge by Diagnosis}
+<<pep.Sys.Prewaking.dx, fig.width = 10, fig.height = 6.8, cache = T>>=
+#Systolic prewaking surge
+sys.prewaking.PEP.dx <- lapply(mod.sys.prewaking.surge,
+                             function(x) ggplot(Predict(x, systolic.prewaking.surge,
+                                                enrolled.dx.factor = c("Normal",
+                                                                       "MCI",
+                                                                       "Ambiguous At Risk")),
+                                                colfill = "grey60",
+                                                adj.subtitle = FALSE,
+                                                xlab = "SBP prewaking",
+                                                ylab = gsub("asl.reac.", "", x$sformula[2])) + 
+  theme(legend.position = "none"))
+
+sys.prewaking.PEP.dx[[15]] <- legend.dx
+do.call(grid.arrange, sys.prewaking.PEP.dx)
+@
+\end{landscape}
+\begin{landscape}
+\subsubsection{SBP Rising Surge by Diagnosis}
+<<pep.Sys.Rising.dx, fig.width = 10, fig.height = 6.8, cache = T>>=
+#Systolic rising surge
+sys.rising.PEP.dx <- lapply(mod.sys.rising.surge,
+                             function(x) ggplot(Predict(x, systolic.rising.surge,
+                                                enrolled.dx.factor = c("Normal",
+                                                                        "MCI",
+                                                                        "Ambiguous At Risk")),
+                                                colfill = "grey60",
+                                                adj.subtitle = FALSE,
+                                                xlab = "SBP rising",
+                                                ylab = gsub("asl.reac.", "", x$sformula[2])) + 
+  theme(legend.position = "none"))
+
+sys.rising.PEP.dx[[15]] <- legend.dx
+do.call(grid.arrange, sys.rising.PEP.dx)
+@
+\end{landscape}
+\begin{landscape}
+\subsubsection{Nocturnal Decline in SBP by Diagnosis}
+<<pep.Noc.Diff.dx, fig.width = 10, fig.height = 6.8, cache = T>>=
+#Nocturnal difference
+noc.sys.diff.PEP.dx <- lapply(mod.noc.sys.diff,
+                             function(x) ggplot(Predict(x, nocturnal.systolic.diff.sleep.self.reported,
+                                                enrolled.dx.factor = c("Normal",
+                                                                        "MCI",
+                                                                        "Ambiguous At Risk")),
+                                                colfill = "grey60",
+                                                adj.subtitle = FALSE,
+                                                ylim. = c(-5,5),
+                                                xlab = "Nocturnal Difference",
+                                                ylab = gsub("asl.reac.", "", x$sformula[2])) + 
+  theme(legend.position = "none"))
+
+
+noc.sys.diff.PEP.dx[[15]] <- legend.dx
+do.call(grid.arrange, noc.sys.diff.PEP.dx)
+@
+\end{landscape}
+
+
+
+\clearpage
+\subsection{Tests of Linearity for ABP Measures}
+
+\begin{itemize}
+  \item The following table represents results for tests of linearity of the ABP measurements, when each ABP measure is modeled as a restricted cubic spline with three knots. 
+  \item No evidence to suggest the effect is truly non-linear for any model. (All p-values are greater than 0.05.)
+\end{itemize}
+
+<<results='asis'>>=
+#######################################
+#  Tests of Linearity                 #
+#######################################
+
+#Select p-values for test of linearity
+sys.prewaking.nonlin <- lapply(mod.sys.prewaking.surge,
+                             function(x) anova(x)[" Nonlinear","P"])
+sys.rising.nonlin <- lapply(mod.sys.rising.surge,
+                             function(x) anova(x)[" Nonlinear","P"])
+noc.sys.diff.nonlin <- lapply(mod.noc.sys.diff,
+                             function(x) anova(x)[" Nonlinear","P"])
+
+
+linear.table <- data.frame("SBP Prewaking Surge" = unlist(sys.prewaking.nonlin),
+                          "SBP Rising Surge" = unlist(sys.rising.nonlin),
+                          "Nocturnal SBP Difference" = unlist(noc.sys.diff.nonlin),
+                          row.names = outcomeNames,
+                          check.names = FALSE)
+
+print(xtable(linear.table, digits = 3,
+             caption = "P-values for test of linearity for ABP predictors"),
+      caption.placement = "top")
+@
+
+
 
 
 \clearpage
@@ -1363,6 +1469,7 @@ grid.arrange(sens1, sens2, sens3, ncol = 3)
 
 #Results available if desired but suppressed since conclusions do not change
 #  (results still not significant at 0.05 level)
+#Models with restricted cubic splines
 
 modelFitComplete <- function(outcome, predictor, ma, knot){
   
@@ -1466,7 +1573,7 @@ Hannah Weeks\\
   \item Project overview and statistical analysis plan
   \item Model fitting and partial effect plots
   \item Tests of association and linearity
-  \item Sensitivity analysis for linear effect
+  \item Interaction analysis
   \item Secondary aim
 \end{itemize}
 
@@ -1476,6 +1583,7 @@ Brooklyn Stanley\\
   \item Application of inclusion/exclusion criteria
   \item Descriptive statistics
   \item Imputation and associated sensitivity analysis
+  \item Tables for full regression output of linear models
 \end{itemize}
 
 \clearpage

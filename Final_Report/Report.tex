@@ -107,6 +107,7 @@ Brooklyn Stanley  \\ \href{mailto:b.stanley@vanderbilt.edu}{\url{b.stanley@vande
 %\pagestyle{fancy}
 \IfFileExists{upquote.sty}{\usepackage{upquote}}{}
 \begin{document}
+%\SweaveOpts{concordance=TRUE}
 
 \maketitle
 \clearpage
@@ -230,8 +231,8 @@ Regional brain volume variables\\
   \item Ordinary least squares regression models for each of the 14 CVR outcomes against each of the 3 ABP variables (42 models), controlling for covariates listed in \hyperref[sec:vars]{section 1.3}.
   \item To allow for a non-linear relationship between CVR outcomes and ABP predictors, we model ABP as a restricted cubic spline with 3 knots. 
   \item Knots are placed at 0 and interquartile range values ($25^{th}$ and $75^{th}$ percentiles) of the positive ABP values to capture abnormal values (e.g. negative ABP surge measurements) and patients at the low and high ends of positive ABP values.
-  \item Wald tests for overall association and linearity of ABP measurements are performed 
-  \item Present partial effect plots for each ABP-CVR outcome pair: effect of ABP holding all other covariates constant.
+  \item Wald tests for linearity of ABP measurements are performed. 
+  \item Since tests for linearity suggested a lack of evidence for associations being truly non-linear, we present results for models with a linear association between ABP measurements and CVR outcomes.
   \item Use multiple imputation to recover missing data in ABP predictors.
 \end{itemize}
 
@@ -244,7 +245,7 @@ Regional brain volume variables\\
   \item Present correlation matrix between ABP predictors and CVR outcomes.
 \end{itemize}
 
-\subsection{Sensitivity Analyses}
+\subsection{Supplemental Analyses}
 
 \begin{itemize}
   \item Graphically compare of observed and imputed values for ABP measurements to ensure distributions are consistent.
@@ -283,7 +284,7 @@ Regional brain volume variables\\
  \clearpage
  \label{sec:table}
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:04 2017
+% Mon Feb 20 13:11:58 2017
 \begin{table}[ht]
 \centering
 \caption{Comparison of Demographics for Excluded and Included Data} 
@@ -291,9 +292,9 @@ Regional brain volume variables\\
   \toprule
 Variable & \parbox{.5in}{Excluded N=162} & \parbox{.9in}{Analyzed Data N=174} & P-Value \\ 
   \midrule
-Diff. in mean SBP, wake - sleep, self-reported periods & 14.5 (10.5) & 13.4 (9.4) & 0.6075 \\ 
-  systolic.post.wake.mean minus systolic.pre.wake.mean & 11.1 (12.3) & 12.3 (12.2) & 0.4331 \\ 
-  systolic.post.wake.1 minus systolic.pre.wake.1 & 8.6 (14.2) & 8.4 (13.6) & 0.8162 \\ 
+Nocturnal Systolic Difference & 14.5 (10.5) & 13.4 (9.4) & 0.6075 \\ 
+  Systolic Prewaking Surge & 11.1 (12.3) & 12.3 (12.2) & 0.4331 \\ 
+  Systolic Rising Surge & 8.6 (14.2) & 8.4 (13.6) & 0.8162 \\ 
   ICV (calculated) & 1403.7 (144.4) & 1364.9 (138.4) & 0.0247 \\ 
   Education (years) & 16.3 (2.6) & 15.5 (2.6) & 0.0095 \\ 
   Age at medhx.date, recalculated & 73.1 (7.5) & 72.7 (7.1) & 0.6214 \\ 
@@ -314,19 +315,19 @@ Diff. in mean SBP, wake - sleep, self-reported periods & 14.5 (10.5) & 13.4 (9.4
   Taking at least 1 anti-hypertensive med &  &  & 0.622 \\ 
   -- Yes & 85 (52\%) & 97 (56\%) &  \\ 
   -- No & 77 (48\%) & 77 (44\%) &  \\ 
-  Diabetic, determined by a1c, glucose, and/or rx &  &  & 0.1947 \\ 
+  Diabetic &  &  & 0.1947 \\ 
   -- Yes & 35 (22\%) & 27 (16\%) &  \\ 
   -- No & 127 (78\%) & 147 (84\%) &  \\ 
   Current smoker (or quit in this or last calendar yr) &  &  & 0.3898 \\ 
   -- Yes & 5 (3\%) & 2 (1\%) &  \\ 
   -- No & 157 (97\%) & 172 (99\%) &  \\ 
-  CVD, determined from variables in med hx &  &  & 0.622 \\ 
+  CVD &  &  & 0.622 \\ 
   -- Yes & 4 (2\%) & 7 (4\%) &  \\ 
   -- No & 158 (98\%) & 167 (96\%) &  \\ 
-  A-fib, determined by med hx and/or echo and/or cmr rhythm &  &  & 1 \\ 
+  A-fib &  &  & 1 \\ 
   -- Yes & 9 (6\%) & 10 (6\%) &  \\ 
   -- No & 151 (93\%) & 164 (94\%) &  \\ 
-  LV hypertrophy, determined by sex and scaled LV mass &  &  & 0.6958 \\ 
+  LV Hypertrophy &  &  & 0.6958 \\ 
   -- Yes & 9 (6\%) & 7 (4\%) &  \\ 
   -- No & 153 (94\%) & 166 (95\%) &  \\ 
    \bottomrule
@@ -352,7 +353,7 @@ In the following table:
 \end{itemize}
 
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:04 2017
+% Mon Feb 20 13:11:58 2017
 \begin{table}[ht]
 \centering
 \caption{Comparison of Demographics by Consensus Diagnosis (N = 174)} 
@@ -360,9 +361,9 @@ In the following table:
   \toprule
 Variable & \parbox{.5in}{Normal N=101} & \parbox{.41in}{MCI    N=62} & \parbox{.61in}{Ambiguous At-Risk      N=11} & P-value \\ 
   \midrule
-nocturnal.systolic.diff.sleep.self.reported & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2) & 3e-04 \\ 
-  systolic.prewaking.surge & 14.1 (12.9) & 8.9 (10.3) & 12.4 (11.9) & 0.0529 \\ 
-  systolic.rising.surge & 11.4 (12.9) & 3.7 (12.5) & 4.9 (18.7) & 0.0011 \\ 
+Nocturnal Systolic Difference & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2) & 3e-04 \\ 
+  Systolic Prewaking Surge & 14.1 (12.9) & 8.9 (10.3) & 12.4 (11.9) & 0.0529 \\ 
+  Systolic Rising Surge & 11.4 (12.9) & 3.7 (12.5) & 4.9 (18.7) & 0.0011 \\ 
   ICV (calculated) & 1369.2 (140) & 1345.9 (135.9) & 1431.9 (122.9) & 0.1649 \\ 
   Education (years) & 16.1 (2.4) & 14.6 (2.6) & 15.5 (3.3) & 0.0021 \\ 
   Age at medhx.date, recalculated & 72.6 (7.3) & 73.2 (7.2) & 71.4 (4.8) & 0.743 \\ 
@@ -378,19 +379,19 @@ nocturnal.systolic.diff.sleep.self.reported & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2
   Taking at least 1 anti-hypertensive med &  &  &  & 0.9005 \\ 
   -- Yes & 55 (54\%) & 36 (58\%) & 6 (55\%) &  \\ 
   -- No & 46 (46\%) & 26 (42\%) & 5 (45\%) &  \\ 
-  Diabetic, determined by a1c, glucose, and/or rx &  &  &  & 0.0863 \\ 
+  Diabetic &  &  &  & 0.0863 \\ 
   -- Yes & 12 (12\%) & 11 (18\%) & 4 (36\%) &  \\ 
   -- No & 89 (88\%) & 51 (82\%) & 7 (64\%) &  \\ 
   Current smoker (or quit in this or last calendar yr) &  &  &  & 0.1608 \\ 
   -- Yes & 0 (0\%) & 2 (3\%) & 0 (0\%) &  \\ 
   -- No & 101 (100\%) & 60 (97\%) & 11 (100\%) &  \\ 
-  CVD, determined from variables in med hx &  &  &  & 0.6743 \\ 
+  CVD &  &  &  & 0.6743 \\ 
   -- Yes & 5 (5\%) & 2 (3\%) & 0 (0\%) &  \\ 
   -- No & 96 (95\%) & 60 (97\%) & 11 (100\%) &  \\ 
-  A-fib, determined by med hx and/or echo and/or cmr rhythm &  &  &  & 0.1502 \\ 
+  A-fib &  &  &  & 0.1502 \\ 
   -- Yes & 4 (4\%) & 4 (6\%) & 2 (18\%) &  \\ 
   -- No & 97 (96\%) & 58 (94\%) & 9 (82\%) &  \\ 
-  LV hypertrophy, determined by sex and scaled LV mass &  &  &  & 0.576 \\ 
+  LV Hypertrophy &  &  &  & 0.576 \\ 
   -- Yes & 3 (3\%) & 3 (5\%) & 1 (9\%) &  \\ 
   -- No & 97 (96\%) & 59 (95\%) & 10 (91\%) &  \\ 
    \bottomrule
@@ -504,6 +505,51 @@ nocturnal.systolic.diff.sleep.self.reported & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2
   \item Univariate trends may not hold in the adjusted analyses.
 \end{itemize}
 
+\subsection{Unadjusted ABP-CVR Associations by Diagnosis}
+
+To examine whether or not an interaction between the ABP predictors of interest and diagnosis group seems to be present. Since our interaction analysis will not include the ``Ambiguous At Risk'' group, the plots are restricted to data for the MCI and Normal cognition groups.
+
+\subsubsection{SBP Prewaking Surge}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-int_unadj_prewaking-1} 
+
+}
+
+
+
+\end{knitrout}
+\clearpage
+\subsubsection{SBP Rising Surge}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-int_unadj_rising-1} 
+
+}
+
+
+
+\end{knitrout}
+\clearpage
+\subsubsection{Nocturnal Difference in SBP}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}
+
+{\centering \includegraphics[width=\maxwidth]{figure/graphics-int_unadj_noc_diff-1} 
+
+}
+
+
+
+\end{knitrout}
+
+\begin{itemize}
+  \item It does not appear an interaction is present. All lines generally follow the same flat trend. 
+  \item For some brain regions, the MCI and Normal trends differ slightly in the tails of the ABP distribution, though this is driven by few data points.
+  \item Lines for the Ambiguous At Risk group have more variability. However, there are only 11 patients in this group, and this diagnosis category will ultimately be excluded in the interaction analysis.
+\end{itemize}
 
 
 \clearpage
@@ -512,7 +558,7 @@ nocturnal.systolic.diff.sleep.self.reported & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2
 
 \subsection{Missing Data}
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:13 2017
+% Mon Feb 20 13:12:15 2017
 \begin{table}[ht]
 \centering
 \caption{Variables with Missing Observations} 
@@ -520,9 +566,9 @@ nocturnal.systolic.diff.sleep.self.reported & 15.3 (9.4) & 9.5 (8.7) & 17.7 (6.2
   \hline
 Variable & Missingness \\ 
   \hline
-LV hypertrophy, determined by sex and scaled LV mass & 1 (0.57\%) \\ 
-  systolic.rising.surge & 23 (13.22\%) \\ 
-  systolic.prewaking.surge & 27 (15.52\%) \\ 
+LV Hypertrophy & 1 (0.57\%) \\ 
+  Systolic Rising Surge & 23 (13.22\%) \\ 
+  Systolic Prewaking Surge & 27 (15.52\%) \\ 
   nocturnal.systolic.diff.sleep.self.reported & 15 (8.62\%) \\ 
    \hline
 \end{tabular}
@@ -538,12 +584,1159 @@ LV hypertrophy, determined by sex and scaled LV mass & 1 (0.57\%) \\
 
 
 
+\clearpage
 \subsection{CVR Outcome Models}
+
+\subsubsection{Model with Linear Effect of ABP Predictors}
+Original models were fit with restricted cubic splines. However, tests of linearity indicated a lack of evidence that effects were truly non-linear. Thus, primary results are presented for a linear association between ABP predictors and CVR outcomes. \\
+
+Visual representations (partial effect plots) of ABP-CVR associations both overall and stratified by diagnosis can be found in \hyperref[sec:PEP]{section 6.3}.
+
+\begin{itemize}
+  \item Results for the coefficients associated with predictors of interest (ABP measurements) are presented on the next page. Full regression outputs of all 42 models are provided as supplementary results (see \hyperref[sec:fullOutput]{section 6.1}).
+  \item No significant p-values at the 0.05 level: Insufficient evidence that any of the ABP measurements have an effect on CVR in any brain region.
+  \item Generally, we would recommend a multiple comparisons adjustment for fitting the 42 models (e.g. using a Bonferroni-corrected significance level of $\frac{.05}{42} = .0012$).
+  \item Coefficients are interpreted as the effect on CVR outcome for a one-mmHg increase in ABP measurement. 
+  \item Multiply coefficients by 10 to interpret the effect on CVR for a 10-mmHg increase in ABP measurement.
+  \begin{itemize}
+    \item E.g. For a 10-mmHg increase in the systolic blood pressure prewaking surge, CVR in the left hemisphere is expected to decrease by .083, holding other model variables constant. 
+  \end{itemize}
+\end{itemize}
+
+
+
+
+\begin{landscape}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:19 2017
+\begin{table}[ht]
+\centering
+\caption{Coefficients for Linear ABP with CVR} 
+\begin{tabular}{lrrrrrrrrr}
+  \toprule
+ &  \\ 
+  & \multicolumn{3}{c}{SBP Prewaking Surge} & 
+                      \multicolumn{3}{c}{SBP Rising Surge} & 
+                      \multicolumn{3}{c}{Nocturnal Decline in SBP} \\ & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \\ \midrule
+Left Hemisphere & -0.0083 & 0.0120 & 0.4930 & -0.0058 & 0.0105 & 0.5819 & -0.0262 & 0.0155 & 0.0931 \\ 
+  Right Hemisphere & -0.0028 & 0.0115 & 0.8054 & -0.0071 & 0.0104 & 0.4932 & -0.0240 & 0.0151 & 0.1133 \\ 
+  Left Frontal Lobe & -0.0041 & 0.0141 & 0.7705 & -0.0038 & 0.0120 & 0.7510 & -0.0289 & 0.0178 & 0.1050 \\ 
+  Right Frontal Lobe & 0.0002 & 0.0130 & 0.9870 & -0.0078 & 0.0115 & 0.4972 & -0.0262 & 0.0170 & 0.1238 \\ 
+  Full Frontal Lobe & -0.0016 & 0.0131 & 0.9024 & -0.0056 & 0.0113 & 0.6237 & -0.0268 & 0.0167 & 0.1114 \\ 
+  Left Occipital Lobe & -0.0202 & 0.0149 & 0.1772 & -0.0130 & 0.0127 & 0.3069 & -0.0144 & 0.0187 & 0.4435 \\ 
+  Right Occipital Lobe & -0.0079 & 0.0141 & 0.5756 & -0.0201 & 0.0125 & 0.1100 & -0.0044 & 0.0181 & 0.8095 \\ 
+  Full Occipital Lobe & -0.0136 & 0.0134 & 0.3125 & -0.0159 & 0.0117 & 0.1767 & -0.0088 & 0.0171 & 0.6072 \\ 
+  Left Temporal Lobe & -0.0015 & 0.0119 & 0.8993 & 0.0019 & 0.0103 & 0.8523 & -0.0207 & 0.0151 & 0.1708 \\ 
+  Right Temporal Lobe & 0.0066 & 0.0127 & 0.6055 & 0.0054 & 0.0111 & 0.6246 & -0.0140 & 0.0171 & 0.4150 \\ 
+  Full Temporal Lobe & 0.0024 & 0.0112 & 0.8298 & 0.0036 & 0.0098 & 0.7186 & -0.0165 & 0.0147 & 0.2650 \\ 
+  Left Parietal Lobe & -0.0189 & 0.0159 & 0.2373 & -0.0185 & 0.0143 & 0.1983 & -0.0254 & 0.0211 & 0.2303 \\ 
+  Right Parietal Lobe & -0.0125 & 0.0140 & 0.3736 & -0.0140 & 0.0126 & 0.2683 & -0.0254 & 0.0183 & 0.1670 \\ 
+  Full Parietal Lobe & -0.0157 & 0.0146 & 0.2828 & -0.0169 & 0.0132 & 0.2005 & -0.0251 & 0.0192 & 0.1936 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+\end{landscape}
+
+\clearpage
+\begin{landscape}
+\subsubsection{Linear CVR Outcome Models with Interaction}
+
+\begin{itemize}
+  \item For the interaction results, patients who were diagnosed as "Ambiguous At Risk" were excluded from analysis (n = 11).
+  \item Results suggest no evidence for the presence of an interaction between any of the SBP predictors and CVR outcomes at the 0.05 level.
+\end{itemize}
 
 
 
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:16 2017
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Coefficients for ABP:CVR Interaction} 
+\begin{tabular}{lrrrrrrrrr}
+  \toprule
+ &  \\ 
+  & \multicolumn{3}{c}{SBP Prewaking Surge} & 
+                      \multicolumn{3}{c}{SBP Rising Surge} & 
+                      \multicolumn{3}{c}{Nocturnal Decline in SBP} \\ & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \\ \midrule
+Left Hemisphere & -0.0003 & 0.0294 & 0.9919 & 0.0137 & 0.0232 & 0.5571 & -0.0074 & 0.0333 & 0.8233 \\ 
+  Right Hemisphere & -0.0093 & 0.0287 & 0.7468 & 0.0085 & 0.0231 & 0.7135 & -0.0116 & 0.0333 & 0.7285 \\ 
+  Left Frontal Lobe & 0.0138 & 0.0338 & 0.6834 & 0.0231 & 0.0266 & 0.3865 & -0.0025 & 0.0377 & 0.9473 \\ 
+  Right Frontal Lobe & -0.0026 & 0.0321 & 0.9362 & 0.0068 & 0.0257 & 0.7922 & -0.0077 & 0.0360 & 0.8307 \\ 
+  Full Frontal Lobe & 0.0074 & 0.0319 & 0.8163 & 0.0166 & 0.0252 & 0.5115 & -0.0048 & 0.0354 & 0.8929 \\ 
+  Left Occipital Lobe & -0.0009 & 0.0445 & 0.9830 & -0.0160 & 0.0304 & 0.5984 & 0.0019 & 0.0389 & 0.9607 \\ 
+  Right Occipital Lobe & -0.0169 & 0.0368 & 0.6464 & -0.0118 & 0.0283 & 0.6761 & -0.0095 & 0.0384 & 0.8057 \\ 
+  Full Occipital Lobe & -0.0106 & 0.0379 & 0.7802 & -0.0140 & 0.0273 & 0.6077 & -0.0041 & 0.0358 & 0.9093 \\ 
+  Left Temporal Lobe & 0.0182 & 0.0281 & 0.5172 & 0.0169 & 0.0228 & 0.4593 & -0.0053 & 0.0318 & 0.8676 \\ 
+  Right Temporal Lobe & 0.0056 & 0.0293 & 0.8473 & 0.0106 & 0.0276 & 0.7006 & 0.0151 & 0.0370 & 0.6832 \\ 
+  Full Temporal Lobe & 0.0101 & 0.0259 & 0.6963 & 0.0128 & 0.0222 & 0.5653 & 0.0012 & 0.0315 & 0.9707 \\ 
+  Left Parietal Lobe & -0.0346 & 0.0398 & 0.3871 & -0.0050 & 0.0324 & 0.8787 & -0.0351 & 0.0452 & 0.4384 \\ 
+  Right Parietal Lobe & -0.0286 & 0.0338 & 0.3983 & 0.0075 & 0.0277 & 0.7869 & -0.0373 & 0.0387 & 0.3372 \\ 
+  Full Parietal Lobe & -0.0316 & 0.0359 & 0.3801 & 0.0007 & 0.0293 & 0.9813 & -0.0349 & 0.0410 & 0.3956 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+\end{landscape}
+
+\clearpage
+\subsection{Secondary Aim}
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{R-squared for ABP predictor models} 
+\begin{tabular}{rrrr}
+  \hline
+ & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
+  \hline
+Left Hemisphere & 0.056 & 0.055 & 0.072 \\ 
+  Right Hemisphere & 0.040 & 0.043 & 0.056 \\ 
+  Left Frontal Lobe & 0.068 & 0.068 & 0.084 \\ 
+  Right Frontal Lobe & 0.056 & 0.059 & 0.071 \\ 
+  Full Frontal Lobe & 0.065 & 0.066 & 0.081 \\ 
+  Left Occipital Lobe & 0.093 & 0.087 & 0.084 \\ 
+  Right Occipital Lobe & 0.056 & 0.069 & 0.054 \\ 
+  Full Occipital Lobe & 0.065 & 0.069 & 0.060 \\ 
+  Left Temporal Lobe & 0.053 & 0.053 & 0.064 \\ 
+  Right Temporal Lobe & 0.023 & 0.023 & 0.026 \\ 
+  Full Temporal Lobe & 0.034 & 0.035 & 0.042 \\ 
+  Left Parietal Lobe & 0.037 & 0.039 & 0.037 \\ 
+  Right Parietal Lobe & 0.049 & 0.052 & 0.055 \\ 
+  Full Parietal Lobe & 0.043 & 0.046 & 0.046 \\ 
+   \hline
+\end{tabular}
+\end{table}
+
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Correlation Matrix for ABP Predictors and CVR Outcomes} 
+\begin{tabular}{rrrr}
+  \toprule
+ & SBP Prewaking Surge & SBP Rising Surge & Nocturnal Decline in SBP \\ 
+  \midrule
+Left Hemisphere & -0.044 & 0.094 & 0.030 \\ 
+  Right Hemisphere & -0.014 & 0.088 & 0.026 \\ 
+  Left Frontal Lobe & -0.013 & 0.096 & 0.029 \\ 
+  Right Frontal Lobe & 0.018 & 0.117 & 0.039 \\ 
+  Full Frontal Lobe & 0.003 & 0.109 & 0.036 \\ 
+  Left Occipital Lobe & -0.064 & 0.109 & 0.114 \\ 
+  Right Occipital Lobe & -0.007 & 0.078 & 0.091 \\ 
+  Full Occipital Lobe & -0.035 & 0.098 & 0.108 \\ 
+  Left Temporal Lobe & 0.003 & 0.177 & 0.095 \\ 
+  Right Temporal Lobe & -0.026 & 0.044 & -0.004 \\ 
+  Full Temporal Lobe & 0.000 & 0.131 & 0.059 \\ 
+  Left Parietal Lobe & -0.087 & 0.046 & 0.030 \\ 
+  Right Parietal Lobe & -0.040 & 0.080 & 0.044 \\ 
+  Full Parietal Lobe & -0.068 & 0.063 & 0.039 \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{itemize}
+  \item Nocturnal decline in SBP has slightly higher $R^2$ in overall hemispheres, frontal, and temporal lobes. SBP rising surge is highest in the occipital and parietal lobes.
+  \item All $R^2$ values are very low, indicating these models generally do not have extensive predictive ability. In other words, less than 1\% of the variability in CVR outcomes is explained by any of the models fitted in this analysis.
+  \item SBP rising surge has all positive correlations, though numbers are small.
+  \item No correlations were statistically significant at the 0.05 level.
+\end{itemize}
+
+
+\clearpage
+\section{Supplemental Analyses}
+
+\subsection{Full Regression Output for Linear Models}
+\label{sec:fullOutput}
+
+The following tables provide full regression outputs for our primary results: ordinary least squares models on the data with multiply imputed ABP predictors to account for missing data. Since all the data are utilized (i.e. Ambiguous At Risk is not excluded), these models do not contain the predictor-diagnosis interaction.
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Left Hemisphere} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 4.390 & 2.420 & (-0.353, 9.13) \\ 
+  systolic.prewaking.surge & -0.008 & 0.015 & (-0.0386, 0.0221) \\ 
+  ma.left.hemisphere & -0.000 & 0.000 & (-8.84e-06, 1.27e-06) \\ 
+  age & -0.002 & 0.019 & (-0.0403, 0.0358) \\ 
+  sex.factor=Female & -0.365 & 0.321 & (-0.993, 0.264) \\ 
+  raceethnicity.factor=Other & -0.119 & 0.409 & (-0.921, 0.682) \\ 
+  education & 0.041 & 0.054 & (-0.0659, 0.147) \\ 
+  enrolled.dx.factor=MCI & -0.272 & 0.295 & (-0.85, 0.307) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.333 & 0.537 & (-1.39, 0.72) \\ 
+  apoe4pos.factor=No & -0.112 & 0.282 & (-0.665, 0.441) \\ 
+  htnrx.factor=No & 0.571 & 0.265 & (0.0508, 1.09)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Right Hemisphere} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.220 & 2.430 & (-1.54, 7.97) \\ 
+  systolic.prewaking.surge & -0.003 & 0.015 & (-0.0324, 0.0267) \\ 
+  ma.right.hemisphere & -0.000 & 0.000 & (-7.12e-06, 3.18e-06) \\ 
+  age & -0.007 & 0.019 & (-0.0444, 0.03) \\ 
+  sex.factor=Female & -0.203 & 0.322 & (-0.833, 0.428) \\ 
+  raceethnicity.factor=Other & -0.137 & 0.397 & (-0.914, 0.64) \\ 
+  education & 0.064 & 0.053 & (-0.0398, 0.167) \\ 
+  enrolled.dx.factor=MCI & -0.157 & 0.287 & (-0.72, 0.406) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.425 & 0.524 & (-1.45, 0.601) \\ 
+  apoe4pos.factor=No & -0.110 & 0.275 & (-0.649, 0.43) \\ 
+  htnrx.factor=No & 0.378 & 0.259 & (-0.129, 0.886) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Left Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.720 & 2.200 & (-1.59, 7.02) \\ 
+  systolic.prewaking.surge & -0.004 & 0.018 & (-0.0389, 0.0307) \\ 
+  ma.left.frontal.lobe.vol & -0.000 & 0.000 & (-3.15e-05, 9.84e-06) \\ 
+  age & -0.004 & 0.022 & (-0.0473, 0.0392) \\ 
+  sex.factor=Female & -0.003 & 0.334 & (-0.658, 0.652) \\ 
+  raceethnicity.factor=Other & -0.003 & 0.469 & (-0.923, 0.917) \\ 
+  education & 0.070 & 0.062 & (-0.0527, 0.192) \\ 
+  enrolled.dx.factor=MCI & -0.182 & 0.342 & (-0.852, 0.488) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.489 & 0.630 & (-1.72, 0.747) \\ 
+  apoe4pos.factor=No & -0.053 & 0.327 & (-0.695, 0.588) \\ 
+  htnrx.factor=No & 0.819 & 0.309 & (0.214, 1.42)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Right Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.850 & 2.190 & (-2.43, 6.14) \\ 
+  systolic.prewaking.surge & 0.000 & 0.017 & (-0.033, 0.0334) \\ 
+  ma.right.frontal.lobe.vol & -0.000 & 0.000 & (-2.64e-05, 1.76e-05) \\ 
+  age & -0.004 & 0.021 & (-0.045, 0.0375) \\ 
+  sex.factor=Female & -0.032 & 0.323 & (-0.664, 0.601) \\ 
+  raceethnicity.factor=Other & 0.121 & 0.445 & (-0.751, 0.994) \\ 
+  education & 0.088 & 0.059 & (-0.0284, 0.204) \\ 
+  enrolled.dx.factor=MCI & -0.140 & 0.325 & (-0.778, 0.497) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.604 & 0.601 & (-1.78, 0.573) \\ 
+  apoe4pos.factor=No & -0.098 & 0.311 & (-0.709, 0.512) \\ 
+  htnrx.factor=No & 0.615 & 0.293 & (0.04, 1.19)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Full Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.460 & 2.110 & (-1.68, 6.6) \\ 
+  systolic.prewaking.surge & -0.002 & 0.017 & (-0.0344, 0.0312) \\ 
+  ma.frontal.lobe.vol & -0.000 & 0.000 & (-1.46e-05, 6.11e-06) \\ 
+  age & -0.005 & 0.021 & (-0.0456, 0.0357) \\ 
+  sex.factor=Female & -0.028 & 0.316 & (-0.647, 0.592) \\ 
+  raceethnicity.factor=Other & 0.037 & 0.440 & (-0.825, 0.899) \\ 
+  education & 0.078 & 0.059 & (-0.0367, 0.193) \\ 
+  enrolled.dx.factor=MCI & -0.162 & 0.321 & (-0.791, 0.468) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.558 & 0.592 & (-1.72, 0.603) \\ 
+  apoe4pos.factor=No & -0.081 & 0.307 & (-0.683, 0.521) \\ 
+  htnrx.factor=No & 0.709 & 0.290 & (0.141, 1.28)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Left Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 4.650 & 2.760 & (-0.756, 10.1) \\ 
+  systolic.prewaking.surge & -0.020 & 0.019 & (-0.0568, 0.0165) \\ 
+  ma.left.occipital.lobe.vol & -0.000 & 0.000 & (-0.000145, 4.46e-06) \\ 
+  age & 0.025 & 0.025 & (-0.0228, 0.0731) \\ 
+  sex.factor=Female & -1.080 & 0.383 & (-1.83, -0.33)* \\ 
+  raceethnicity.factor=Other & -0.507 & 0.523 & (-1.53, 0.518) \\ 
+  education & 0.003 & 0.068 & (-0.131, 0.137) \\ 
+  enrolled.dx.factor=MCI & -0.065 & 0.371 & (-0.792, 0.662) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.192 & 0.674 & (-1.13, 1.51) \\ 
+  apoe4pos.factor=No & -0.212 & 0.356 & (-0.91, 0.486) \\ 
+  htnrx.factor=No & 0.745 & 0.335 & (0.0883, 1.4)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Right Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.600 & 2.470 & (-3.24, 6.44) \\ 
+  systolic.prewaking.surge & -0.008 & 0.018 & (-0.0435, 0.0277) \\ 
+  ma.right.occipital.lobe.vol & -0.000 & 0.000 & (-8.01e-05, 4.42e-05) \\ 
+  age & 0.011 & 0.024 & (-0.0357, 0.0572) \\ 
+  sex.factor=Female & -0.452 & 0.365 & (-1.17, 0.264) \\ 
+  raceethnicity.factor=Other & -0.864 & 0.501 & (-1.85, 0.118) \\ 
+  education & 0.095 & 0.067 & (-0.0366, 0.226) \\ 
+  enrolled.dx.factor=MCI & 0.328 & 0.363 & (-0.383, 1.04) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.320 & 0.662 & (-0.978, 1.62) \\ 
+  apoe4pos.factor=No & -0.011 & 0.350 & (-0.697, 0.674) \\ 
+  htnrx.factor=No & 0.129 & 0.331 & (-0.519, 0.777) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Full Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.240 & 2.470 & (-1.61, 8.08) \\ 
+  systolic.prewaking.surge & -0.014 & 0.017 & (-0.0472, 0.02) \\ 
+  ma.occipital.lobe.vol & -0.000 & 0.000 & (-5.37e-05, 1.27e-05) \\ 
+  age & 0.017 & 0.022 & (-0.0272, 0.0606) \\ 
+  sex.factor=Female & -0.740 & 0.349 & (-1.42, -0.0553)* \\ 
+  raceethnicity.factor=Other & -0.632 & 0.475 & (-1.56, 0.3) \\ 
+  education & 0.038 & 0.063 & (-0.0852, 0.162) \\ 
+  enrolled.dx.factor=MCI & 0.088 & 0.340 & (-0.58, 0.755) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.281 & 0.621 & (-0.937, 1.5) \\ 
+  apoe4pos.factor=No & -0.113 & 0.328 & (-0.755, 0.53) \\ 
+  htnrx.factor=No & 0.444 & 0.309 & (-0.162, 1.05) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Left Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.430 & 2.190 & (-0.851, 7.72) \\ 
+  systolic.prewaking.surge & -0.002 & 0.015 & (-0.0311, 0.028) \\ 
+  ma.left.temporal.lobe.vol & -0.000 & 0.000 & (-5.93e-05, 2.11e-05) \\ 
+  age & 0.002 & 0.019 & (-0.0362, 0.04) \\ 
+  sex.factor=Female & -0.338 & 0.316 & (-0.957, 0.282) \\ 
+  raceethnicity.factor=Other & -0.562 & 0.411 & (-1.37, 0.244) \\ 
+  education & -0.006 & 0.055 & (-0.113, 0.102) \\ 
+  enrolled.dx.factor=MCI & -0.426 & 0.299 & (-1.01, 0.16) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.262 & 0.543 & (-1.33, 0.801) \\ 
+  apoe4pos.factor=No & -0.136 & 0.286 & (-0.698, 0.425) \\ 
+  htnrx.factor=No & 0.473 & 0.270 & (-0.0555, 1) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Right Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.860 & 2.490 & (-2.01, 7.73) \\ 
+  systolic.prewaking.surge & 0.007 & 0.017 & (-0.0269, 0.0401) \\ 
+  ma.right.temporal.lobe.vol & 0.000 & 0.000 & (-4.29e-05, 4.76e-05) \\ 
+  age & -0.011 & 0.022 & (-0.054, 0.0314) \\ 
+  sex.factor=Female & -0.059 & 0.358 & (-0.76, 0.642) \\ 
+  raceethnicity.factor=Other & -0.072 & 0.456 & (-0.965, 0.822) \\ 
+  education & 0.003 & 0.061 & (-0.117, 0.123) \\ 
+  enrolled.dx.factor=MCI & -0.308 & 0.332 & (-0.958, 0.342) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.766 & 0.601 & (-1.94, 0.413) \\ 
+  apoe4pos.factor=No & -0.149 & 0.319 & (-0.774, 0.477) \\ 
+  htnrx.factor=No & 0.056 & 0.299 & (-0.53, 0.642) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Full Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.110 & 2.170 & (-1.14, 7.37) \\ 
+  systolic.prewaking.surge & 0.002 & 0.015 & (-0.0265, 0.0313) \\ 
+  ma.temporal.lobe.vol & -0.000 & 0.000 & (-2.4e-05, 1.63e-05) \\ 
+  age & -0.005 & 0.019 & (-0.0422, 0.0322) \\ 
+  sex.factor=Female & -0.202 & 0.311 & (-0.812, 0.407) \\ 
+  raceethnicity.factor=Other & -0.338 & 0.399 & (-1.12, 0.444) \\ 
+  education & -0.002 & 0.053 & (-0.107, 0.102) \\ 
+  enrolled.dx.factor=MCI & -0.359 & 0.290 & (-0.928, 0.21) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.552 & 0.526 & (-1.58, 0.48) \\ 
+  apoe4pos.factor=No & -0.123 & 0.278 & (-0.669, 0.423) \\ 
+  htnrx.factor=No & 0.283 & 0.261 & (-0.229, 0.796) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Left Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.440 & 2.670 & (-3.8, 6.68) \\ 
+  systolic.prewaking.surge & -0.019 & 0.021 & (-0.0603, 0.0225) \\ 
+  ma.left.parietal.lobe.vol & 0.000 & 0.000 & (-4.85e-05, 4.94e-05) \\ 
+  age & 0.021 & 0.026 & (-0.0301, 0.0726) \\ 
+  sex.factor=Female & -0.319 & 0.399 & (-1.1, 0.462) \\ 
+  raceethnicity.factor=Other & -0.033 & 0.557 & (-1.13, 1.06) \\ 
+  education & -0.015 & 0.074 & (-0.162, 0.131) \\ 
+  enrolled.dx.factor=MCI & -0.138 & 0.405 & (-0.931, 0.655) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.233 & 0.736 & (-1.68, 1.21) \\ 
+  apoe4pos.factor=No & -0.296 & 0.388 & (-1.06, 0.465) \\ 
+  htnrx.factor=No & 0.697 & 0.365 & (-0.0188, 1.41) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Right Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.350 & 2.430 & (-3.41, 6.12) \\ 
+  systolic.prewaking.surge & -0.013 & 0.018 & (-0.0483, 0.0234) \\ 
+  ma.right.parietal.lobe.vol & 0.000 & 0.000 & (-4.35e-05, 4.44e-05) \\ 
+  age & 0.008 & 0.023 & (-0.0372, 0.0536) \\ 
+  sex.factor=Female & -0.187 & 0.366 & (-0.905, 0.53) \\ 
+  raceethnicity.factor=Other & -0.349 & 0.490 & (-1.31, 0.61) \\ 
+  education & 0.036 & 0.065 & (-0.0914, 0.164) \\ 
+  enrolled.dx.factor=MCI & -0.032 & 0.357 & (-0.731, 0.667) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.025 & 0.648 & (-1.25, 1.3) \\ 
+  apoe4pos.factor=No & -0.344 & 0.343 & (-1.02, 0.328) \\ 
+  htnrx.factor=No & 0.705 & 0.324 & (0.0704, 1.34)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Prewaking Surge and Full Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.320 & 2.520 & (-3.61, 6.25) \\ 
+  systolic.prewaking.surge & -0.016 & 0.019 & (-0.0534, 0.022) \\ 
+  ma.parietal.lobe.vol & 0.000 & 0.000 & (-2.19e-05, 2.47e-05) \\ 
+  age & 0.015 & 0.024 & (-0.0327, 0.0618) \\ 
+  sex.factor=Female & -0.242 & 0.374 & (-0.975, 0.49) \\ 
+  raceethnicity.factor=Other & -0.182 & 0.511 & (-1.18, 0.819) \\ 
+  education & 0.006 & 0.068 & (-0.127, 0.14) \\ 
+  enrolled.dx.factor=MCI & -0.101 & 0.372 & (-0.83, 0.627) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.158 & 0.676 & (-1.48, 1.17) \\ 
+  apoe4pos.factor=No & -0.330 & 0.357 & (-1.03, 0.369) \\ 
+  htnrx.factor=No & 0.708 & 0.336 & (0.0491, 1.37)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Left Hemisphere} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 4.160 & 2.420 & (-0.585, 8.9) \\ 
+  systolic.rising.surge & -0.006 & 0.015 & (-0.0362, 0.0246) \\ 
+  ma.left.hemisphere & -0.000 & 0.000 & (-8.67e-06, 1.44e-06) \\ 
+  age & -0.002 & 0.019 & (-0.0396, 0.0366) \\ 
+  sex.factor=Female & -0.327 & 0.321 & (-0.955, 0.302) \\ 
+  raceethnicity.factor=Other & -0.122 & 0.409 & (-0.923, 0.68) \\ 
+  education & 0.041 & 0.054 & (-0.0655, 0.148) \\ 
+  enrolled.dx.factor=MCI & -0.272 & 0.295 & (-0.85, 0.306) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.357 & 0.537 & (-1.41, 0.696) \\ 
+  apoe4pos.factor=No & -0.116 & 0.282 & (-0.669, 0.437) \\ 
+  htnrx.factor=No & 0.575 & 0.265 & (0.0547, 1.1)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:23 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Right Hemisphere} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.190 & 2.430 & (-1.57, 7.95) \\ 
+  systolic.rising.surge & -0.007 & 0.015 & (-0.0366, 0.0224) \\ 
+  ma.right.hemisphere & -0.000 & 0.000 & (-7.05e-06, 3.25e-06) \\ 
+  age & -0.007 & 0.019 & (-0.044, 0.0304) \\ 
+  sex.factor=Female & -0.211 & 0.322 & (-0.842, 0.42) \\ 
+  raceethnicity.factor=Other & -0.137 & 0.397 & (-0.914, 0.64) \\ 
+  education & 0.063 & 0.053 & (-0.0403, 0.167) \\ 
+  enrolled.dx.factor=MCI & -0.194 & 0.287 & (-0.756, 0.369) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.469 & 0.524 & (-1.5, 0.557) \\ 
+  apoe4pos.factor=No & -0.103 & 0.275 & (-0.643, 0.436) \\ 
+  htnrx.factor=No & 0.380 & 0.259 & (-0.128, 0.888) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Left Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.650 & 2.200 & (-1.65, 6.96) \\ 
+  systolic.rising.surge & -0.004 & 0.018 & (-0.0386, 0.031) \\ 
+  ma.left.frontal.lobe.vol & -0.000 & 0.000 & (-3.14e-05, 1e-05) \\ 
+  age & -0.004 & 0.022 & (-0.0471, 0.0394) \\ 
+  sex.factor=Female & 0.008 & 0.334 & (-0.647, 0.663) \\ 
+  raceethnicity.factor=Other & -0.004 & 0.469 & (-0.924, 0.916) \\ 
+  education & 0.070 & 0.062 & (-0.0521, 0.192) \\ 
+  enrolled.dx.factor=MCI & -0.189 & 0.342 & (-0.859, 0.481) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.507 & 0.630 & (-1.74, 0.729) \\ 
+  apoe4pos.factor=No & -0.055 & 0.327 & (-0.696, 0.587) \\ 
+  htnrx.factor=No & 0.821 & 0.309 & (0.216, 1.43)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Right Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.970 & 2.190 & (-2.32, 6.25) \\ 
+  systolic.rising.surge & -0.008 & 0.017 & (-0.0411, 0.0254) \\ 
+  ma.right.frontal.lobe.vol & -0.000 & 0.000 & (-2.66e-05, 1.74e-05) \\ 
+  age & -0.004 & 0.021 & (-0.0449, 0.0377) \\ 
+  sex.factor=Female & -0.069 & 0.323 & (-0.701, 0.564) \\ 
+  raceethnicity.factor=Other & 0.123 & 0.445 & (-0.75, 0.996) \\ 
+  education & 0.087 & 0.059 & (-0.029, 0.203) \\ 
+  enrolled.dx.factor=MCI & -0.197 & 0.325 & (-0.835, 0.44) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.656 & 0.601 & (-1.83, 0.521) \\ 
+  apoe4pos.factor=No & -0.086 & 0.311 & (-0.696, 0.524) \\ 
+  htnrx.factor=No & 0.615 & 0.293 & (0.0398, 1.19)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Full Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.490 & 2.110 & (-1.65, 6.63) \\ 
+  systolic.rising.surge & -0.006 & 0.017 & (-0.0384, 0.0273) \\ 
+  ma.frontal.lobe.vol & -0.000 & 0.000 & (-1.46e-05, 6.13e-06) \\ 
+  age & -0.005 & 0.021 & (-0.0454, 0.0359) \\ 
+  sex.factor=Female & -0.041 & 0.316 & (-0.661, 0.578) \\ 
+  raceethnicity.factor=Other & 0.038 & 0.440 & (-0.824, 0.9) \\ 
+  education & 0.078 & 0.059 & (-0.0367, 0.192) \\ 
+  enrolled.dx.factor=MCI & -0.194 & 0.321 & (-0.823, 0.436) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.592 & 0.592 & (-1.75, 0.569) \\ 
+  apoe4pos.factor=No & -0.075 & 0.307 & (-0.678, 0.527) \\ 
+  htnrx.factor=No & 0.709 & 0.290 & (0.142, 1.28)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Left Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 4.130 & 2.760 & (-1.27, 9.54) \\ 
+  systolic.rising.surge & -0.013 & 0.019 & (-0.0497, 0.0236) \\ 
+  ma.left.occipital.lobe.vol & -0.000 & 0.000 & (-0.00014, 8.91e-06) \\ 
+  age & 0.027 & 0.025 & (-0.021, 0.0749) \\ 
+  sex.factor=Female & -0.992 & 0.383 & (-1.74, -0.241)* \\ 
+  raceethnicity.factor=Other & -0.514 & 0.523 & (-1.54, 0.51) \\ 
+  education & 0.004 & 0.068 & (-0.13, 0.138) \\ 
+  enrolled.dx.factor=MCI & -0.054 & 0.371 & (-0.781, 0.673) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.154 & 0.674 & (-1.17, 1.47) \\ 
+  apoe4pos.factor=No & -0.223 & 0.356 & (-0.921, 0.475) \\ 
+  htnrx.factor=No & 0.754 & 0.335 & (0.0972, 1.41)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Right Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.420 & 2.470 & (-3.42, 6.27) \\ 
+  systolic.rising.surge & -0.020 & 0.018 & (-0.0557, 0.0154) \\ 
+  ma.right.occipital.lobe.vol & -0.000 & 0.000 & (-7.53e-05, 4.9e-05) \\ 
+  age & 0.012 & 0.024 & (-0.0344, 0.0585) \\ 
+  sex.factor=Female & -0.473 & 0.365 & (-1.19, 0.243) \\ 
+  raceethnicity.factor=Other & -0.865 & 0.501 & (-1.85, 0.117) \\ 
+  education & 0.093 & 0.067 & (-0.0382, 0.224) \\ 
+  enrolled.dx.factor=MCI & 0.225 & 0.363 & (-0.486, 0.935) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.204 & 0.662 & (-1.09, 1.5) \\ 
+  apoe4pos.factor=No & 0.011 & 0.350 & (-0.674, 0.696) \\ 
+  htnrx.factor=No & 0.128 & 0.331 & (-0.521, 0.776) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Full Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.920 & 2.470 & (-1.93, 7.76) \\ 
+  systolic.rising.surge & -0.016 & 0.017 & (-0.0495, 0.0177) \\ 
+  ma.occipital.lobe.vol & -0.000 & 0.000 & (-5.17e-05, 1.48e-05) \\ 
+  age & 0.018 & 0.022 & (-0.0257, 0.062) \\ 
+  sex.factor=Female & -0.708 & 0.349 & (-1.39, -0.023)* \\ 
+  raceethnicity.factor=Other & -0.637 & 0.475 & (-1.57, 0.294) \\ 
+  education & 0.038 & 0.063 & (-0.0853, 0.162) \\ 
+  enrolled.dx.factor=MCI & 0.044 & 0.340 & (-0.623, 0.711) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.208 & 0.621 & (-1.01, 1.43) \\ 
+  apoe4pos.factor=No & -0.107 & 0.328 & (-0.75, 0.536) \\ 
+  htnrx.factor=No & 0.448 & 0.309 & (-0.158, 1.05) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Left Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.380 & 2.190 & (-0.899, 7.67) \\ 
+  systolic.rising.surge & 0.002 & 0.015 & (-0.0276, 0.0315) \\ 
+  ma.left.temporal.lobe.vol & -0.000 & 0.000 & (-5.92e-05, 2.11e-05) \\ 
+  age & 0.002 & 0.019 & (-0.0363, 0.04) \\ 
+  sex.factor=Female & -0.320 & 0.316 & (-0.94, 0.299) \\ 
+  raceethnicity.factor=Other & -0.562 & 0.411 & (-1.37, 0.244) \\ 
+  education & -0.005 & 0.055 & (-0.112, 0.102) \\ 
+  enrolled.dx.factor=MCI & -0.406 & 0.299 & (-0.992, 0.18) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.250 & 0.543 & (-1.31, 0.813) \\ 
+  apoe4pos.factor=No & -0.145 & 0.286 & (-0.706, 0.416) \\ 
+  htnrx.factor=No & 0.473 & 0.270 & (-0.0557, 1) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Right Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.010 & 2.490 & (-1.86, 7.88) \\ 
+  systolic.rising.surge & 0.005 & 0.017 & (-0.0281, 0.0389) \\ 
+  ma.right.temporal.lobe.vol & 0.000 & 0.000 & (-4.39e-05, 4.66e-05) \\ 
+  age & -0.012 & 0.022 & (-0.0546, 0.0308) \\ 
+  sex.factor=Female & -0.084 & 0.358 & (-0.785, 0.617) \\ 
+  raceethnicity.factor=Other & -0.064 & 0.456 & (-0.957, 0.83) \\ 
+  education & 0.003 & 0.061 & (-0.118, 0.123) \\ 
+  enrolled.dx.factor=MCI & -0.303 & 0.332 & (-0.953, 0.347) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.744 & 0.601 & (-1.92, 0.434) \\ 
+  apoe4pos.factor=No & -0.149 & 0.319 & (-0.775, 0.477) \\ 
+  htnrx.factor=No & 0.054 & 0.299 & (-0.532, 0.64) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Full Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.160 & 2.170 & (-1.1, 7.41) \\ 
+  systolic.rising.surge & 0.004 & 0.015 & (-0.0253, 0.0324) \\ 
+  ma.temporal.lobe.vol & -0.000 & 0.000 & (-2.42e-05, 1.61e-05) \\ 
+  age & -0.005 & 0.019 & (-0.0425, 0.0319) \\ 
+  sex.factor=Female & -0.205 & 0.311 & (-0.815, 0.404) \\ 
+  raceethnicity.factor=Other & -0.335 & 0.399 & (-1.12, 0.447) \\ 
+  education & -0.002 & 0.053 & (-0.107, 0.102) \\ 
+  enrolled.dx.factor=MCI & -0.347 & 0.290 & (-0.915, 0.222) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.537 & 0.526 & (-1.57, 0.494) \\ 
+  apoe4pos.factor=No & -0.128 & 0.278 & (-0.674, 0.417) \\ 
+  htnrx.factor=No & 0.282 & 0.261 & (-0.23, 0.795) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Left Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.100 & 2.670 & (-4.13, 6.34) \\ 
+  systolic.rising.surge & -0.018 & 0.021 & (-0.0599, 0.0229) \\ 
+  ma.left.parietal.lobe.vol & 0.000 & 0.000 & (-4.63e-05, 5.17e-05) \\ 
+  age & 0.023 & 0.026 & (-0.0287, 0.074) \\ 
+  sex.factor=Female & -0.271 & 0.399 & (-1.05, 0.511) \\ 
+  raceethnicity.factor=Other & -0.049 & 0.557 & (-1.14, 1.04) \\ 
+  education & -0.015 & 0.074 & (-0.161, 0.131) \\ 
+  enrolled.dx.factor=MCI & -0.175 & 0.405 & (-0.969, 0.618) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.315 & 0.736 & (-1.76, 1.13) \\ 
+  apoe4pos.factor=No & -0.293 & 0.388 & (-1.05, 0.468) \\ 
+  htnrx.factor=No & 0.707 & 0.365 & (-0.00965, 1.42) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Right Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.160 & 2.430 & (-3.61, 5.92) \\ 
+  systolic.rising.surge & -0.014 & 0.018 & (-0.0498, 0.0218) \\ 
+  ma.right.parietal.lobe.vol & 0.000 & 0.000 & (-4.21e-05, 4.58e-05) \\ 
+  age & 0.009 & 0.023 & (-0.0362, 0.0546) \\ 
+  sex.factor=Female & -0.160 & 0.366 & (-0.878, 0.557) \\ 
+  raceethnicity.factor=Other & -0.362 & 0.490 & (-1.32, 0.597) \\ 
+  education & 0.037 & 0.065 & (-0.091, 0.165) \\ 
+  enrolled.dx.factor=MCI & -0.069 & 0.357 & (-0.768, 0.63) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.038 & 0.648 & (-1.31, 1.23) \\ 
+  apoe4pos.factor=No & -0.340 & 0.343 & (-1.01, 0.333) \\ 
+  htnrx.factor=No & 0.712 & 0.324 & (0.0774, 1.35)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Rising Surge and Full Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.050 & 2.520 & (-3.88, 5.98) \\ 
+  systolic.rising.surge & -0.017 & 0.019 & (-0.0546, 0.0207) \\ 
+  ma.parietal.lobe.vol & 0.000 & 0.000 & (-2.09e-05, 2.57e-05) \\ 
+  age & 0.016 & 0.024 & (-0.0314, 0.063) \\ 
+  sex.factor=Female & -0.206 & 0.374 & (-0.939, 0.526) \\ 
+  raceethnicity.factor=Other & -0.197 & 0.511 & (-1.2, 0.804) \\ 
+  education & 0.007 & 0.068 & (-0.127, 0.141) \\ 
+  enrolled.dx.factor=MCI & -0.143 & 0.372 & (-0.872, 0.586) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.235 & 0.676 & (-1.56, 1.09) \\ 
+  apoe4pos.factor=No & -0.325 & 0.357 & (-1.03, 0.375) \\ 
+  htnrx.factor=No & 0.716 & 0.336 & (0.0573, 1.38)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Left Hemisphere} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 4.500 & 2.420 & (-0.239, 9.24) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.026 & 0.015 & (-0.0565, 0.0042) \\ 
+  ma.left.hemisphere & -0.000 & 0.000 & (-8.57e-06, 1.53e-06) \\ 
+  age & -0.002 & 0.019 & (-0.04, 0.0362) \\ 
+  sex.factor=Female & -0.427 & 0.321 & (-1.06, 0.201) \\ 
+  raceethnicity.factor=Other & -0.083 & 0.409 & (-0.885, 0.718) \\ 
+  education & 0.039 & 0.054 & (-0.0679, 0.145) \\ 
+  enrolled.dx.factor=MCI & -0.386 & 0.295 & (-0.965, 0.192) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.275 & 0.537 & (-1.33, 0.778) \\ 
+  apoe4pos.factor=No & -0.074 & 0.282 & (-0.627, 0.479) \\ 
+  htnrx.factor=No & 0.587 & 0.265 & (0.0664, 1.11)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Right Hemisphere} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.480 & 2.430 & (-1.28, 8.24) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.024 & 0.015 & (-0.0535, 0.00554) \\ 
+  ma.right.hemisphere & -0.000 & 0.000 & (-6.96e-06, 3.34e-06) \\ 
+  age & -0.007 & 0.019 & (-0.0444, 0.03) \\ 
+  sex.factor=Female & -0.294 & 0.322 & (-0.925, 0.336) \\ 
+  raceethnicity.factor=Other & -0.102 & 0.397 & (-0.879, 0.675) \\ 
+  education & 0.061 & 0.053 & (-0.0422, 0.165) \\ 
+  enrolled.dx.factor=MCI & -0.286 & 0.287 & (-0.848, 0.277) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.382 & 0.524 & (-1.41, 0.645) \\ 
+  apoe4pos.factor=No & -0.068 & 0.275 & (-0.608, 0.471) \\ 
+  htnrx.factor=No & 0.391 & 0.259 & (-0.117, 0.899) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Left Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.030 & 2.200 & (-1.27, 7.34) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.029 & 0.018 & (-0.0637, 0.00586) \\ 
+  ma.left.frontal.lobe.vol & -0.000 & 0.000 & (-3.04e-05, 1.1e-05) \\ 
+  age & -0.004 & 0.022 & (-0.0475, 0.039) \\ 
+  sex.factor=Female & -0.115 & 0.334 & (-0.77, 0.54) \\ 
+  raceethnicity.factor=Other & 0.040 & 0.469 & (-0.88, 0.96) \\ 
+  education & 0.067 & 0.062 & (-0.0554, 0.189) \\ 
+  enrolled.dx.factor=MCI & -0.332 & 0.342 & (-1, 0.338) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.443 & 0.630 & (-1.68, 0.793) \\ 
+  apoe4pos.factor=No & -0.003 & 0.327 & (-0.645, 0.638) \\ 
+  htnrx.factor=No & 0.835 & 0.309 & (0.23, 1.44)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Right Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.190 & 2.190 & (-2.09, 6.48) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.026 & 0.017 & (-0.0595, 0.007) \\ 
+  ma.right.frontal.lobe.vol & -0.000 & 0.000 & (-2.52e-05, 1.88e-05) \\ 
+  age & -0.004 & 0.021 & (-0.0452, 0.0373) \\ 
+  sex.factor=Female & -0.155 & 0.323 & (-0.787, 0.478) \\ 
+  raceethnicity.factor=Other & 0.164 & 0.445 & (-0.709, 1.04) \\ 
+  education & 0.085 & 0.059 & (-0.0317, 0.201) \\ 
+  enrolled.dx.factor=MCI & -0.295 & 0.325 & (-0.932, 0.343) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.574 & 0.601 & (-1.75, 0.603) \\ 
+  apoe4pos.factor=No & -0.047 & 0.311 & (-0.657, 0.563) \\ 
+  htnrx.factor=No & 0.629 & 0.293 & (0.0535, 1.2)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Full Frontal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.790 & 2.110 & (-1.36, 6.93) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.027 & 0.017 & (-0.0596, 0.00602) \\ 
+  ma.frontal.lobe.vol & -0.000 & 0.000 & (-1.4e-05, 6.69e-06) \\ 
+  age & -0.005 & 0.021 & (-0.0457, 0.0355) \\ 
+  sex.factor=Female & -0.144 & 0.316 & (-0.763, 0.476) \\ 
+  raceethnicity.factor=Other & 0.079 & 0.440 & (-0.783, 0.941) \\ 
+  education & 0.075 & 0.059 & (-0.0397, 0.19) \\ 
+  enrolled.dx.factor=MCI & -0.311 & 0.321 & (-0.94, 0.318) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.522 & 0.592 & (-1.68, 0.639) \\ 
+  apoe4pos.factor=No & -0.031 & 0.307 & (-0.633, 0.571) \\ 
+  htnrx.factor=No & 0.723 & 0.290 & (0.156, 1.29)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Left Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 4.160 & 2.760 & (-1.25, 9.57) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.014 & 0.019 & (-0.051, 0.0223) \\ 
+  ma.left.occipital.lobe.vol & -0.000 & 0.000 & (-0.000138, 1.09e-05) \\ 
+  age & 0.027 & 0.025 & (-0.0212, 0.0747) \\ 
+  sex.factor=Female & -0.999 & 0.383 & (-1.75, -0.247)* \\ 
+  raceethnicity.factor=Other & -0.488 & 0.523 & (-1.51, 0.536) \\ 
+  education & 0.003 & 0.068 & (-0.131, 0.137) \\ 
+  enrolled.dx.factor=MCI & -0.048 & 0.371 & (-0.776, 0.679) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.258 & 0.674 & (-1.06, 1.58) \\ 
+  apoe4pos.factor=No & -0.219 & 0.356 & (-0.917, 0.479) \\ 
+  htnrx.factor=No & 0.760 & 0.335 & (0.103, 1.42)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Right Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.460 & 2.470 & (-3.38, 6.31) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.004 & 0.018 & (-0.0399, 0.0312) \\ 
+  ma.right.occipital.lobe.vol & -0.000 & 0.000 & (-7.91e-05, 4.52e-05) \\ 
+  age & 0.011 & 0.024 & (-0.0353, 0.0576) \\ 
+  sex.factor=Female & -0.420 & 0.365 & (-1.14, 0.297) \\ 
+  raceethnicity.factor=Other & -0.865 & 0.501 & (-1.85, 0.117) \\ 
+  education & 0.095 & 0.067 & (-0.0362, 0.226) \\ 
+  enrolled.dx.factor=MCI & 0.339 & 0.363 & (-0.372, 1.05) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.344 & 0.662 & (-0.954, 1.64) \\ 
+  apoe4pos.factor=No & -0.017 & 0.350 & (-0.702, 0.668) \\ 
+  htnrx.factor=No & 0.134 & 0.331 & (-0.514, 0.782) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Full Occipital Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 2.950 & 2.470 & (-1.9, 7.79) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.009 & 0.017 & (-0.0424, 0.0248) \\ 
+  ma.occipital.lobe.vol & -0.000 & 0.000 & (-5.21e-05, 1.44e-05) \\ 
+  age & 0.018 & 0.022 & (-0.0263, 0.0614) \\ 
+  sex.factor=Female & -0.684 & 0.349 & (-1.37, 0.000357) \\ 
+  raceethnicity.factor=Other & -0.627 & 0.475 & (-1.56, 0.305) \\ 
+  education & 0.038 & 0.063 & (-0.085, 0.162) \\ 
+  enrolled.dx.factor=MCI & 0.101 & 0.340 & (-0.566, 0.768) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.323 & 0.621 & (-0.894, 1.54) \\ 
+  apoe4pos.factor=No & -0.119 & 0.328 & (-0.762, 0.524) \\ 
+  htnrx.factor=No & 0.453 & 0.309 & (-0.154, 1.06) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Left Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.580 & 2.190 & (-0.704, 7.86) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.021 & 0.015 & (-0.0503, 0.00881) \\ 
+  ma.left.temporal.lobe.vol & -0.000 & 0.000 & (-5.64e-05, 2.39e-05) \\ 
+  age & 0.002 & 0.019 & (-0.0361, 0.0401) \\ 
+  sex.factor=Female & -0.413 & 0.316 & (-1.03, 0.206) \\ 
+  raceethnicity.factor=Other & -0.528 & 0.411 & (-1.33, 0.278) \\ 
+  education & -0.009 & 0.055 & (-0.116, 0.0987) \\ 
+  enrolled.dx.factor=MCI & -0.538 & 0.299 & (-1.12, 0.0479) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.231 & 0.543 & (-1.29, 0.832) \\ 
+  apoe4pos.factor=No & -0.100 & 0.286 & (-0.661, 0.462) \\ 
+  htnrx.factor=No & 0.481 & 0.270 & (-0.0475, 1.01) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Right Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.340 & 2.490 & (-1.54, 8.21) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.014 & 0.017 & (-0.0475, 0.0195) \\ 
+  ma.right.temporal.lobe.vol & 0.000 & 0.000 & (-4.38e-05, 4.66e-05) \\ 
+  age & -0.012 & 0.022 & (-0.0547, 0.0308) \\ 
+  sex.factor=Female & -0.177 & 0.358 & (-0.878, 0.524) \\ 
+  raceethnicity.factor=Other & -0.048 & 0.456 & (-0.942, 0.845) \\ 
+  education & 0.001 & 0.061 & (-0.12, 0.121) \\ 
+  enrolled.dx.factor=MCI & -0.425 & 0.332 & (-1.08, 0.225) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.758 & 0.601 & (-1.94, 0.421) \\ 
+  apoe4pos.factor=No & -0.111 & 0.319 & (-0.736, 0.515) \\ 
+  htnrx.factor=No & 0.060 & 0.299 & (-0.526, 0.646) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Full Temporal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 3.390 & 2.170 & (-0.867, 7.65) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.017 & 0.015 & (-0.0453, 0.0124) \\ 
+  ma.temporal.lobe.vol & -0.000 & 0.000 & (-2.34e-05, 1.68e-05) \\ 
+  age & -0.005 & 0.019 & (-0.0424, 0.032) \\ 
+  sex.factor=Female & -0.293 & 0.311 & (-0.902, 0.317) \\ 
+  raceethnicity.factor=Other & -0.311 & 0.399 & (-1.09, 0.471) \\ 
+  education & -0.005 & 0.053 & (-0.11, 0.0995) \\ 
+  enrolled.dx.factor=MCI & -0.468 & 0.290 & (-1.04, 0.101) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.534 & 0.526 & (-1.57, 0.497) \\ 
+  apoe4pos.factor=No & -0.089 & 0.278 & (-0.635, 0.457) \\ 
+  htnrx.factor=No & 0.289 & 0.261 & (-0.223, 0.802) \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Left Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.290 & 2.670 & (-3.95, 6.52) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.025 & 0.021 & (-0.0668, 0.016) \\ 
+  ma.left.parietal.lobe.vol & 0.000 & 0.000 & (-4.52e-05, 5.28e-05) \\ 
+  age & 0.022 & 0.026 & (-0.0294, 0.0733) \\ 
+  sex.factor=Female & -0.312 & 0.399 & (-1.09, 0.469) \\ 
+  raceethnicity.factor=Other & -0.010 & 0.557 & (-1.1, 1.08) \\ 
+  education & -0.016 & 0.074 & (-0.162, 0.13) \\ 
+  enrolled.dx.factor=MCI & -0.197 & 0.405 & (-0.99, 0.597) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.151 & 0.736 & (-1.59, 1.29) \\ 
+  apoe4pos.factor=No & -0.277 & 0.388 & (-1.04, 0.484) \\ 
+  htnrx.factor=No & 0.718 & 0.365 & (0.00171, 1.43)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Right Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.220 & 2.430 & (-3.54, 5.98) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.025 & 0.018 & (-0.0612, 0.0104) \\ 
+  ma.right.parietal.lobe.vol & 0.000 & 0.000 & (-3.86e-05, 4.94e-05) \\ 
+  age & 0.009 & 0.023 & (-0.0366, 0.0542) \\ 
+  sex.factor=Female & -0.205 & 0.366 & (-0.922, 0.512) \\ 
+  raceethnicity.factor=Other & -0.322 & 0.490 & (-1.28, 0.638) \\ 
+  education & 0.035 & 0.065 & (-0.0934, 0.162) \\ 
+  enrolled.dx.factor=MCI & -0.118 & 0.357 & (-0.817, 0.581) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & 0.094 & 0.648 & (-1.18, 1.36) \\ 
+  apoe4pos.factor=No & -0.317 & 0.343 & (-0.989, 0.356) \\ 
+  htnrx.factor=No & 0.726 & 0.324 & (0.0914, 1.36)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:24 2017
+\begin{table}[ht]
+\centering
+\caption{Regression for ABP with CVR: SBP Nocturnal Difference and Full Parietal Lobe} 
+\begin{tabular}{lrrr}
+  \toprule
+ & Coefficient & StdError & 95\% Conf. Int. \\ 
+  \midrule
+Intercept & 1.160 & 2.520 & (-3.77, 6.09) \\ 
+  nocturnal.systolic.diff.sleep.self.reported & -0.025 & 0.019 & (-0.0628, 0.0126) \\ 
+  ma.parietal.lobe.vol & 0.000 & 0.000 & (-1.97e-05, 2.69e-05) \\ 
+  age & 0.015 & 0.024 & (-0.032, 0.0624) \\ 
+  sex.factor=Female & -0.246 & 0.374 & (-0.978, 0.487) \\ 
+  raceethnicity.factor=Other & -0.156 & 0.511 & (-1.16, 0.845) \\ 
+  education & 0.005 & 0.068 & (-0.129, 0.139) \\ 
+  enrolled.dx.factor=MCI & -0.172 & 0.372 & (-0.9, 0.557) \\ 
+  enrolled.dx.factor=Ambiguous At Risk & -0.085 & 0.676 & (-1.41, 1.24) \\ 
+  apoe4pos.factor=No & -0.307 & 0.357 & (-1.01, 0.392) \\ 
+  htnrx.factor=No & 0.729 & 0.336 & (0.0695, 1.39)* \\ 
+   \bottomrule
+\end{tabular}
+\end{table}
+
+
+\clearpage
+\subsection{Restricted Cubic Spline Model Output}
+
+The following table presents coefficient results for the models originally fit with ABP predictors modeled as restricted cubic splines.  
+
+
+
+
+% latex table generated in R 3.3.2 by xtable 1.8-2 package
+% Mon Feb 20 13:12:27 2017
 \begin{table}[ht]
 \centering
 \caption{Coefficients for ABP with CVR: ABP Modeled as Restricted Cubic Spline with 3 Knots} 
@@ -551,20 +1744,20 @@ LV hypertrophy, determined by sex and scaled LV mass & 1 (0.57\%) \\
   \toprule
  & Systolic Prewaking Surge & Systolic Rising Surge & Nocturnal SBP Difference \\ 
   \midrule
-Left Hemisphere & (-0.011,0.004) & (-0.023,0.03) & (-0.052,  0.033) \\ 
-  Right Hemisphere & (-0.017,0.023) & (-0.025,0.031) & (-0.041,  0.021) \\ 
-  Left Frontal Lobe & (-0.011,0.01) & (-0.026,0.038) & (-0.053,  0.031) \\ 
-  Right Frontal Lobe & (-0.023,0.037) & (-0.026,0.031) & (-0.056,  0.039) \\ 
-  Full Frontal Lobe & (-0.016,0.023) & (-0.025,0.034) & (-0.053,  0.034) \\ 
-  Left Occipital Lobe & (-0.008,-0.019) & (-0.044,0.053) & (-0.018,  0.005) \\ 
-  Right Occipital Lobe & (-0.021,0.02) & (-0.043,0.038) & (-0.03,  0.033) \\ 
-  Full Occipital Lobe & (-0.013,-0.001) & (-0.044,0.048) & (-0.024,  0.02) \\ 
-  Left Temporal Lobe & (0.007,-0.013) & (-0.009,0.019) & (-0.055,  0.044) \\ 
-  Right Temporal Lobe & (0.019,-0.019) & (-0.004,0.015) & (0.007,  -0.027) \\ 
-  Full Temporal Lobe & (0.012,-0.015) & (-0.006,0.016) & (-0.023,  0.008) \\ 
-  Left Parietal Lobe & (-0.037,0.028) & (-0.058,0.067) & (-0.057,  0.041) \\ 
-  Right Parietal Lobe & (-0.042,0.045) & (-0.048,0.059) & (-0.056,  0.039) \\ 
-  Full Parietal Lobe & (-0.039,0.036) & (-0.054,0.064) & (-0.055,  0.038) \\ 
+Left Hemisphere & (-0.013,0.006) & (-0.027,0.024) & (-0.107,  0.098) \\ 
+  Right Hemisphere & (-0.015,0.021) & (-0.023,0.02) & (-0.078,  0.069) \\ 
+  Left Frontal Lobe & (-0.019,0.015) & (-0.039,0.039) & (-0.115,  0.102) \\ 
+  Right Frontal Lobe & (-0.03,0.044) & (-0.027,0.023) & (-0.11,  0.103) \\ 
+  Full Frontal Lobe & (-0.024,0.029) & (-0.034,0.031) & (-0.111,  0.101) \\ 
+  Left Occipital Lobe & (0.001,-0.032) & (-0.026,0.03) & (-0.063,  0.058) \\ 
+  Right Occipital Lobe & (-0.012,0.009) & (-0.042,0.043) & (-0.051,  0.059) \\ 
+  Full Occipital Lobe & (-0.004,-0.013) & (-0.034,0.037) & (-0.057,  0.058) \\ 
+  Left Temporal Lobe & (-0.009,0) & (-0.017,0.019) & (-0.122,  0.119) \\ 
+  Right Temporal Lobe & (0.018,-0.016) & (0.003,0.003) & (0.016,  -0.039) \\ 
+  Full Temporal Lobe & (0.005,-0.008) & (-0.005,0.009) & (-0.049,  0.038) \\ 
+  Left Parietal Lobe & (-0.023,0.016) & (-0.06,0.065) & (-0.067,  0.062) \\ 
+  Right Parietal Lobe & (-0.032,0.037) & (-0.06,0.067) & (-0.095,  0.097) \\ 
+  Full Parietal Lobe & (-0.028,0.027) & (-0.06,0.065) & (-0.081,  0.079) \\ 
    \bottomrule
 \end{tabular}
 \end{table}
@@ -574,59 +1767,30 @@ Left Hemisphere & (-0.011,0.004) & (-0.023,0.03) & (-0.052,  0.033) \\
   \item Since we are using 3 knots, each ABP variable has 2 associated coefficients
 \end{itemize}
 
-{\bf Note:} Coefficients from fitting a restricted cubic spline are not directly interpretable regarding effect on the CVR measurements in each region of interest. Rather than interpreting the table above, we provide:\\
-\begin{itemize}
-  \item results for tests of overall association between ABP and CVR measurements (``overall'' meaning using all coefficients affiliated with each ABP variable).
-  \item partial effect plots as a visual representation of ABP effect on CVR for each model.
-  \end{itemize}
-
-\clearpage
-\subsection{Test of Association between ABP and CVR}
+{\bf Note:} Coefficients from fitting a restricted cubic spline are not directly interpretable regarding effect on the CVR measurements in each region of interest. Rather than interpreting the table above, we provide partial effect plots as a visual representation of ABP effect on CVR for each model.
+  
+%\clearpage
+%\subsection{Test of Association between ABP (RCS) and CVR}
 
 
-% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:17 2017
-\begin{table}[ht]
-\centering
-\caption{P-values for Test of Association Between ABP and CVR} 
-\begin{tabular}{rrrr}
-  \toprule
- & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
-  \midrule
-Left Hemisphere & 0.787 & 0.494 & 0.215 \\ 
-  Right Hemisphere & 0.798 & 0.425 & 0.280 \\ 
-  Left Frontal Lobe & 0.931 & 0.495 & 0.243 \\ 
-  Right Frontal Lobe & 0.651 & 0.474 & 0.256 \\ 
-  Full Frontal Lobe & 0.836 & 0.481 & 0.246 \\ 
-  Left Occipital Lobe & 0.360 & 0.200 & 0.745 \\ 
-  Right Occipital Lobe & 0.741 & 0.148 & 0.808 \\ 
-  Full Occipital Lobe & 0.593 & 0.136 & 0.812 \\ 
-  Left Temporal Lobe & 0.921 & 0.791 & 0.250 \\ 
-  Right Temporal Lobe & 0.762 & 0.812 & 0.624 \\ 
-  Full Temporal Lobe & 0.880 & 0.793 & 0.537 \\ 
-  Left Parietal Lobe & 0.435 & 0.104 & 0.430 \\ 
-  Right Parietal Lobe & 0.409 & 0.124 & 0.314 \\ 
-  Full Parietal Lobe & 0.431 & 0.089 & 0.370 \\ 
-   \bottomrule
-\end{tabular}
-\end{table}
 
 
-\begin{itemize}
-  \item No significant p-values at the 0.05 level: Insufficient evidence that any of the ABP measurements have an effect on CVR in any brain region.
-  \item Generally, we would recommend a multiple comparisons adjustment for fitting the 42 models (e.g. using a Bonferroni-corrected significance level of $\frac{.05}{42} = .0012$). 
-\end{itemize}
 
 \clearpage
 \subsection{Partial Effect Plots}
+\label{sec:PEP}
+Partial effect plots show the effect of each ABP measure on CVR outcome with other variables in the model fixed. Due to the exploratory nature of this analysis, these plots are presented for the models in which ABP predictors were represented as restricted cubic splines. This is to allow effects to differ at different values of the systolic blood pressure measurement distributions.\\
 
 \begin{itemize}
-  \item Partial effect plots show the effect of each SBP measure on CVR outcome with other variables in the model fixed. 
+  \item ABP:diagnosis interactions were included in these models to make the stratified partial effect plots more informative.
   \item A single plot is presented from each model for the predictor of interest against the CVR outcome for the specified region of interest, overall and stratified by diagnosis.
   \item By default, continuous variables are fixed at their median and categorical variables are fixed at their mode.
+\end{itemize}
+{\it Plot comments:}
+\begin{itemize}
   \item Generally, all curves have a slight decline for lower ABP values then tend to level off.
-  \item  Normal Cognition group tends to have the highest CVR more often.
-  \item However, no consistent ordering of diagnosis group response across brain regions.
+  \item No consistent ordering of diagnosis group response across brain regions, and curves for all diagnosis groups are highly similar.
+  \item The Ambiguous At Risk group had the largest variability for Nocturnal Difference in SBP. However, since there are only 11 patients in this group, this may be spurious.
 \end{itemize}
 
 
@@ -715,10 +1879,18 @@ Left Hemisphere & 0.787 & 0.494 & 0.215 \\
 \end{knitrout}
 \end{landscape}
 
+
+
+\clearpage
 \subsection{Tests of Linearity for ABP Measures}
 
+\begin{itemize}
+  \item The following table represents results for tests of linearity of the ABP measurements, when each ABP measure is modeled as a restricted cubic spline with three knots. 
+  \item No evidence to suggest the effect is truly non-linear for any model. (All p-values are greater than 0.05.)
+\end{itemize}
+
 % latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:39 2017
+% Mon Feb 20 13:12:28 2017
 \begin{table}[ht]
 \centering
 \caption{P-values for test of linearity for ABP predictors} 
@@ -726,143 +1898,26 @@ Left Hemisphere & 0.787 & 0.494 & 0.215 \\
   \hline
  & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
   \hline
-Left Hemisphere & 0.916 & 0.302 & 0.478 \\ 
-  Right Hemisphere & 0.534 & 0.278 & 0.649 \\ 
-  Left Frontal Lobe & 0.797 & 0.257 & 0.561 \\ 
-  Right Frontal Lobe & 0.356 & 0.326 & 0.451 \\ 
-  Full Frontal Lobe & 0.556 & 0.278 & 0.502 \\ 
-  Left Occipital Lobe & 0.678 & 0.141 & 0.930 \\ 
-  Right Occipital Lobe & 0.610 & 0.272 & 0.546 \\ 
-  Full Occipital Lobe & 0.979 & 0.143 & 0.698 \\ 
-  Left Temporal Lobe & 0.712 & 0.508 & 0.322 \\ 
-  Right Temporal Lobe & 0.621 & 0.668 & 0.605 \\ 
-  Full Temporal Lobe & 0.647 & 0.566 & 0.849 \\ 
-  Left Parietal Lobe & 0.592 & 0.095 & 0.522 \\ 
-  Right Parietal Lobe & 0.312 & 0.098 & 0.473 \\ 
-  Full Parietal Lobe & 0.455 & 0.082 & 0.507 \\ 
+Left Hemisphere & 0.931 & 0.686 & 0.302 \\ 
+  Right Hemisphere & 0.850 & 0.622 & 0.465 \\ 
+  Left Frontal Lobe & 0.980 & 0.903 & 0.375 \\ 
+  Right Frontal Lobe & 0.951 & 0.894 & 0.408 \\ 
+  Full Frontal Lobe & 0.976 & 0.907 & 0.364 \\ 
+  Left Occipital Lobe & 0.842 & 0.750 & 0.327 \\ 
+  Right Occipital Lobe & 0.267 & 0.811 & 0.425 \\ 
+  Full Occipital Lobe & 0.526 & 0.847 & 0.352 \\ 
+  Left Temporal Lobe & 0.831 & 0.667 & 0.235 \\ 
+  Right Temporal Lobe & 0.930 & 0.507 & 0.902 \\ 
+  Full Temporal Lobe & 0.872 & 0.543 & 0.809 \\ 
+  Left Parietal Lobe & 0.768 & 0.763 & 0.518 \\ 
+  Right Parietal Lobe & 0.765 & 0.768 & 0.237 \\ 
+  Full Parietal Lobe & 0.751 & 0.749 & 0.364 \\ 
    \hline
 \end{tabular}
 \end{table}
 
 
-\begin{itemize}
-  \item No evidence to suggest the effect is truly non-linear for any model
-\end{itemize}
 
-\clearpage
-\subsection{Secondary Aim}
-
-% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:39 2017
-\begin{table}[ht]
-\centering
-\caption{R-squared for ABP predictor models} 
-\begin{tabular}{rrrr}
-  \hline
- & SBP Prewaking Surge & SBP Rising Surge & Nocturnal SBP Difference \\ 
-  \hline
-Left Hemisphere & 0.058 & 0.062 & 0.076 \\ 
-  Right Hemisphere & 0.045 & 0.051 & 0.059 \\ 
-  Left Frontal Lobe & 0.070 & 0.075 & 0.086 \\ 
-  Right Frontal Lobe & 0.065 & 0.065 & 0.076 \\ 
-  Full Frontal Lobe & 0.069 & 0.074 & 0.085 \\ 
-  Left Occipital Lobe & 0.096 & 0.099 & 0.084 \\ 
-  Right Occipital Lobe & 0.058 & 0.077 & 0.056 \\ 
-  Full Occipital Lobe & 0.066 & 0.082 & 0.061 \\ 
-  Left Temporal Lobe & 0.055 & 0.056 & 0.070 \\ 
-  Right Temporal Lobe & 0.027 & 0.026 & 0.029 \\ 
-  Full Temporal Lobe & 0.037 & 0.037 & 0.043 \\ 
-  Left Parietal Lobe & 0.042 & 0.057 & 0.041 \\ 
-  Right Parietal Lobe & 0.059 & 0.069 & 0.059 \\ 
-  Full Parietal Lobe & 0.050 & 0.066 & 0.050 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-
-% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:39 2017
-\begin{table}[ht]
-\centering
-\caption{Correlation Matrix for ABP Predictors and CVR Outcomes} 
-\begin{tabular}{rrrr}
-  \toprule
- & SBP Prewaking Surge & SBP Rising Surge & Nocturnal Decline in SBP \\ 
-  \midrule
-Left Hemisphere & -0.044 & 0.094 & 0.030 \\ 
-  Right Hemisphere & -0.014 & 0.088 & 0.026 \\ 
-  Left Frontal Lobe & -0.013 & 0.096 & 0.029 \\ 
-  Right Frontal Lobe & 0.018 & 0.117 & 0.039 \\ 
-  Full Frontal Lobe & 0.003 & 0.109 & 0.036 \\ 
-  Left Occipital Lobe & -0.064 & 0.109 & 0.114 \\ 
-  Right Occipital Lobe & -0.007 & 0.078 & 0.091 \\ 
-  Full Occipital Lobe & -0.035 & 0.098 & 0.108 \\ 
-  Left Temporal Lobe & 0.003 & 0.177 & 0.095 \\ 
-  Right Temporal Lobe & -0.026 & 0.044 & -0.004 \\ 
-  Full Temporal Lobe & 0.000 & 0.131 & 0.059 \\ 
-  Left Parietal Lobe & -0.087 & 0.046 & 0.030 \\ 
-  Right Parietal Lobe & -0.040 & 0.080 & 0.044 \\ 
-  Full Parietal Lobe & -0.068 & 0.063 & 0.039 \\ 
-   \bottomrule
-\end{tabular}
-\end{table}
-
-
-\begin{itemize}
-  \item Nocturnal decline in SBP has slightly higher $R^2$ in overall hemispheres, frontal, and temporal lobes. SBP rising surge is highest in the occipital and parietal lobes.
-  \item All $R^2$ values are very low, indicating these models generally do not have extensive predictive ability. In other words, less than 1\% of the variability in CVR outcomes is explained by any of the models fitted in this analysis.
-  \item SBP rising surge has all positive correlations, though numbers are small.
-\end{itemize}
-
-
-\clearpage
-\section{Sensitivity Analyses}
-
-\subsection{Model with Linear Effect of ABP Measures}
-
-\begin{itemize}
-  \item No evidence of an association
-  \item Coefficients are interpreted as the effect on CVR outcome for a one-mmHg increase in ABP measurement. 
-  \item Multiply coefficients by 10 to interpret the effect on CVR for a 10-mmHg increase in ABP measurement.
-  \begin{itemize}
-    \item E.g. For a 10-mmHg increase in the systolic blood pressure prewaking surge, CVR in the left hemisphere is expected to decrease by .083, holding other model variables constant. 
-  \end{itemize}
-\end{itemize}
-
-
-\begin{landscape}
-% latex table generated in R 3.3.2 by xtable 1.8-2 package
-% Wed Feb 15 11:03:42 2017
-\begin{table}[ht]
-\centering
-\caption{Coefficients for Linear ABP with CVR} 
-\begin{tabular}{lrrrrrrrrr}
-  \toprule
- &  \\ 
-  & \multicolumn{3}{c}{SBP Prewaking Surge} & 
-                      \multicolumn{3}{c}{SBP Rising Surge} & 
-                      \multicolumn{3}{c}{Nocturnal Decline in SBP} \\ & Coefficient & Standard Error & P-value 
-                        & Coefficient & Standard Error & P-value 
-                        & Coefficient & Standard Error & P-value \\ \midrule
-Left Hemisphere & -0.0083 & 0.0120 & 0.4930 & -0.0058 & 0.0105 & 0.5819 & -0.0262 & 0.0155 & 0.0931 \\ 
-  Right Hemisphere & -0.0028 & 0.0115 & 0.8054 & -0.0071 & 0.0104 & 0.4932 & -0.0240 & 0.0151 & 0.1133 \\ 
-  Left Frontal Lobe & -0.0041 & 0.0141 & 0.7705 & -0.0038 & 0.0120 & 0.7510 & -0.0289 & 0.0178 & 0.1050 \\ 
-  Right Frontal Lobe & 0.0002 & 0.0130 & 0.9870 & -0.0078 & 0.0115 & 0.4972 & -0.0262 & 0.0170 & 0.1238 \\ 
-  Full Frontal Lobe & -0.0016 & 0.0131 & 0.9024 & -0.0056 & 0.0113 & 0.6237 & -0.0268 & 0.0167 & 0.1114 \\ 
-  Left Occipital Lobe & -0.0202 & 0.0149 & 0.1772 & -0.0130 & 0.0127 & 0.3069 & -0.0144 & 0.0187 & 0.4435 \\ 
-  Right Occipital Lobe & -0.0079 & 0.0141 & 0.5756 & -0.0201 & 0.0125 & 0.1100 & -0.0044 & 0.0181 & 0.8095 \\ 
-  Full Occipital Lobe & -0.0136 & 0.0134 & 0.3125 & -0.0159 & 0.0117 & 0.1767 & -0.0088 & 0.0171 & 0.6072 \\ 
-  Left Temporal Lobe & -0.0015 & 0.0119 & 0.8993 & 0.0019 & 0.0103 & 0.8523 & -0.0207 & 0.0151 & 0.1708 \\ 
-  Right Temporal Lobe & 0.0066 & 0.0127 & 0.6055 & 0.0054 & 0.0111 & 0.6246 & -0.0140 & 0.0171 & 0.4150 \\ 
-  Full Temporal Lobe & 0.0024 & 0.0112 & 0.8298 & 0.0036 & 0.0098 & 0.7186 & -0.0165 & 0.0147 & 0.2650 \\ 
-  Left Parietal Lobe & -0.0189 & 0.0159 & 0.2373 & -0.0185 & 0.0143 & 0.1983 & -0.0254 & 0.0211 & 0.2303 \\ 
-  Right Parietal Lobe & -0.0125 & 0.0140 & 0.3736 & -0.0140 & 0.0126 & 0.2683 & -0.0254 & 0.0183 & 0.1670 \\ 
-  Full Parietal Lobe & -0.0157 & 0.0146 & 0.2828 & -0.0169 & 0.0132 & 0.2005 & -0.0251 & 0.0192 & 0.1936 \\ 
-   \bottomrule
-\end{tabular}
-\end{table}
-
-\end{landscape}
 
 
 \clearpage
@@ -928,7 +1983,7 @@ Hannah Weeks\\
   \item Project overview and statistical analysis plan
   \item Model fitting and partial effect plots
   \item Tests of association and linearity
-  \item Sensitivity analysis for linear effect
+  \item Interaction analysis
   \item Secondary aim
 \end{itemize}
 
@@ -938,6 +1993,7 @@ Brooklyn Stanley\\
   \item Application of inclusion/exclusion criteria
   \item Descriptive statistics
   \item Imputation and associated sensitivity analysis
+  \item Tables for full regression output of linear models
 \end{itemize}
 
 \clearpage
@@ -1096,6 +2152,16 @@ Brooklyn Stanley\\
 \hlstd{exclude} \hlkwb{<-} \hlstd{totalData[}\hlopt{!}\hlstd{(totalData}\hlopt{$}\hlstd{map.id} \hlopt{%in%} \hlstd{cvrdata}\hlopt{$}\hlstd{map.id),}
                      \hlkwd{c}\hlstd{(}\hlnum{1}\hlopt{:}\hlnum{18}\hlstd{,} \hlnum{61}\hlstd{,} \hlkwd{grep}\hlstd{(}\hlstr{"asl.reac"}\hlstd{,} \hlkwd{names}\hlstd{(totalData)),}
                        \hlkwd{grep}\hlstd{(}\hlstr{"ma."}\hlstd{,} \hlkwd{names}\hlstd{(totalData)))]}
+
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{echo.lvh.factor)} \hlkwb{<-} \hlstr{"LV Hypertrophy"}
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{afib.factor)} \hlkwb{<-} \hlstr{"A-fib"}
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{cvd.factor)} \hlkwb{<-} \hlstr{"CVD"}
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{diabetes.factor)} \hlkwb{<-} \hlstr{"Diabetic"}
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{systolic.prewaking.surge)} \hlkwb{<-} \hlstr{"Systolic Prewaking Surge"}
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{systolic.rising.surge)} \hlkwb{<-} \hlstr{"Systolic Rising Surge"}
+\hlkwd{label}\hlstd{(cvrdata}\hlopt{$}\hlstd{nocturnal.systolic.diff.sleep.self.reported)} \hlkwb{<-} \hlstr{"Nocturnal Systolic Difference"}
+
+
 \hlcom{#######################################}
 \hlcom{#  Inclusion/Exclusion Comparison     #}
 \hlcom{#######################################}
@@ -1194,9 +2260,6 @@ Brooklyn Stanley\\
                              \hlstr{"P-value"}\hlstd{)}
 
 \hlstd{comparison.dx}\hlopt{$}\hlstd{Variable} \hlkwb{<-} \hlkwd{as.character}\hlstd{(comparison.dx}\hlopt{$}\hlstd{Variable)}
-\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"pre.wake.mean"}\hlstd{, comparison.dx}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{1}\hlstd{]}
-\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"pre.wake.1"}\hlstd{, comparison.dx}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{2}\hlstd{]}
-\hlstd{comparison.dx}\hlopt{$}\hlstd{Variable[}\hlkwd{grep}\hlstd{(}\hlstr{"Diff"}\hlstd{, comparison.dx}\hlopt{$}\hlstd{Variable)]} \hlkwb{<-} \hlstd{predictors[}\hlnum{3}\hlstd{]}
 
 
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(comparison.dx,} \hlkwc{caption} \hlstd{=}
@@ -1293,6 +2356,26 @@ Brooklyn Stanley\\
         \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+}
   \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Difference in Awake/Sleeping Systolic Blood Pressure"}\hlstd{)}
 
+\hlstd{outlong.interaction} \hlkwb{<-} \hlstd{outlong[outlong}\hlopt{$}\hlstd{enrolled.dx.factor} \hlopt{!=} \hlstr{"Ambiguous at Risk"}\hlstd{,]}
+\hlkwd{ggplot}\hlstd{(outlong.interaction,} \hlkwd{aes}\hlstd{(systolic.prewaking.surge, outcome,} \hlkwc{color} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.4}\hlstd{)} \hlopt{+} \hlkwd{geom_smooth}\hlstd{(}\hlkwc{se} \hlstd{=} \hlnum{FALSE}\hlstd{)} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+} \hlkwd{scale_colour_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Prewaking Surge Blood Pressure"}\hlstd{)}
+\hlkwd{ggplot}\hlstd{(outlong.interaction,} \hlkwd{aes}\hlstd{(systolic.rising.surge, outcome,} \hlkwc{color} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.4}\hlstd{)} \hlopt{+} \hlkwd{geom_smooth}\hlstd{(}\hlkwc{se} \hlstd{=} \hlnum{FALSE}\hlstd{)} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+} \hlkwd{scale_colour_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Systolic Rising Surge Blood Pressure"}\hlstd{)}
+\hlkwd{ggplot}\hlstd{(outlong.interaction,} \hlkwd{aes}\hlstd{(nocturnal.systolic.diff.sleep.self.reported, outcome,}
+                                \hlkwc{color} \hlstd{= enrolled.dx.factor))} \hlopt{+}
+  \hlkwd{geom_point}\hlstd{(}\hlkwc{alpha}\hlstd{=}\hlnum{0.4}\hlstd{)} \hlopt{+} \hlkwd{geom_smooth}\hlstd{(}\hlkwc{se} \hlstd{=} \hlnum{FALSE}\hlstd{)} \hlopt{+} \hlkwd{facet_wrap}\hlstd{(}\hlopt{~}\hlstd{lab,} \hlkwc{ncol}\hlstd{=}\hlnum{3}\hlstd{)} \hlopt{+}
+  \hlkwd{theme}\hlstd{(}\hlkwc{strip.text} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{12}\hlstd{),}
+        \hlkwc{axis.text.x} \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),} \hlkwc{axis.text.y}  \hlstd{=} \hlkwd{element_text}\hlstd{(}\hlkwc{size}\hlstd{=}\hlnum{14}\hlstd{),}
+        \hlkwc{panel.grid.major.x}\hlstd{=}\hlkwd{element_line}\hlstd{(}\hlkwc{colour}\hlstd{=}\hlstr{'grey'}\hlstd{))} \hlopt{+} \hlkwd{scale_colour_discrete}\hlstd{(}\hlkwc{name} \hlstd{=} \hlstr{"Diagnosis"}\hlstd{)} \hlopt{+}
+  \hlkwd{ylab}\hlstd{(}\hlstr{"Measured CVR"}\hlstd{)} \hlopt{+} \hlkwd{xlab}\hlstd{(}\hlstr{"Difference in Awake/Sleeping Systolic Blood Pressure"}\hlstd{)}
 \hlcom{#######################################}
 \hlcom{#  Missing Data                       #}
 \hlcom{#######################################}
@@ -1335,16 +2418,246 @@ Brooklyn Stanley\\
                             \hlstd{asl.reac.right.hemisphere.hct,}
                           \hlkwc{data} \hlstd{= cvrdata)}
 \hlcom{#######################################}
+\hlcom{#  Model Fitting: Linear Effect       #}
+\hlcom{#######################################}
+
+\hlstd{modelFitLinear} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{)\{}
+
+  \hlstd{fit} \hlkwb{<-} \hlkwd{fit.mult.impute}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~"}\hlstd{, predictor,} \hlstr{"+"}\hlstd{, ma,} \hlstr{"+"}\hlstd{,}
+\hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
+\hlstr{"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor"}\hlstd{)),}
+                         \hlkwc{fitter} \hlstd{= ols,} \hlkwc{xtrans} \hlstd{= impute.data,} \hlkwc{data} \hlstd{= cvrdata)}
+
+  \hlkwd{return}\hlstd{(fit)}
+\hlstd{\}}
+
+
+\hlcom{#Systolic prewaking surge}
+\hlstd{mod.sys.prewaking.surge.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.prewaking.surge.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{1}\hlstd{],}
+                                                   \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlcom{#Systolic rising surge}
+\hlstd{mod.sys.rising.surge.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.rising.surge.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{2}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlcom{#Nocturnal Difference}
+\hlstd{mod.noc.sys.diff.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.noc.sys.diff.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{3}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlstd{sys.prewaking.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
+                                                      \hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.prewaking.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{sys.rising.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
+                                                      \hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.rising.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{noc.diff.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff.linear,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
+                                                      \hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"nocturnal.systolic.diff.sleep.self.reported"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+\hlstd{outcomeNames} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Left Hemisphere"}\hlstd{,} \hlstr{"Right Hemisphere"}\hlstd{,} \hlstr{"Left Frontal Lobe"}\hlstd{,}
+                         \hlstr{"Right Frontal Lobe"}\hlstd{,} \hlstr{"Full Frontal Lobe"}\hlstd{,} \hlstr{"Left Occipital Lobe"}\hlstd{,}
+                         \hlstr{"Right Occipital Lobe"}\hlstd{,} \hlstr{"Full Occipital Lobe"}\hlstd{,} \hlstr{"Left Temporal Lobe"}\hlstd{,}
+                         \hlstr{"Right Temporal Lobe"}\hlstd{,} \hlstr{"Full Temporal Lobe"}\hlstd{,} \hlstr{"Left Parietal Lobe"}\hlstd{,}
+                         \hlstr{"Right Parietal Lobe"}\hlstd{,} \hlstr{"Full Parietal Lobe"}\hlstd{)}
+
+\hlstd{prewaking.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.prewaking.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{rising.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.rising.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{noc.diff.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(noc.diff.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{addtorow} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{1}\hlstd{]]} \hlkwb{<-} \hlnum{0}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{2}\hlstd{]]} \hlkwb{<-} \hlnum{0}
+\hlstd{addtorow}\hlopt{$}\hlstd{command} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'& \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Prewaking Surge\} & 
+                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Rising Surge\} & 
+                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{Nocturnal Decline in SBP\} \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{,}
+                      \hlkwd{c}\hlstd{(}\hlstr{'& Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{))}
+
+\hlstd{full.table} \hlkwb{<-} \hlkwd{cbind}\hlstd{(prewaking.coef.table, rising.coef.table, noc.diff.coef.table)}
+\hlkwd{names}\hlstd{(full.table)} \hlkwb{<-} \hlkwa{NULL}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(full.table,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{9}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{4}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Coefficients for Linear ABP with CVR"}\hlstd{)),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{add.to.row} \hlstd{= addtorow,}
+      \hlkwc{sanitize.text.function} \hlstd{= force,} \hlkwc{table.placement} \hlstd{=} \hlstr{"ht"}\hlstd{)}
+\hlcom{#######################################}
+\hlcom{#  Model Fitting: Interaction         #}
+\hlcom{#######################################}
+
+\hlstd{modelFitInter} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{)\{}
+
+  \hlstd{fit} \hlkwb{<-} \hlkwd{fit.mult.impute}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~"}\hlstd{, predictor,} \hlstr{"*enrolled.dx.factor +"}\hlstd{, ma,} \hlstr{"+"}\hlstd{,}
+\hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
+\hlstr{" + apoe4pos.factor + htnrx.factor"}\hlstd{)),}
+                         \hlkwc{fitter} \hlstd{= ols,} \hlkwc{xtrans} \hlstd{= impute.data,}
+\hlkwc{data} \hlstd{= cvrdata[cvrdata}\hlopt{$}\hlstd{enrolled.dx.factor} \hlopt{!=} \hlstr{"Ambiguous At Risk"}\hlstd{,])}
+
+  \hlkwd{return}\hlstd{(fit)}
+\hlstd{\}}
+
+
+\hlcom{#Systolic prewaking surge}
+\hlstd{mod.sys.prewaking.surge.int} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.prewaking.surge.int[[i]]} \hlkwb{<-} \hlkwd{modelFitInter}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{1}\hlstd{],}
+                                                   \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlcom{#Systolic rising surge}
+\hlstd{mod.sys.rising.surge.int} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.sys.rising.surge.int[[i]]} \hlkwb{<-} \hlkwd{modelFitInter}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{2}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+
+\hlcom{#Nocturnal Difference}
+\hlstd{mod.noc.sys.diff.int} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
+  \hlstd{mod.noc.sys.diff.int[[i]]} \hlkwb{<-} \hlkwd{modelFitInter}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
+                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{3}\hlstd{],}
+                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
+\hlstd{\}}
+\hlcom{#Grab coefficients associated with interaction}
+\hlstd{sys.prewaking.int.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge.int,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef)],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef),}
+                                                      \hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef)]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{" All Interactions"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{sys.rising.int.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge.int,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef)],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef),}
+                                                      \hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef)]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{" All Interactions"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{noc.diff.int.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff.int,}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef)],}
+                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef),}
+                                                      \hlkwd{length}\hlstd{(x}\hlopt{$}\hlstd{coef)]),}
+                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{" All Interactions"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
+
+
+\hlstd{prewaking.int.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.prewaking.int.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{rising.int.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.rising.int.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{noc.diff.int.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(noc.diff.int.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
+
+\hlstd{addtorow} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos} \hlkwb{<-} \hlkwd{list}\hlstd{()}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{1}\hlstd{]]} \hlkwb{<-} \hlnum{0}
+\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{2}\hlstd{]]} \hlkwb{<-} \hlnum{0}
+\hlstd{addtorow}\hlopt{$}\hlstd{command} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'& \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Prewaking Surge\} & 
+                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Rising Surge\} & 
+                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{Nocturnal Decline in SBP\} \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{,}
+                      \hlkwd{c}\hlstd{(}\hlstr{'& Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value 
+                        & Coefficient & Standard Error & P-value \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{))}
+
+\hlstd{int.table} \hlkwb{<-} \hlkwd{cbind}\hlstd{(prewaking.int.table, rising.int.table, noc.diff.int.table)}
+\hlkwd{names}\hlstd{(int.table)} \hlkwb{<-} \hlkwa{NULL}
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(int.table,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{9}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{4}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Coefficients for ABP:CVR Interaction"}\hlstd{)),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{add.to.row} \hlstd{= addtorow,}
+      \hlkwc{sanitize.text.function} \hlstd{= force,} \hlkwc{table.placement} \hlstd{=} \hlstr{"ht"}\hlstd{)}
+\hlcom{#Select R^2 values for each model}
+\hlstd{sys.prewaking.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge.linear,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
+\hlstd{sys.rising.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge.linear,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
+\hlstd{noc.sys.diff.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff.linear,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
+
+\hlstd{r2.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"SBP Prewaking Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.prewaking.r2),}
+                          \hlstr{"SBP Rising Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.rising.r2),}
+                          \hlstr{"Nocturnal SBP Difference"} \hlstd{=} \hlkwd{unlist}\hlstd{(noc.sys.diff.r2),}
+                          \hlkwc{row.names} \hlstd{= outcomeNames,}
+                          \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(r2.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlstr{"R-squared for ABP predictor models"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
+\hlstd{corMat} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{cor}\hlstd{(cvrdata[,outcomes.reac],} \hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata[,predictors])),}
+                        \hlkwc{row.names} \hlstd{= outcomeNames)}
+\hlkwd{names}\hlstd{(corMat)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SBP Prewaking Surge"}\hlstd{,} \hlstr{"SBP Rising Surge"}\hlstd{,} \hlstr{"Nocturnal Decline in SBP"}\hlstd{)}
+
+\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(corMat,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{caption} \hlstd{=} \hlstr{"Correlation Matrix for ABP Predictors and CVR Outcomes"}\hlstd{),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{14}\hlstd{)\{}
+  \hlstd{coef} \hlkwb{<-} \hlstd{mod.sys.prewaking.surge.linear[[i]]}\hlopt{$}\hlstd{coefficients}
+  \hlstd{se} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{diag}\hlstd{(mod.noc.sys.diff.linear[[i]]}\hlopt{$}\hlstd{var))}
+  \hlstd{confUp} \hlkwb{<-} \hlstd{coef} \hlopt{+} \hlkwd{qnorm}\hlstd{(}\hlnum{0.975}\hlstd{)}\hlopt{*}\hlstd{se}
+  \hlstd{confLow} \hlkwb{<-} \hlstd{coef} \hlopt{-} \hlkwd{qnorm}\hlstd{(}\hlnum{0.975}\hlstd{)}\hlopt{*}\hlstd{se}
+  \hlstd{confInt} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"("}\hlstd{,} \hlkwd{signif}\hlstd{(confLow,}\hlnum{3}\hlstd{),} \hlstr{", "}\hlstd{,} \hlkwd{signif}\hlstd{(confUp,}\hlnum{3}\hlstd{),} \hlstr{")"}\hlstd{,}
+                   \hlkwd{ifelse}\hlstd{(}\hlnum{0} \hlopt{<} \hlstd{confUp} \hlopt{&} \hlnum{0} \hlopt{>} \hlstd{confLow,} \hlstr{""}\hlstd{,} \hlstr{"*"}\hlstd{),} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+  \hlstd{results} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Coefficient} \hlstd{=} \hlkwd{signif}\hlstd{(coef,}\hlnum{3}\hlstd{),} \hlkwc{StdError} \hlstd{=} \hlkwd{signif}\hlstd{(se,}\hlnum{3}\hlstd{),} \hlkwc{ConfInt}\hlstd{=confInt)}
+  \hlkwd{colnames}\hlstd{(results)[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlstr{"95% Conf. Int."}
+  \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(results,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{3}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Regression for ABP with CVR: SBP Prewaking Surge and "}\hlstd{,} \hlkwd{levels}\hlstd{(outlong}\hlopt{$}\hlstd{lab)[i])),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{\}}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{14}\hlstd{)\{}
+  \hlstd{coef} \hlkwb{<-} \hlstd{mod.sys.rising.surge.linear[[i]]}\hlopt{$}\hlstd{coefficients}
+  \hlstd{se} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{diag}\hlstd{(mod.noc.sys.diff.linear[[i]]}\hlopt{$}\hlstd{var))}
+  \hlstd{confUp} \hlkwb{<-} \hlstd{coef} \hlopt{+} \hlkwd{qnorm}\hlstd{(}\hlnum{0.975}\hlstd{)}\hlopt{*}\hlstd{se}
+  \hlstd{confLow} \hlkwb{<-} \hlstd{coef} \hlopt{-} \hlkwd{qnorm}\hlstd{(}\hlnum{0.975}\hlstd{)}\hlopt{*}\hlstd{se}
+  \hlstd{confInt} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"("}\hlstd{,} \hlkwd{signif}\hlstd{(confLow,}\hlnum{3}\hlstd{),} \hlstr{", "}\hlstd{,} \hlkwd{signif}\hlstd{(confUp,}\hlnum{3}\hlstd{),} \hlstr{")"}\hlstd{,}
+                   \hlkwd{ifelse}\hlstd{(}\hlnum{0} \hlopt{<} \hlstd{confUp} \hlopt{&} \hlnum{0} \hlopt{>} \hlstd{confLow,} \hlstr{""}\hlstd{,} \hlstr{"*"}\hlstd{),} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+  \hlstd{results} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Coefficient} \hlstd{=} \hlkwd{signif}\hlstd{(coef,}\hlnum{3}\hlstd{),} \hlkwc{StdError} \hlstd{=} \hlkwd{signif}\hlstd{(se,}\hlnum{3}\hlstd{),} \hlkwc{ConfInt}\hlstd{=confInt)}
+  \hlkwd{colnames}\hlstd{(results)[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlstr{"95% Conf. Int."}
+  \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(results,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{3}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Regression for ABP with CVR: SBP Rising Surge and "}\hlstd{,} \hlkwd{levels}\hlstd{(outlong}\hlopt{$}\hlstd{lab)[i])),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{\}}
+\hlkwa{for} \hlstd{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{14}\hlstd{)\{}
+  \hlstd{coef} \hlkwb{<-} \hlstd{mod.noc.sys.diff.linear[[i]]}\hlopt{$}\hlstd{coefficients}
+  \hlstd{se} \hlkwb{<-} \hlkwd{sqrt}\hlstd{(}\hlkwd{diag}\hlstd{(mod.noc.sys.diff.linear[[i]]}\hlopt{$}\hlstd{var))}
+  \hlstd{confUp} \hlkwb{<-} \hlstd{coef} \hlopt{+} \hlkwd{qnorm}\hlstd{(}\hlnum{0.975}\hlstd{)}\hlopt{*}\hlstd{se}
+  \hlstd{confLow} \hlkwb{<-} \hlstd{coef} \hlopt{-} \hlkwd{qnorm}\hlstd{(}\hlnum{0.975}\hlstd{)}\hlopt{*}\hlstd{se}
+  \hlstd{confInt} \hlkwb{<-} \hlkwd{paste}\hlstd{(}\hlstr{"("}\hlstd{,} \hlkwd{signif}\hlstd{(confLow,}\hlnum{3}\hlstd{),} \hlstr{", "}\hlstd{,} \hlkwd{signif}\hlstd{(confUp,}\hlnum{3}\hlstd{),} \hlstr{")"}\hlstd{,}
+                   \hlkwd{ifelse}\hlstd{(}\hlnum{0} \hlopt{<} \hlstd{confUp} \hlopt{&} \hlnum{0} \hlopt{>} \hlstd{confLow,} \hlstr{""}\hlstd{,} \hlstr{"*"}\hlstd{),} \hlkwc{sep}\hlstd{=}\hlstr{""}\hlstd{)}
+  \hlstd{results} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlkwc{Coefficient} \hlstd{=} \hlkwd{signif}\hlstd{(coef,}\hlnum{3}\hlstd{),} \hlkwc{StdError} \hlstd{=} \hlkwd{signif}\hlstd{(se,}\hlnum{3}\hlstd{),} \hlkwc{ConfInt}\hlstd{=confInt)}
+  \hlkwd{colnames}\hlstd{(results)[}\hlnum{3}\hlstd{]} \hlkwb{<-} \hlstr{"95% Conf. Int."}
+  \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(results,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{3}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
+             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Regression for ABP with CVR: SBP Nocturnal Difference and "}\hlstd{,} \hlkwd{levels}\hlstd{(outlong}\hlopt{$}\hlstd{lab)[i])),}
+      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlstd{\}}
+\hlcom{#######################################}
 \hlcom{#  Model Fitting                      #}
 \hlcom{#######################################}
 \hlstd{modelFit} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{,} \hlkwc{knot}\hlstd{)\{}
 
   \hlstd{fit} \hlkwb{<-} \hlkwd{fit.mult.impute}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~ rcs("}\hlstd{, predictor,} \hlstr{", c("}\hlstd{,}
                                            \hlstd{knot[}\hlnum{1}\hlstd{],}\hlstr{","}\hlstd{, knot[}\hlnum{2}\hlstd{],}\hlstr{","}\hlstd{,}
-                                           \hlstd{knot[}\hlnum{3}\hlstd{],}\hlstr{")) +"}\hlstd{,}
+                                           \hlstd{knot[}\hlnum{3}\hlstd{],}\hlstr{"))*enrolled.dx.factor +"}\hlstd{,}
                                            \hlstd{ma,} \hlstr{"+"}\hlstd{,}
 \hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
-\hlstr{"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor"}\hlstd{)),}
+\hlstr{"+ apoe4pos.factor + htnrx.factor"}\hlstd{)),}
                          \hlkwc{fitter} \hlstd{= ols,} \hlkwc{xtrans} \hlstd{= impute.data,} \hlkwc{data} \hlstd{= cvrdata)}
 
   \hlkwd{return}\hlstd{(fit)}
@@ -1397,11 +2710,6 @@ Brooklyn Stanley\\
                                            \hlkwc{ma} \hlstd{= ma.vars[i],}
                                     \hlkwc{knot} \hlstd{= noc.knot)}
 \hlstd{\}}
-\hlstd{outcomeNames} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"Left Hemisphere"}\hlstd{,} \hlstr{"Right Hemisphere"}\hlstd{,} \hlstr{"Left Frontal Lobe"}\hlstd{,}
-                         \hlstr{"Right Frontal Lobe"}\hlstd{,} \hlstr{"Full Frontal Lobe"}\hlstd{,} \hlstr{"Left Occipital Lobe"}\hlstd{,}
-                         \hlstr{"Right Occipital Lobe"}\hlstd{,} \hlstr{"Full Occipital Lobe"}\hlstd{,} \hlstr{"Left Temporal Lobe"}\hlstd{,}
-                         \hlstr{"Right Temporal Lobe"}\hlstd{,} \hlstr{"Full Temporal Lobe"}\hlstd{,} \hlstr{"Left Parietal Lobe"}\hlstd{,}
-                         \hlstr{"Right Parietal Lobe"}\hlstd{,} \hlstr{"Full Parietal Lobe"}\hlstd{)}
 
 \hlcom{#Extract coefficients associated with ABP measures}
 \hlstd{sys.prewaking.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
@@ -1432,18 +2740,21 @@ Brooklyn Stanley\\
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(coef.table,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{3}\hlstd{)),}
              \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Coefficients for ABP with CVR: ABP Modeled as Restricted Cubic Spline with 3 Knots"}\hlstd{)),}
       \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlcom{#######################################}
-\hlcom{#  Tests of Association               #}
-\hlcom{#######################################}
+\hlcom{#########################################}
+\hlcom{#  Tests of Association for RCS Models  #}
+\hlcom{#########################################}
+\hlcom{#Not printed since primary results were based on linear model,}
+\hlcom{#  but this is how the test results would be extracted if needed}
+\hlcom{#  in the future}
 
 \hlcom{#Extract p-values for test of association}
 
 \hlstd{sys.prewaking.pval} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,}
-                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.prewaking.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlnum{1}\hlstd{,}\hlstr{"P"}\hlstd{])}
 \hlstd{sys.rising.pval} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,}
-                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.rising.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlnum{1}\hlstd{,}\hlstr{"P"}\hlstd{])}
 \hlstd{noc.sys.diff.pval} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,}
-                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlstr{"nocturnal.systolic.diff.sleep.self.reported"}\hlstd{,}\hlstr{"P"}\hlstd{])}
+                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{anova}\hlstd{(x)[}\hlnum{1}\hlstd{,}\hlstr{"P"}\hlstd{])}
 
 \hlstd{assoc.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"SBP Prewaking Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.prewaking.pval),}
                           \hlstr{"SBP Rising Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.rising.pval),}
@@ -1451,9 +2762,9 @@ Brooklyn Stanley\\
                           \hlkwc{row.names} \hlstd{= outcomeNames,}
                           \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
 
-\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(assoc.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
-             \hlkwc{caption} \hlstd{=} \hlstr{"P-values for Test of Association Between ABP and CVR"}\hlstd{),}
-      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
+\hlcom{# print(xtable(assoc.table, digits = 3,}
+\hlcom{#              caption = "P-values for Test of Association Between ABP and CVR"),}
+\hlcom{#       caption.placement = "top", booktabs = TRUE)}
 \hlcom{#Default plotting values for partial effect plots}
 \hlstd{subset_cvrdata} \hlkwb{<-} \hlkwd{subset}\hlstd{(cvrdata,} \hlkwc{select} \hlstd{=} \hlkwd{c}\hlstd{(age, education, sex.factor,}
                                              \hlstd{enrolled.dx.factor, raceethnicity.factor,}
@@ -1523,7 +2834,6 @@ Brooklyn Stanley\\
                                                                        \hlstr{"Ambiguous At Risk"}\hlstd{)),}
                                                 \hlkwc{colfill} \hlstd{=} \hlstr{"grey60"}\hlstd{,}
                                                 \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
-                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{5}\hlstd{),}
                                                 \hlkwc{xlab} \hlstd{=} \hlstr{"SBP prewaking"}\hlstd{,}
                                                 \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{]))} \hlopt{+}
   \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{))}
@@ -1538,7 +2848,6 @@ Brooklyn Stanley\\
                                                                         \hlstr{"Ambiguous At Risk"}\hlstd{)),}
                                                 \hlkwc{colfill} \hlstd{=} \hlstr{"grey60"}\hlstd{,}
                                                 \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
-                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{5}\hlstd{),}
                                                 \hlkwc{xlab} \hlstd{=} \hlstr{"SBP rising"}\hlstd{,}
                                                 \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{]))} \hlopt{+}
   \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{))}
@@ -1553,7 +2862,7 @@ Brooklyn Stanley\\
                                                                         \hlstr{"Ambiguous At Risk"}\hlstd{)),}
                                                 \hlkwc{colfill} \hlstd{=} \hlstr{"grey60"}\hlstd{,}
                                                 \hlkwc{adj.subtitle} \hlstd{=} \hlnum{FALSE}\hlstd{,}
-                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlnum{0}\hlstd{,}\hlnum{5}\hlstd{),}
+                                                \hlkwc{ylim.} \hlstd{=} \hlkwd{c}\hlstd{(}\hlopt{-}\hlnum{5}\hlstd{,}\hlnum{5}\hlstd{),}
                                                 \hlkwc{xlab} \hlstd{=} \hlstr{"Nocturnal Difference"}\hlstd{,}
                                                 \hlkwc{ylab} \hlstd{=} \hlkwd{gsub}\hlstd{(}\hlstr{"asl.reac."}\hlstd{,} \hlstr{""}\hlstd{, x}\hlopt{$}\hlstd{sformula[}\hlnum{2}\hlstd{]))} \hlopt{+}
   \hlkwd{theme}\hlstd{(}\hlkwc{legend.position} \hlstd{=} \hlstr{"none"}\hlstd{))}
@@ -1583,108 +2892,6 @@ Brooklyn Stanley\\
 \hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(linear.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
              \hlkwc{caption} \hlstd{=} \hlstr{"P-values for test of linearity for ABP predictors"}\hlstd{),}
       \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
-\hlcom{#Select R^2 values for each model}
-\hlstd{sys.prewaking.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
-\hlstd{sys.rising.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
-\hlstd{noc.sys.diff.r2} \hlkwb{<-} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff,} \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{) x}\hlopt{$}\hlstd{stats[}\hlstr{"R2"}\hlstd{])}
-
-
-\hlstd{r2.table} \hlkwb{<-} \hlkwd{data.frame}\hlstd{(}\hlstr{"SBP Prewaking Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.prewaking.r2),}
-                          \hlstr{"SBP Rising Surge"} \hlstd{=} \hlkwd{unlist}\hlstd{(sys.rising.r2),}
-                          \hlstr{"Nocturnal SBP Difference"} \hlstd{=} \hlkwd{unlist}\hlstd{(noc.sys.diff.r2),}
-                          \hlkwc{row.names} \hlstd{= outcomeNames,}
-                          \hlkwc{check.names} \hlstd{=} \hlnum{FALSE}\hlstd{)}
-
-\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(r2.table,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,}
-             \hlkwc{caption} \hlstd{=} \hlstr{"R-squared for ABP predictor models"}\hlstd{),}
-      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{)}
-\hlstd{corMat} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(}\hlkwd{cor}\hlstd{(cvrdata[,outcomes.reac],} \hlopt{!}\hlkwd{is.na}\hlstd{(cvrdata[,predictors])),} \hlkwc{row.names} \hlstd{= outcomeNames)}
-\hlkwd{names}\hlstd{(corMat)} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{"SBP Prewaking Surge"}\hlstd{,} \hlstr{"SBP Rising Surge"}\hlstd{,} \hlstr{"Nocturnal Decline in SBP"}\hlstd{)}
-
-\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(corMat,} \hlkwc{digits} \hlstd{=} \hlnum{3}\hlstd{,} \hlkwc{caption} \hlstd{=} \hlstr{"Correlation Matrix for ABP Predictors and CVR Outcomes"}\hlstd{),}
-      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{)}
-\hlcom{#######################################}
-\hlcom{#  Model Fitting: Linear Effect       #}
-\hlcom{#######################################}
-
-\hlstd{modelFitLinear} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{)\{}
-
-  \hlstd{fit} \hlkwb{<-} \hlkwd{fit.mult.impute}\hlstd{(}\hlkwd{as.formula}\hlstd{(}\hlkwd{paste0}\hlstd{(outcome,} \hlstr{"~"}\hlstd{, predictor,} \hlstr{"+"}\hlstd{, ma,} \hlstr{"+"}\hlstd{,}
-\hlstr{"age + sex.factor + raceethnicity.factor + education"}\hlstd{,}
-\hlstr{"+ enrolled.dx.factor + apoe4pos.factor + htnrx.factor"}\hlstd{)),}
-                         \hlkwc{fitter} \hlstd{= ols,} \hlkwc{xtrans} \hlstd{= impute.data,} \hlkwc{data} \hlstd{= cvrdata)}
-
-  \hlkwd{return}\hlstd{(fit)}
-\hlstd{\}}
-
-
-\hlcom{#Systolic prewaking surge}
-\hlstd{mod.sys.prewaking.surge.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
-  \hlstd{mod.sys.prewaking.surge.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
-                                                   \hlkwc{predictor} \hlstd{= predictors[}\hlnum{1}\hlstd{],}
-                                                   \hlkwc{ma} \hlstd{= ma.vars[i])}
-\hlstd{\}}
-
-\hlcom{#Systolic rising surge}
-\hlstd{mod.sys.rising.surge.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
-  \hlstd{mod.sys.rising.surge.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
-                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{2}\hlstd{],}
-                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
-\hlstd{\}}
-
-\hlcom{#Nocturnal Difference}
-\hlstd{mod.noc.sys.diff.linear} \hlkwb{<-} \hlkwd{list}\hlstd{()}
-\hlkwa{for}\hlstd{(i} \hlkwa{in} \hlkwd{seq_along}\hlstd{(outcomes.reac))\{}
-  \hlstd{mod.noc.sys.diff.linear[[i]]} \hlkwb{<-} \hlkwd{modelFitLinear}\hlstd{(}\hlkwc{outcome} \hlstd{= outcomes.reac[i],}
-                                           \hlkwc{predictor} \hlstd{= predictors[}\hlnum{3}\hlstd{],}
-                                           \hlkwc{ma} \hlstd{= ma.vars[i])}
-\hlstd{\}}
-
-\hlstd{sys.prewaking.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.prewaking.surge.linear,}
-                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
-                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
-                                                      \hlkwd{grep}\hlstd{(}\hlstr{"prewaking"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
-                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.prewaking.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
-
-
-\hlstd{sys.rising.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.sys.rising.surge.linear,}
-                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
-                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
-                                                      \hlkwd{grep}\hlstd{(}\hlstr{"rising"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
-                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"systolic.rising.surge"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
-
-
-\hlstd{noc.diff.lin.coef} \hlkwb{<-} \hlkwd{do.call}\hlstd{(rbind,} \hlkwd{lapply}\hlstd{(mod.noc.sys.diff.linear,}
-                             \hlkwa{function}\hlstd{(}\hlkwc{x}\hlstd{)} \hlkwd{c}\hlstd{(x}\hlopt{$}\hlstd{coef[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))],}
-                                           \hlkwd{sqrt}\hlstd{(x}\hlopt{$}\hlstd{var[}\hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef)),}
-                                                      \hlkwd{grep}\hlstd{(}\hlstr{"noc"}\hlstd{,} \hlkwd{names}\hlstd{(x}\hlopt{$}\hlstd{coef))]),}
-                                           \hlkwd{anova}\hlstd{(x)[}\hlstr{"nocturnal.systolic.diff.sleep.self.reported"}\hlstd{,}\hlstr{"P"}\hlstd{])))}
-
-\hlstd{prewaking.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.prewaking.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
-
-\hlstd{rising.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(sys.rising.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
-
-\hlstd{noc.diff.coef.table} \hlkwb{<-} \hlkwd{as.data.frame}\hlstd{(noc.diff.lin.coef,} \hlkwc{row.names} \hlstd{= outcomeNames)}
-
-\hlstd{addtorow} \hlkwb{<-} \hlkwd{list}\hlstd{()}
-\hlstd{addtorow}\hlopt{$}\hlstd{pos} \hlkwb{<-} \hlkwd{list}\hlstd{()}
-\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{1}\hlstd{]]} \hlkwb{<-} \hlnum{0}
-\hlstd{addtorow}\hlopt{$}\hlstd{pos[[}\hlnum{2}\hlstd{]]} \hlkwb{<-} \hlnum{0}
-\hlstd{addtorow}\hlopt{$}\hlstd{command} \hlkwb{<-} \hlkwd{c}\hlstd{(}\hlstr{'& \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Prewaking Surge\} & 
-                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{SBP Rising Surge\} & 
-                      \textbackslash{}\textbackslash{}multicolumn\{3\}\{c\}\{Nocturnal Decline in SBP\} \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{,}
-                      \hlkwd{c}\hlstd{(}\hlstr{'& Coefficient & Standard Error & P-value 
-                        & Coefficient & Standard Error & P-value 
-                        & Coefficient & Standard Error & P-value \textbackslash{}\textbackslash{}\textbackslash{}\textbackslash{}'}\hlstd{))}
-
-\hlstd{full.table} \hlkwb{<-} \hlkwd{cbind}\hlstd{(prewaking.coef.table, rising.coef.table, noc.diff.coef.table)}
-\hlkwd{names}\hlstd{(full.table)} \hlkwb{<-} \hlkwa{NULL}
-\hlkwd{print}\hlstd{(}\hlkwd{xtable}\hlstd{(full.table,} \hlkwc{align} \hlstd{=} \hlkwd{c}\hlstd{(}\hlstr{"l"}\hlstd{,} \hlkwd{rep}\hlstd{(}\hlstr{"r"}\hlstd{,} \hlnum{9}\hlstd{)),} \hlkwc{digits} \hlstd{=} \hlnum{4}\hlstd{,}
-             \hlkwc{caption} \hlstd{=} \hlkwd{paste0}\hlstd{(}\hlstr{"Coefficients for Linear ABP with CVR"}\hlstd{)),}
-      \hlkwc{caption.placement} \hlstd{=} \hlstr{"top"}\hlstd{,} \hlkwc{booktabs} \hlstd{=} \hlnum{TRUE}\hlstd{,} \hlkwc{add.to.row} \hlstd{= addtorow,}
-      \hlkwc{sanitize.text.function} \hlstd{= force,} \hlkwc{table.placement} \hlstd{=} \hlstr{"ht"}\hlstd{)}
 \hlstd{cvrdata}\hlopt{$}\hlstd{sys.rising.impute} \hlkwb{<-} \hlstd{cvrdata}\hlopt{$}\hlstd{systolic.rising.surge}
 \hlstd{cvrdata}\hlopt{$}\hlstd{sys.prewaking.impute} \hlkwb{<-} \hlstd{cvrdata}\hlopt{$}\hlstd{systolic.prewaking.surge}
 \hlstd{cvrdata}\hlopt{$}\hlstd{noc.diff.impute} \hlkwb{<-} \hlstd{cvrdata}\hlopt{$}\hlstd{nocturnal.systolic.diff.sleep.self.reported}
@@ -1718,6 +2925,7 @@ Brooklyn Stanley\\
 
 \hlcom{#Results available if desired but suppressed since conclusions do not change}
 \hlcom{#  (results still not significant at 0.05 level)}
+\hlcom{#Models with restricted cubic splines}
 
 \hlstd{modelFitComplete} \hlkwb{<-} \hlkwa{function}\hlstd{(}\hlkwc{outcome}\hlstd{,} \hlkwc{predictor}\hlstd{,} \hlkwc{ma}\hlstd{,} \hlkwc{knot}\hlstd{)\{}
 
